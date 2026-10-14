@@ -5,4 +5,4 @@ The UI/UX/experience/frontend workstream of **Arivo** — the owner's reading/st
 - Backend: [Arivoo](https://github.com/prathamarchives/Arivoo) — the base, foundation, and mechanism (API contracts, no UI by design).
 - This repo: the experience that serves it — reader, capture, notes, journal, library, the personal-wikipedia surface, and the agent-facing experience layer.
 
-**Status:** seed. Governance is engineered in plan mode with the owner (INTENT-LEDGER INT-001) before any execution. Start at `AGENTS.md`.
+**Status:** walls standing — kernel (LAWS, RULES, CONTRACT, PRINCIPLES, DECISIONS) + harness (GOVERNANCE, `verify.sh`) are live; stage 2 (layer-by-layer experience reasoning with the owner) is next. Start at `AGENTS.md` (read order). Verify with `bash verify.sh`.

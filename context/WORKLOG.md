@@ -42,3 +42,32 @@ Append-only operational memory. Every session reads this before working and appe
 - Design-relevant owner vision words now in context: "clean minimalistic UI, rounded corners, not sloppy" · "just like a book" · highlights classified fact/concept/quote (free text post-D-030) · "raw pen/pencil... rough work on journals/book" · notes = raw thinking WITH DIAGRAMS, explicitly not sticky notes · journal = end-of-day page + writing lab ("where i write posts, experimnent, raw writing") · @ references passage↔work everywhere · lists/library of currently-reading · concepts = growing personal-wikipedia entities · dictionary feature · compounding digest · "everything compounds like its a whole new brain forming up".
 - Doctrine anchors for arivodesign's system build: repo as executable memory (five systems); the two cuts (agent verifies by running the real thing; codebase is memory); product contract + golden path + ONE verify command as first assets; constraint ladder with prose last; failure→asset ratchet; proof-carrying changes; gardener role; growth stages — start small, grow on observed failures.
 - Session 2 closes. Next: the owner reasons through layers one at a time (plan mode); repo updates land after each layer.
+
+---
+## Session 3 — 2026-10-14 — turn-003 intake + KERNEL & HARNESS built (the walls stand)
+
+**Task ID:** 3 · **Agent:** Super Z (main, GLM host)
+
+**Task:** Owner turn 3 (INT-003) — tighten rules and laws so agents don't drift; the repo grows as we go; set iteration/verification/feedback loops; the agent writes its own intents when it sees one in text; own rules/laws/constraints (not-to-do/what-to-do); corrections automatically become law/rule; feedback/iteration loop + self-healing. Combined with INT-002's standing order: walls/harness/kernel BEFORE any UI.
+
+**Work Log:**
+- Ingested turn 3 verbatim (raw/turn-003.txt) + INT-003 ledgered with labeled interpretations; pushed (6ffc53c).
+- Built the kernel (b2a6469): LAWS.md — 18 laws on a constraint ladder C0–C6 (reading experience first; owner sovereignty incl. self-extraction L-06 and corrections-codify L-09; memory/append-only; drift control incl. verify-before-claim L-13; old-Arivo quarantine; evidence honesty; grow-on-failure sizing) — every law INT-anchored. RULES.md — 9 DO / 11 DON'T, each citing its law. CONTRACT.md — the experience contract: 10 objects rendered from Arivoo D-023/D-030/D-031 + the owner's raw vision words, 10 experience invariants (X-01..X-10), the golden path arc, verification protocol. PRINCIPLES.md — 12 design principles. DECISIONS.md — D-001..D-007 (desktop-first working decision; old-Arivo quarantine; build order kernel→harness→layers→paint; CCL as self-healing; verify.sh as the one command; fresh-context verification; layer reasoning owner-gated).
+- Built the harness: GOVERNANCE.md — loops 0–6 (session gate, intent intake, correction codification with the seven-step protocol + promotion-tier table, work iteration with the paint cycle, two-level verification, drift audit, exit gate), the self-healing ratchet diagram, growth stages 0–5 with entry/exit conditions, the anti-over-engineering exclusions. verify.sh — the ONE verify command: raw-corpus sentinel, ledger completeness, secret hygiene, quarantine leak check, kernel presence, worklog/STATE freshness.
+- verify.sh's first run caught three real bugs IN the verifier — ratcheted in-session (Loop 2 step 6 lived, not just documented): (1) CWD-dependence → script now cds to repo root; (2) unbalanced quote in a basename substitution (`txt")"`) that broke parsing → fixed; (3) INT id matching missed the ledger's zero-padding convention (INT-1 vs INT-001) → `printf -v id 'INT-%03d'`. Two process lessons logged: never run the verifier in parallel with an edit to itself (two race hits this session); isolation repros must come from file extraction, not printf quoting gymnastics.
+- Entry files updated: AGENTS.md v1.0 (read order of 12 steps, golden path, six binding rules, anti-drift contract), STATE.md (stage 1 complete, next = layer map with owner), GLOSSARY.md (18 terms), README status line.
+
+**Stage Summary:**
+- THE WALLS ARE STANDING (stage 1 of 5 complete). Any agent — current or future, with zero chat context — can now enter through AGENTS.md, obey the kernel, work the loops, and be mechanically verified before push.
+- Owner's turn-3 asks are all codified as operating machinery, not prose: self-extraction = Loop 1 + L-06; corrections→rules = Loop 2 + L-09 + ratchet; anti-drift = read order + provenance + verify gate; repo grows as we go = growth stages + L-18 sizing.
+- verify.sh green as of the final run of this session (after ratchets). Commits: 6ffc53c (intake), b2a6469 (kernel), session-3 close (harness + entry files).
+- Next: hand the owner the layer map — the decomposition of the Arivo experience into layers for stage 2 (one layer at a time, repo updated each time, owner-gated per D-007). Proposed map delivered in chat; owner arbitrates order and content.
+- Unresolved (owner-gated): lock desktop-first as final (D-001); layer order; whether any layer needs adding beyond the proposed map.
+
+---
+## Session 3 addendum — harness close-out (verify green, entry files live)
+
+- Final `bash verify.sh` state at session close: PASS from a foreign CWD (11 system files present, 3/3 raw turns ledgered, no secrets, no quarantine leaks, worklog + STATE fresh for INT-003). Exit 0.
+- Harness commit: GOVERNANCE.md, verify.sh, AGENTS.md v1.0, STATE.md, GLOSSARY.md, README touch, this entry.
+- The ratchet holds three new permanent checks born from this session's own mistakes: CWD-robustness, unbalanced-quote survival (via bash -n discipline going forward), zero-padded INT matching.
+
