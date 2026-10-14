@@ -91,3 +91,10 @@ Append-only operational memory. Every session reads this before working and appe
 - THE GLASS READS (pass 2): surface alphas, glows and borders strengthened until frosted panels visibly refract; overlay demonstrates blur level 3 with full-page backdrop blur.
 - Known trade-offs logged: motion blur is the CSS approximation (blur+translate+opacity on glide easing); fonts are owner-provided — production must license Helvetica properly (note in design/README.md).
 - Next: owner reviews + reacts (Loop 1/2); more references promised; then either iterate the paint or open the next layer (reading surface + capture) per D-007.
+
+---
+## Session 4 addendum — the wrong-CWD incident (Loop 2, lived)
+
+- The paint commit initially landed in the HOST workspace repo (/home/z/my-project) because the Bash session's CWD resets between calls; `git add -A` ran there twice. Repaired: host commit reset --mixed (history restored), paint committed to arivodesign properly (927c095).
+- CODIFIED: verify.sh now carries a permanent check — "paint artifacts committed to THIS repo" (git ls-files design/index.html). The failure class is mechanically impossible to miss from now on.
+- RULE for every future session (and any agent): NEVER trust the shell CWD across tool calls. Use `git -C <repo>` / absolute paths for every git and file operation. The verify.sh CWD-robustness (cd to script dir) is now load-bearing, not nice-to-have.
