@@ -1,0 +1,5 @@
+arivodesign — owner turn 2, 2026-10-14 (verbatim; chat session web-5692152c). No credentials in turn.
+
+---
+
+*old arivo is archived for a reason all code and design is slop and the shittiest please don't go on that path..... i mean both... dekstop-first i guesss.... go through the raw of arivoo and you will understnad what i want.. so first do that and then we'll reason through layers and update the repo each time. and we;ll not hop on the designing and building the frontend ui and ux but first the walls and harness and kernel aligned to our goal and make this repo a system for agents a garden so i would apprecite if you red the engineering and its upstream files in raw in arivoo. and then after evetyghin we will replicate, refine, iterate every phase and then paint our vision and everything on html/css refine, iterate, change, test before finalizing and executing

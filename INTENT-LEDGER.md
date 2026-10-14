@@ -21,3 +21,16 @@ Source: owner turn 1, chat 2026-10-14 (`context/raw/turn-001.txt`). Grounds: thi
 Interpretations (labeled, not owner words):
 - The backend (Arivoo) is the authority on product contracts (source/import, anchor, highlight, bookmark, note, journal block, @-reference, retrieval — Arivoo D-023). arivodesign designs and builds the experience that consumes those contracts. No UI work belongs in Arivoo (Arivoo P-01/NORTH-STAR non-goal: "No UI/UX design (owner's separate work; the backend serves it)" — this repo IS that separate workstream).
 - "the right way this time... build the system specifically for design" — the owner assesses Arivoo's full governance weight as over-built for a design workstream; arivodesign adopts the CORE rules (repo as long-term memory, verbatim owner intent, append-only supersession, small verified increments, continuous commit) adapted for design artifacts, not the whole backend apparatus, unless the owner says otherwise in plan mode.
+
+---
+
+**INT-002 — OLD ARIVO IS ARCHIVED SLOP; DESKTOP-FIRST LEANING; RAW FIRST; WALLS/HARNESS/KERNEL BEFORE UI; THE GARDEN DIRECTIVE — active**
+
+> "*old arivo is archived for a reason all code and design is slop and the shittiest please don't go on that path..... i mean both... dekstop-first i guesss.... go through the raw of arivoo and you will understnad what i want.. so first do that and then we'll reason through layers and update the repo each time. and we;ll not hop on the designing and building the frontend ui and ux but first the walls and harness and kernel aligned to our goal and make this repo a system for agents a garden so i would apprecite if you red the engineering and its upstream files in raw in arivoo. and then after evetyghin we will replicate, refine, iterate every phase and then paint our vision and everything on html/css refine, iterate, change, test before finalizing and executing"
+
+Source: owner turn 2, chat 2026-10-14 (`context/raw/turn-002.txt`). Grounds: this repo's execution order; the anti-reference rule (old Arivo is NOT design or code heritage — "i mean both"); the platform lean (desktop-first, tentative — "i guesss"); the vision source (Arivoo's raw corpus is the intent source for what Arivo should be); the system-first doctrine (walls, harness, kernel aligned to the goal BEFORE any frontend design/build — the Arivoo P-14/P-17 pattern applied to arivodesign); the garden metaphor (repo as a system for agents — ENGINEERING doctrine); the final-artifact discipline (HTML/CSS vision work comes AFTER the system: replicate, refine, iterate every phase, then paint, refine, iterate, change, test — before finalizing and executing).
+
+Interpretations (labeled, not owner words):
+- Execution order for this repo: (1) absorb Arivoo raw corpus + ENGINEERING + upstream doctrine; (2) reason through layers with the owner, updating the repo each time; (3) build walls, harness, kernel (agent-system infrastructure) aligned to the goal; (4) only then design/build frontend UI/UX — with HTML/CSS vision painting as a refine-iterate-test loop before anything is finalized.
+- "desktop-first i guesss" is a leaning, not a locked decision — tentative in the owner's own words; plan mode arbitrates.
+- The old `prathamarchives/Arivo` repo (Electron app, v0.5.0) is explicitly quarantined: neither its code nor its design may be referenced as a starting point.
