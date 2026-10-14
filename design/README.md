@@ -4,16 +4,21 @@ Static prototype that locks the visuals before production (INT-004, D-009/D-010)
 
 ## Open it
 
-Open `index.html` directly in a browser, or serve it (nicer):
+From the repo root — `bash serve.sh` (the repo's preview capability, INT-005):
 
 ```bash
-cd design && python3 -m http.server 4173
-# → http://localhost:4173
+bash serve.sh            # → http://localhost:3000  (the chat preview gateway proxies 3000)
+bash serve.sh 4173       # any port you like
 ```
+
+Or open `design/index.html` directly in a browser (no build step, no dependency).
+
+> Session-4 note: preview used to be an ad-hoc shell command that died with the
+> session. It is now a repo capability — any agent or the owner can start it.
 
 ## What to try (the owner's checklist)
 
-1. **Sidebar** — hover it: it glides open (480ms), labels drift in with the motion-blur treatment. Move away: it settles back. The small button top-left pins it open ("just small").
+1. **Sidebar** — hover it: after a deliberate 120ms beat it glides open (480ms), labels drift in with the motion-blur treatment; it waits 260ms before closing so flicks don't thrash. The small button top-left pins it open ("just small") and responds instantly.
 2. **Account** — click the avatar row at the bottom: the overlay grows from bottom-left with the SAME motion family. Escape or the backdrop closes it. The Appearance toggle switches dark/light (grayscale both ways).
 3. **Home** — currently reading (progress), lists, recent-highlights feed (Are.na anatomy, desktop translation).
 4. **Library** — folders with covers peeking (mybooks ref), filter pills, all-works grid.

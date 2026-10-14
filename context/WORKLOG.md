@@ -98,3 +98,29 @@ Append-only operational memory. Every session reads this before working and appe
 - The paint commit initially landed in the HOST workspace repo (/home/z/my-project) because the Bash session's CWD resets between calls; `git add -A` ran there twice. Repaired: host commit reset --mixed (history restored), paint committed to arivodesign properly (927c095).
 - CODIFIED: verify.sh now carries a permanent check — "paint artifacts committed to THIS repo" (git ls-files design/index.html). The failure class is mechanically impossible to miss from now on.
 - RULE for every future session (and any agent): NEVER trust the shell CWD across tool calls. Use `git -C <repo>` / absolute paths for every git and file operation. The verify.sh CWD-robustness (cd to script dir) is now load-bearing, not nice-to-have.
+
+---
+## Session 5 — 2026-10-14 — INT-005: owner-directed drift audit (Loop 5 lived), critical fix, preview capability
+
+**Task ID:** 5 · **Agent:** Super Z (main, GLM host)
+
+**Task:** Owner turn 5 (INT-005) — "make sure the repo is aligned... find gaps fix... where the execution went wrong where you drifted whats not done and do the iteration.. first startup the dev so i can preview the html here". Owner-directed Loop 5 audit + live in-chat preview, preview ordered FIRST.
+
+**Work Log:**
+- Loop 1 intake first (L-06): turn-005 verbatim + INT-005 ledgered; committed before substantive work (68c222d).
+- AUDIT (Loop 5) — claims vs disk, spec vs implementation. Found and fixed:
+  1. **CRITICAL (functional):** `.overlay-rootidden]` in shell.css — a corrupted attribute selector (missing `[`) that silently disabled the overlay hide rule. Effect: after the first overlay close, the fixed full-viewport overlay root never left — every click died. Session 4's screenshot verification missed it because screenshots never tested close-then-interact. Fixed to `.overlay-root[hidden]`.
+  2. **Spec drift:** hover-expand delays (120ms in / 260ms out) were CLAIMED in DESIGN-SYSTEM.md and a shell.css comment but never implemented (no transition-delay on width). Implemented: sidebar + content carry the delays (destination-state supplies them); pin responds instantly (0ms); drift labels now fade INTO the panel slide (160ms collapse delay).
+  3. **Spec drift:** 268px hardcoded in 3 places → `--sidebar-w-expanded` token.
+  4. **Discipline violation:** 10 raw hex gradients inside components.css (avatar, 5 cover variants, cover-mini, 3 folder-cover overrides) violated the tokens-only Don't rule → promoted to a `--cover-*` token family in tokens.css (theme-independent: covers are artwork). Grep now proves zero hex outside tokens.css.
+  5. **Hygiene:** favicon added (data-URI, no 404 noise).
+  6. **Capability gap (the INT-005 ask):** preview was an ad-hoc shell command that died with the session → `serve.sh` at repo root is now THE dev server (default port 3000; the chat preview gateway proxies 3000).
+- RATCHET (Loop 2 step 6): the corrupted-selector failure class is now a permanent verify.sh check — any CSS line containing `]` must contain `[` (check 5c). Negative-tested by planting the corruption: verify caught it; restored; verify green.
+- VERIFIED BY RUN (Loop 4, agent-browser at 1440×900): page loads with zero console errors; overlay opens (backdrop + blur live) → Escape closes → `display:none` confirmed via offsetParent; UI ALIVE after close (nav to Library + back to Home works — the exact pre-fix failure mode); hover delay wiring confirmed live (0.12s transition-delay on hover state, expanded width from token). Screenshot: design/preview/home-audit.png.
+- Sandbox lesson (process): background servers spawned in a Bash tool call die with the call's process group — even setsid+nohup. A double-fork daemon (scripts/daemon-serve.py, parent exits, grandchild reparented to PID 1) survives call boundaries. The persistent preview runs this way; serve.sh remains the human-facing one-command starter.
+
+**Stage Summary:**
+- The audit found exactly what audits should: one invisible functional bug, two claims-not-implemented, one discipline leak, one missing capability — all fixed same-session, one ratcheted into the verifier. The repo now matches its own spec, and the spec's claims are true.
+- PREVIEW IS LIVE for the owner (in-chat gateway → port 3000 → design/index.html); serve.sh makes it reproducible.
+- Unfinished (honest, owner-gated per D-007): reading surface + in-reader capture, concepts deep-dive, compounding digest — not painted; more owner references promised (INT-004); owner-side: PAT rotation.
+- verify.sh: 24 checks, green (worklog + STATE freshness restored by this entry).
