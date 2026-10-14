@@ -34,3 +34,19 @@ Interpretations (labeled, not owner words):
 - Execution order for this repo: (1) absorb Arivoo raw corpus + ENGINEERING + upstream doctrine; (2) reason through layers with the owner, updating the repo each time; (3) build walls, harness, kernel (agent-system infrastructure) aligned to the goal; (4) only then design/build frontend UI/UX — with HTML/CSS vision painting as a refine-iterate-test loop before anything is finalized.
 - "desktop-first i guesss" is a leaning, not a locked decision — tentative in the owner's own words; plan mode arbitrates.
 - The old `prathamarchives/Arivo` repo (Electron app, v0.5.0) is explicitly quarantined: neither its code nor its design may be referenced as a starting point.
+
+---
+
+**INT-003 — TIGHTEN RULES AND LAWS (ANTI-DRIFT); REPO GROWS AS WE GO; ITERATION/VERIFICATION/FEEDBACK LOOPS; SELF-EXTRACTION OF INTENTS; CORRECTIONS AUTOMATICALLY BECOME RULES/LAWS; SELF-HEALING — active**
+
+> "yea also rules and laws. tighethen it. so agent doesnt drift and before the the repo should grow as we go. set iteration/verification and feedback loops. like it writes its own intents when sees one in text onw rules and own lawsn and own constriants/nottodo/whatodo/ and everything. like suppose agent did work, made mistake, i correct it. now it should be a law/rule or something automatically by agent. so feedbakc/iteration loop + selfhealing"
+
+Source: owner turn 3, chat 2026-10-14 (`context/raw/turn-003.txt`). Grounds: this repo's governance layer is now EXPLICITLY in scope and precedes all UI work (it merges with INT-002's walls/harness/kernel directive — tightened rules/laws/constraints ARE the kernel; the feedback/iteration/verification loops + self-healing ARE the harness); the anti-drift requirement ("so agent doesnt drift"); the growth protocol ("the repo should grow as we go"); the self-extraction mandate ("it writes its own intents when sees one in text"); the correction-codification mandate ("i correct it. now it should be a law/rule or something automatically by agent"); the constraint taxonomy ("own constriants/nottodo/whatodo").
+
+Interpretations (labeled, not owner words):
+- Anti-drift is first-class: read-order discipline, verify-before-push, and provenance chains (every artifact cites the owner intent that grounds it) are the three drift controls.
+- "writes its own intents when sees one in text" — proactive intent extraction WITHOUT being asked, before anything else is done with an owner turn (promoted to law L-10; operated by Loop 1).
+- "made mistake, i correct it. now it should be a law/rule or something automatically" — the Correction Codification Loop: same-session capture → ledger → promotion to the right tier (law/rule/contract invariant) → repair → regression check → push. An uncoded correction is a lost correction (promoted to law L-09; operated by Loop 2).
+- Failure→asset: a mistake that is mechanically checkable additionally becomes a permanent check in `verify.sh`, so the same failure cannot recur silently (the Arivoo ENGINEERING failure-becomes-asset ratchet, adopted).
+- "the repo should grow as we go" — the repo is the only long-term memory; every loop deposits into it; chat-only knowledge is void (L-02/L-11).
+- Sizing note: "the right way this time" (INT-001) still holds — the governance layer stays lean; growth stages mean no speculative files, only failure- or owner-driven additions (L-15).
