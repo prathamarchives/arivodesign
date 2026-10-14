@@ -73,6 +73,20 @@ else
   bad "design/ is NOT tracked by this repo — a commit landed in the wrong CWD or paint is uncommitted"
 fi
 
+# ---------------------------------------------------------------- 5c. CSS selector integrity
+# (ratcheted 2026-10-14, Loop 5 audit: a corrupted selector `.overlay-rootidden]` — a
+# missing `[` — silently disabled the overlay hide rule; the UI died after the first
+# overlay close because the fixed overlay root kept covering the viewport. CSS never
+# errors on unknown selectors, so the proxy check: any line in design/styles/ that
+# contains `]` must also contain `[`.)
+css_bad="$(grep -Hn ']' design/styles/*.css 2>/dev/null | grep -v '\[' || true)"
+if [ -n "$css_bad" ]; then
+  bad "corrupted CSS selector line(s) — ']' without '[' on the same line:"
+  lines+=("$css_bad")
+else
+  ok "css selector brackets balanced per line"
+fi
+
 # ---------------------------------------------------------------- 6. worklog is alive for the latest turn
 latest="$(ls context/raw/turn-*.txt 2>/dev/null | sort | tail -1)"
 if [ -n "$latest" ]; then

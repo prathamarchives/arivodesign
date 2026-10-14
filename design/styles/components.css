@@ -106,7 +106,7 @@
   border-radius: 50%;
   background:
     radial-gradient(120% 120% at 30% 20%, rgba(255,255,255,.28), transparent 50%),
-    linear-gradient(145deg, #3A3A40, #1B1B1F);
+    var(--cover-1);
   color: var(--cover-ink); font-weight: 700;
   border: 1px solid var(--border-strong);
   flex: none;
@@ -170,11 +170,11 @@
 .cover .c-author { font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; opacity: .6; margin-top: 4px; }
 .cover .c-spine { position: absolute; inset: 0 auto 0 0; width: 3px; background: rgba(255,255,255,.10); }
 /* grayscale cover variants */
-.cv-a { background: linear-gradient(160deg, #34343A, #121215 70%); }
-.cv-b { background: linear-gradient(200deg, #2A2A30, #101013 65%); }
-.cv-c { background: linear-gradient(140deg, #414147, #151518 75%); }
-.cv-d { background: linear-gradient(180deg, #222226, #0E0E10); }
-.cv-e { background: linear-gradient(120deg, #3B3B41, #141417 60%); }
+.cv-a { background: var(--cover-2); }
+.cv-b { background: var(--cover-3); }
+.cv-c { background: var(--cover-4); }
+.cv-d { background: var(--cover-5); }
+.cv-e { background: var(--cover-6); }
 .cover .c-mark {
   position: absolute; top: var(--s-4); right: var(--s-4);
   font-size: 22px; font-weight: 300; opacity: .5; font-style: italic;
@@ -198,7 +198,7 @@
 .list-card .l-stack .cover-mini {
   width: 34px; height: 50px; border-radius: 6px;
   border: 1px solid var(--border-strong);
-  background: linear-gradient(160deg, #2E2E33, #121215);
+  background: var(--cover-mini);
   margin-right: -14px;
   box-shadow: var(--shadow-1);
 }
@@ -244,9 +244,9 @@
 .folder-card:hover .f-covers .fc:nth-child(1) { transform: rotate(-7deg) translateY(-3px); }
 .folder-card:hover .f-covers .fc:nth-child(2) { transform: translateY(-5px); }
 .folder-card:hover .f-covers .fc:nth-child(3) { transform: rotate(7deg) translateY(-3px); }
-.fc.cv-a { background: linear-gradient(160deg, #38383E, #121215); }
-.fc.cv-b { background: linear-gradient(200deg, #2C2C32, #101013); }
-.fc.cv-c { background: linear-gradient(140deg, #44444A, #151518); }
+.fc.cv-a { background: var(--cover-2); }
+.fc.cv-b { background: var(--cover-3); }
+.fc.cv-c { background: var(--cover-4); }
 .folder-card .f-caption { display: flex; justify-content: center; gap: 6px; margin-top: var(--s-3); font-size: var(--fs-meta); }
 .folder-card .f-caption b { font-weight: 700; }
 .folder-card .f-caption span { color: var(--fg-3); }

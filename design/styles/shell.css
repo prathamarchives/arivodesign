@@ -18,7 +18,7 @@
   border-radius: var(--r-xl);
 }
 
-:root { --sidebar-w: 76px; }
+:root { --sidebar-w: 76px; --sidebar-w-expanded: 268px; }
 
 /* ============ SIDEBAR — floating glass (Panora float + frosted level) ============ */
 .sidebar {
@@ -38,12 +38,16 @@
               background var(--dur-micro) var(--ease-out),
               box-shadow var(--dur-micro) var(--ease-out);
 }
-/* hover-expand: delay 120ms in; leave a little slower (260ms) */
-.sidebar:hover { --sidebar-expand: 1; }
+/* hover-expand: delay 120ms in (no accidental expansions); leave a little
+   slower (260ms) so flicks don't thrash. Pinned responds instantly (0ms).
+   Delays live on the transition (destination state supplies them). */
+.sidebar { transition-delay: 260ms; }
+.sidebar:hover { width: var(--sidebar-w-expanded); transition-delay: 120ms; }
+.sidebar.pinned { width: var(--sidebar-w-expanded); transition-delay: 0ms; }
 
-.sidebar:hover { width: 268px; }
-.sidebar:hover ~ .content, .sidebar.pinned ~ .content { margin-left: calc(268px - var(--s-3)); }
-.sidebar.pinned { width: 268px; }
+.content { transition-delay: 260ms; }
+.sidebar:hover ~ .content { margin-left: calc(var(--sidebar-w-expanded) - var(--s-3)); transition-delay: 120ms; }
+.sidebar.pinned ~ .content { margin-left: calc(var(--sidebar-w-expanded) - var(--s-3)); transition-delay: 0ms; }
 
 /* ---- top row: pin button + wordmark ---- */
 .sb-top { display: flex; align-items: center; height: 32px; margin-bottom: var(--s-6); }
@@ -78,7 +82,7 @@
   transition: opacity var(--dur-drift) var(--ease-glide),
               filter var(--dur-drift) var(--ease-glide),
               transform var(--dur-drift) var(--ease-glide);
-  transition-delay: 0ms;
+  transition-delay: 160ms; /* collapse: labels fade INTO the panel slide (panel waits 260ms) */
 }
 .sidebar:hover .drift, .sidebar.pinned .drift {
   opacity: 1; filter: blur(0); transform: translateX(0);

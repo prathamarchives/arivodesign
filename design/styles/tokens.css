@@ -54,6 +54,16 @@
   /* ---- icon sizes (16/20/24 only) ---- */
   --ic-sm: 16px; --ic-md: 20px; --ic-lg: 24px;
 
+  /* ---- cover fills: placeholder artwork (grayscale, theme-independent —
+         covers are artwork, they do not follow the theme; Loop 5 audit) ---- */
+  --cover-1: linear-gradient(145deg, #3A3A40, #1B1B1F);
+  --cover-2: linear-gradient(160deg, #34343A, #121215 70%);
+  --cover-3: linear-gradient(200deg, #2A2A30, #101013 65%);
+  --cover-4: linear-gradient(140deg, #414147, #151518 75%);
+  --cover-5: linear-gradient(180deg, #222226, #0E0E10);
+  --cover-6: linear-gradient(120deg, #3B3B41, #141417 60%);
+  --cover-mini: linear-gradient(160deg, #2E2E33, #121215);
+
   /* ---- blur levels — the Frosted ref (X-14) ---- */
   --blur-glass: 24px;
   --blur-glass-strong: 40px;
