@@ -68,3 +68,17 @@ Interpretations (labeled, not owner words):
 - "a bit motion blur and transition" → CSS cannot truly motion-blur; the approximation (animating blur + opacity + translate during structural movement) is the locked technique — specified in DESIGN-SYSTEM.md as the motion system.
 - "more refrences of design i like visually ahead" → more owner turns are coming with additional refs; the paint artifacts are expected to iterate under the paint cycle (replicate → refine → iterate → change → test), not be final.
 - The design-system skills package is methodology to absorb and align ("extend to align with ours") — its patterns inform DESIGN-SYSTEM.md structure; the package itself is not committed (external material; local study copy only), our system is.
+
+---
+
+**INT-005 — AUDIT DIRECTIVE: ALIGN REPO WITH THE WORK, FIND GAPS, DETECT DRIFT, ITERATE ON WHAT IS UNFINISHED; START THE DEV SERVER FOR IN-CHAT HTML PREVIEW — active**
+
+> "make sure the repo is aligned with what we are doing and everything solid find gaps fix, and see where the execution and verything went wrong where you drifted whats not done and do the iteration.. first startup the dev so i can preview the html here"
+
+Source: owner turn 5, chat 2026-10-14 (`context/raw/turn-005.txt`). Grounds: this turn arrives BEFORE any owner visual review of the paint — the owner wants a self-audit pass first: (a) repo/work alignment ("repo is aligned with what we are doing"), (b) solidity ("everything solid find gaps fix"), (c) drift detection ("where the execution and verything went wrong where you drifted"), (d) iteration on the unfinished ("whats not done and do the iteration"); (e) the preview is ordered FIRST ("first startup the dev so i can preview the html here") — the owner reviews the HTML live in this chat, not just via screenshots.
+
+Interpretations (labeled, not owner words):
+- This turn OPERATES GOVERNANCE LOOP 5 (drift audit) as an owner-directed audit — not triggered by a failure but by the owner's standing demand for self-verification. Audit scope: claims vs disk (does every "verified" claim hold?), spec vs implementation (DESIGN-SYSTEM.md vs design/), ledger vs state (is everything ingested/committed/pushed?), and the golden path (can a fresh agent enter and preview?).
+- "first startup the dev" → preview serving becomes a REPO CAPABILITY, not a shell-history artifact: a one-command dev/preview server any agent or the owner can start, so "preview the html here" is reproducible. This closes the gap that session 4's server was ad-hoc.
+- "whats not done" → the audit must also surface UNFINISHED work honestly (evidence-label it), not hide it: known-open items are the unpainted layers (reading surface, capture flows, concepts deep-dive, compounding digest — owner-gated per D-007) and owner-side actions (PAT rotation, more references promised).
+- No visual corrections yet: any defects found in this audit are self-found (Loop 5 → Loop 3/Loop 2 as applicable), codified if mechanically checkable.

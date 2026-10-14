@@ -1,0 +1,9 @@
+# Owner turn 5 — verbatim (received 2026-10-14)
+
+make sure the repo is aligned with what we are doing and everything solid find gaps fix, and see where the execution and verything went wrong where you drifted whats not done and do the iteration.. first startup the dev so i can preview the html here
+
+# Context
+
+- Arrives immediately after session 4 (INT-004 intake, DESIGN-SYSTEM.md, paint pass 1 with preview screenshots).
+- Owner has NOT yet given visual corrections — this turn asks for a self-audit before review: alignment check, gap-finding, drift detection, iteration on what is unfinished.
+- "first startup the dev so i can preview the html here" — the preview must be live BEFORE/AFTER the audit so the owner can see the HTML in this chat. Ordering word "first" = the preview is the priority action.
