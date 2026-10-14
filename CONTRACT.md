@@ -32,6 +32,15 @@ Every artifact produced in the paint phase cites the invariants it implements (R
 - **X-09 · @ is everywhere.** Passage ↔ work reference is reachable from reading, notes, and journal with the same gesture and renders consistently everywhere. [D-023]
 - **X-10 · Lookup in place.** Dictionary/reference lookups happen at the passage, without ejecting the reader from the book. [owner vision: dictionary feature]
 
+## Part 2b — Visual-language invariants (locked by the owner's vision turn)
+
+- **X-11 · One motion system everywhere.** Sidebar, overlay, pages, cards — all structural movement shares one easing family, and movement carries the blur treatment. Consistency is the law: "same animation/motion rules and everything same as the sidebar... keep like this consistency allover". [INT-004]
+- **X-12 · Grayscale discipline.** Grey and white only, in both themes — "the colour accents would be grey and white thats it". No hue anywhere unless the owner later unlocks it. [INT-004]
+- **X-13 · No sharp corners.** Radii on every surface, pills where pill-like, round caps even in icons. [INT-004]
+- **X-14 · Glass on elevation.** Floating/elevated surfaces are translucent with backdrop blur at the locked levels (clear/frosted/blur) and hairline borders. [INT-004 + refs]
+- **X-15 · Hover is a first-class state.** Detailing on hover everywhere — lifts, border brightens, reveals — micro, never bouncy. [INT-004 "detialing on hover nad everything"]
+- **X-16 · Typography is Helvetica.** One family, the locked scale; the wordmark is the only exception (Rounded Bold). [INT-004]
+
 ## Part 3 — The golden path (the experience arc the design must serve end-to-end)
 
 Import/read a Work → read with zero chrome → capture a highlight at the passage → classify it with free-text words (or leave it raw) → jot a raw note or diagram → end the day in the journal page → @-link a passage into a note/journal → watch concepts grow → receive the compounding digest.

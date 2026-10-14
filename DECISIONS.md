@@ -31,3 +31,15 @@ At every phase boundary (each layer reasoned, each painted artifact iterated), a
 **D-007 — Layer reasoning is owner-gated, one layer at a time — active** · 2026-10-14
 The experience is reasoned through in layers with the owner present (plan mode); the repo is updated after EACH layer; the next layer starts only after the prior one is ledgered and committed. The agent proposes; the owner disposes.
 *Grounds: INT-002 ("we'll reason through layers and update the repo each time"); R-D09.*
+
+**D-008 — The visual language is locked: grayscale glass, Helvetica, no sharp corners, blur-marked motion — active** · 2026-10-14
+Palette is grayscale-only in both themes (dark designed first); typeface is Helvetica (Light/Regular/Italic/Bold + Rounded Bold for the wordmark only); radii on every surface; glass on elevated surfaces at three blur levels; one easing family with blur treatment marking all structural movement. The canonical spec is DESIGN-SYSTEM.md — implementation must match it; mismatches are defects (Loop 2).
+*Grounds: INT-004 (owner's own words + the 8 references in context/refs/); DESIGN-SYSTEM.md.*
+
+**D-009 — Paint stage opened for scope: shell + home + library + archive — active** · 2026-10-14
+The owner set the vision for the app shell, home, library, and archive directly and authorized pre-execution HTML/CSS. Stage 3 (paint) is OPEN for exactly this scope; the remaining layers (in-reader capture flows, concepts deep-dive, compounding digest, reading surface itself) stay closed until reasoned with the owner. More references are expected ("ill add more refrences... ahead") — artifacts iterate under the paint cycle, nothing is final.
+*Grounds: INT-004 ("start html/css or whatever it takes to prepare this pre-execution visuals"); D-003; P-12.*
+
+**D-010 — Prototype medium: static HTML/CSS + minimal vanilla JS, no framework — active** · 2026-10-14
+Pre-execution visuals are plain HTML/CSS with minimal vanilla JS for interaction fidelity (sidebar states, overlay, page switching, theme). No framework, no build step — the prototype exists to lock visuals, and the production framework decision is made later WITH the owner.
+*Grounds: INT-004 ("we're just designing the HTML/CSS... use whatever tech you gotta use idc what framwork"); artifacts live in design/.*
