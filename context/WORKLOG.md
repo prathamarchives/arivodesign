@@ -71,3 +71,23 @@ Append-only operational memory. Every session reads this before working and appe
 - Harness commit: GOVERNANCE.md, verify.sh, AGENTS.md v1.0, STATE.md, GLOSSARY.md, README touch, this entry.
 - The ratchet holds three new permanent checks born from this session's own mistakes: CWD-robustness, unbalanced-quote survival (via bash -n discipline going forward), zero-padded INT matching.
 
+
+---
+## Session 4 — 2026-10-14 — THE VISION TURN: INT-004 intake, design system, paint pass 1 (verified by run)
+
+**Task ID:** 4 · **Agent:** Super Z (main, GLM host)
+
+**Task:** Owner turn 4 (INT-004) — the owner wrote the vision himself: app shell (hover-expand sidebar + pin + account overlay growing with the same motion family), Home/Library/Archive content model, grayscale glass + Helvetica + no sharp corners + motion-blur language; paint authorized ("start html/css... pre-execution visuals"); bar set ("do better than the refrences", "solid foundation for the sidebar... don't dissapoint", "focus on that blur").
+
+**Work Log:**
+- Loop 1: turn-004 verbatim + attachment manifest → raw; 8 reference images preserved in context/refs/ (viewed all); INT-004 ledgered with grounds + labeled interpretations; committed+pushed BEFORE any substantive work (7be8f51).
+- Studied the design.how skills package (build-design-system SKILL.md + README): adopted its discipline — tokens named by purpose never value, complete states per component, Don't/Do rule pairs, checks that catch drift. Extracted Helvetica faces (Light/Regular/Italic/Bold + Rounded Bold for wordmark-only).
+- Wrote DESIGN-SYSTEM.md (the locked spec): grayscale roles, type presets, radius scale, 3-level glass recipe (clear/frosted/blur per the Frosted ref), three motion laws (one easing family; blur marks structural movement; micro never bouncy) with named presets, component registry, Don't/Do rules. D-008/009/010 decided; CONTRACT X-11..X-16 appended; committed (9b226e0).
+- PAINTED design/: tokens.css, base.css, components.css, shell.css, pages.css, index.html (shell + 3 pages + overlay, ~90 lines vanilla JS), design/README.md.
+- Loop 4 verified by run (agent-browser, 1440×900): rendered home/library/archive/overlay/light + pinned sidebar; critiqued screenshots → refined in one pass (glass alpha +10-20%, canvas glow structure rebuilt, progress track token) → re-verified. Fixed invalid backdrop-filter declaration caught on self-review. Saved 6 preview screenshots to design/preview/.
+
+**Stage Summary:**
+- The owner's vision is now executable on disk: spec (DESIGN-SYSTEM.md) + implementation (design/) that matches it + previews that prove it. Sidebar foundation, account overlay (same motion family), home (currently reading/lists/highlights feed), library (folders à la mybooks), archive (journal/notes-with-diagram/knowledge base) — all in grayscale glass Helvetica, dark-first with derived light theme.
+- THE GLASS READS (pass 2): surface alphas, glows and borders strengthened until frosted panels visibly refract; overlay demonstrates blur level 3 with full-page backdrop blur.
+- Known trade-offs logged: motion blur is the CSS approximation (blur+translate+opacity on glide easing); fonts are owner-provided — production must license Helvetica properly (note in design/README.md).
+- Next: owner reviews + reacts (Loop 1/2); more references promised; then either iterate the paint or open the next layer (reading surface + capture) per D-007.

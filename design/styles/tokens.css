@@ -1,0 +1,153 @@
+/* ============================================================
+   arivo — tokens.css
+   The single source of visual values. Purpose-named, never raw.
+   Components may reference tokens ONLY (DESIGN-SYSTEM.md rules).
+   Grounds: INT-004 · D-008 · X-11..X-16
+   ============================================================ */
+
+@font-face {
+  font-family: "Helvetica";
+  src: url("../assets/fonts/helvetica-light.ttf") format("truetype");
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica";
+  src: url("../assets/fonts/helvetica-regular.ttf") format("truetype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica";
+  src: url("../assets/fonts/helvetica-italic.ttf") format("truetype");
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica";
+  src: url("../assets/fonts/helvetica-bold.ttf") format("truetype");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica Rounded";
+  src: url("../assets/fonts/helvetica-rounded-bold.otf") format("opentype");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+
+:root {
+  /* ---- typography roles (X-16) ---- */
+  --font-sans: "Helvetica", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-wordmark: "Helvetica Rounded", "Helvetica", sans-serif;
+
+  --fs-display: 40px;  --lh-display: 1.1;   --ls-display: -0.02em; --fw-display: 300;
+  --fs-title: 22px;    --lh-title: 1.25;
+  --fs-heading: 16px;  --lh-heading: 1.35;
+  --fs-body: 15px;     --lh-body: 1.55;
+  --fs-meta: 13px;     --lh-meta: 1.4;
+  --fs-micro: 11px;    --lh-micro: 1;       --ls-micro: 0.08em;
+
+  /* ---- radius: no sharp corners (X-13) ---- */
+  --r-xs: 8px; --r-sm: 12px; --r-md: 16px; --r-lg: 20px;
+  --r-xl: 24px; --r-2xl: 28px; --r-pill: 999px;
+
+  /* ---- spacing scale ---- */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-7: 32px; --s-8: 40px; --s-9: 56px; --s-10: 72px;
+
+  /* ---- icon sizes (16/20/24 only) ---- */
+  --ic-sm: 16px; --ic-md: 20px; --ic-lg: 24px;
+
+  /* ---- blur levels — the Frosted ref (X-14) ---- */
+  --blur-glass: 24px;
+  --blur-glass-strong: 40px;
+  --blur-motion: 8px;
+
+  /* ---- motion: one family (X-11) ---- */
+  --ease-glide: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-panel: 480ms;   /* glide-panel */
+  --dur-page: 320ms;    /* rise-page */
+  --dur-drift: 280ms;   /* drift-in */
+  --dur-micro: 160ms;   /* press-micro */
+  --dur-fade: 200ms;    /* fade-soft */
+
+  /* ---- z ---- */
+  --z-sidebar: 40; --z-overlay-backdrop: 60; --z-overlay: 70;
+}
+
+/* ============ DARK THEME (designed first) ============ */
+:root, [data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg-0: #09090A;
+  --bg-1: #101013;
+
+  --surface-glass: rgba(255, 255, 255, 0.075);
+  --surface-glass-strong: rgba(255, 255, 255, 0.115);
+  --surface-solid: #17171B;
+  --surface-raised: #1F1F24;
+  --surface-backdrop: rgba(5, 5, 6, 0.5);
+
+  --fg-1: #F5F5F7;
+  --fg-2: rgba(240, 240, 245, 0.62);
+  --fg-3: rgba(240, 240, 245, 0.40);
+  --fg-4: rgba(240, 240, 245, 0.26);
+  --fg-on-primary: #0B0B0C;
+
+  --border-hair: rgba(255, 255, 255, 0.105);
+  --border-strong: rgba(255, 255, 255, 0.19);
+  --border-focus: rgba(255, 255, 255, 0.5);
+
+  --highlight-top: rgba(255, 255, 255, 0.09);
+  --track: rgba(255, 255, 255, 0.12);
+
+  --shadow-1: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-2: 0 12px 32px rgba(0, 0, 0, 0.35);
+  --shadow-3: 0 24px 64px rgba(0, 0, 0, 0.45);
+
+  --glow-a: rgba(255, 255, 255, 0.085);
+  --glow-b: rgba(255, 255, 255, 0.055);
+  --noise-opacity: 0.035;
+  --cover-ink: #EDEDF0;
+}
+
+/* ============ LIGHT THEME (derived, same roles) ============ */
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg-0: #F2F2F4;
+  --bg-1: #FAFAFB;
+
+  --surface-glass: rgba(255, 255, 255, 0.6);
+  --surface-glass-strong: rgba(255, 255, 255, 0.82);
+  --surface-solid: #FFFFFF;
+  --surface-raised: #FFFFFF;
+  --surface-backdrop: rgba(20, 20, 22, 0.25);
+
+  --fg-1: #131315;
+  --fg-2: rgba(24, 24, 28, 0.62);
+  --fg-3: rgba(24, 24, 28, 0.42);
+  --fg-4: rgba(24, 24, 28, 0.26);
+  --fg-on-primary: #FFFFFF;
+
+  --border-hair: rgba(15, 15, 18, 0.12);
+  --border-strong: rgba(15, 15, 18, 0.22);
+  --border-focus: rgba(15, 15, 18, 0.5);
+
+  --highlight-top: rgba(255, 255, 255, 0.7);
+  --track: rgba(15, 15, 18, 0.14);
+
+  --shadow-1: 0 2px 8px rgba(20, 20, 24, 0.08);
+  --shadow-2: 0 12px 32px rgba(20, 20, 24, 0.12);
+  --shadow-3: 0 24px 64px rgba(20, 20, 24, 0.16);
+
+  --glow-a: rgba(20, 20, 24, 0.07);
+  --glow-b: rgba(20, 20, 24, 0.045);
+  --noise-opacity: 0.028;
+  --cover-ink: #FAFAFB;
+}
+
+/* reduced motion: movement collapses to fades (non-negotiable) */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-panel: 1ms; --dur-page: 1ms; --dur-drift: 1ms;
+    --dur-micro: 1ms; --dur-fade: 120ms; --blur-motion: 0px;
+  }
+}

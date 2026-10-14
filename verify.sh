@@ -63,6 +63,16 @@ for f in AGENTS.md LAWS.md RULES.md CONTRACT.md PRINCIPLES.md DECISIONS.md \
   if [ -s "$f" ]; then ok "system file present: $f"; else bad "system file missing/empty: $f"; fi
 done
 
+# ---------------------------------------------------------------- 5b. paint artifacts belong to THIS repo
+# (ratcheted 2026-10-14: a wrong-CWD git commit landed the paint in the host
+# workspace repo instead of here — this check makes that failure impossible to miss)
+if git rev-parse --is-inside-work-tree > /dev/null 2>&1 && \
+   git ls-files --error-unmatch design/index.html > /dev/null 2>&1; then
+  ok "paint artifacts committed to this repo"
+else
+  bad "design/ is NOT tracked by this repo — a commit landed in the wrong CWD or paint is uncommitted"
+fi
+
 # ---------------------------------------------------------------- 6. worklog is alive for the latest turn
 latest="$(ls context/raw/turn-*.txt 2>/dev/null | sort | tail -1)"
 if [ -n "$latest" ]; then

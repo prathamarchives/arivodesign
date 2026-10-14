@@ -4,17 +4,17 @@
 
 ## Where things stand
 
-- **Position:** STAGE 1 COMPLETE — kernel + harness standing (the walls the owner ordered, INT-002/003). **Stage 2 is next: layer-by-layer experience reasoning WITH the owner (plan mode), repo updated after each layer (D-007).** No UI artifact exists yet (L-04 holds).
-- **Work (this session, session 3):** owner turn 3 ingested (INT-003 — tighten rules/laws, anti-drift, loops, self-extraction, corrections→rules, self-healing); kernel built: LAWS.md (18 laws, ladder C0–C6), RULES.md (9 DO / 11 DON'T), CONTRACT.md (10 objects, 10 invariants X-01..X-10, golden path), PRINCIPLES.md (12), DECISIONS.md (D-001..007); harness built: GOVERNANCE.md (loops 0–6, self-healing ratchet, growth stages 0–5), verify.sh (the ONE verify command, ratcheted twice on first run), AGENTS.md v1.0, GLOSSARY.md.
-- **Dependencies (owner-gated, for stage 2):** the layer decomposition of the experience (proposed in the layer map handed to the owner); which layer goes first; any layer the owner wants added or cut. Platform: desktop-first held as working decision (D-001) until the owner locks it.
+- **Position:** STAGE 3 PASS 1 PAINTED — the owner set the vision (INT-004), the visual language is locked (DESIGN-SYSTEM.md, D-008), and the pre-execution HTML/CSS prototype is built AND verified by run (browser screenshots): shell (hover-expand sidebar + pin + account overlay), home, library, archive, dark + light themes.
+- **Work (this session, session 4):** turn-004 ingested verbatim with 8 references preserved (context/refs/) + INT-004 ledgered; DESIGN-SYSTEM.md written (tokens by purpose, three motion laws, glass recipe, component registry with full states, Don't/Do rules — aligned with the owner-provided design.how skills package); D-008/009/010 decided; CONTRACT extended with visual-language invariants X-11..X-16; prototype built in `design/` (5 CSS files + index.html + Helvetica faces + preview screenshots); paint cycle ran one full loop: replicate → screenshot-critique → refine (glass visibility, glow structure, progress track) → re-verify.
+- **Dependencies (owner-gated):** the owner reviews the paint (open `design/index.html` or `design/preview/`); corrections arrive → Loop 2. More references promised ("ill add more refrences of design i like visually ahead"). Layers still closed until reasoned: in-reader capture flows, the reading surface itself, concepts deep-dive, compounding digest.
 - **Evidence:**
-  - verified by run — `bash verify.sh` executing green from any CWD (ratcheted: CWD-robustness, zero-padded INT matching, unbalanced-quote repair); intake/kernel/harness commits pushed.
-  - not checked — nothing experiential exists yet to verify; the CONTRACT invariants are reasoned, not rendered (they get verified in the paint phase per L-16).
-- **Coordination (snapshot at last update):** Arivoo main @ `e34dcb3`, PRs #18–#23 open/landing (D-034 execution). arivodesign: kernel+harness landed on `main`; 0 open PRs.
+  - verified by run — prototype rendered in a real browser at 1440×900: home (dark), library, archive, account overlay (glass + backdrop blur live), sidebar pinned-expanded, light theme; screenshots stored in `design/preview/`. verify.sh green.
+  - not checked — true motion-blur fidelity (CSS approximation locked in DESIGN-SYSTEM.md, not physically rendered motion), and hover-feel latency on real hardware (needs the owner's hand).
+- **Coordination (snapshot at last update):** Arivoo main @ `e34dcb3` (PRs #18–#23, D-034 execution). arivodesign `main`: intake → spec → paint commits; 0 open PRs.
 
 ## Next action (exact)
 
-With the owner: walk the layer map (handed over in chat this session), one layer at a time — for each: reason → ledger/decision updates → commit → next. After the last layer: stage 3, the HTML/CSS paint cycle (replicate → refine → iterate → change → test, P-12).
+Owner reviews the paint and reacts. Every reaction = Loop 1/Loop 2 intake; visual corrections refine `design/`; new references extend the ref library. The moment the owner says the visuals are locked: stage 3 closes for this scope and the next layer (reading surface + capture, or whatever the owner picks) is reasoned through per D-007.
 
 ## How to use this file
 
