@@ -1,0 +1,5 @@
+arivodesign — owner turn 1, 2026-10-14 (verbatim; chat session web-5692152c). Credential redacted at ingestion per the Arivoo pattern (D-025/INT-092: access credentials never enter repo files — an owner-supplied credential is used for the session and redacted at recording).
+
+---
+
+[CREDENTIAL REDACTED — GitHub PAT, used for session setup only] setup github cli and gh and auth and commands and dependencies read and go through arivoo and give me your opinions get the context. but we'll be working on arivodesign which is will be UI/UX/expericne/frontend part of the arivoo which is backend that is in progress that you can see yourself. so as you could see how im appraching the building and engineered the system to work on it (honestly just a lil bit over engineered but we'll do it the right way this time and build the system specifically for design) you should take the core rules tho like repo as an long term memory..... you shall start with the repo as we go so you don't lose the owners intent aka my words. we'll be in plan mode after this where we will reason through design/UI/UX and experince of arivo and document and engineer the repo before executing.

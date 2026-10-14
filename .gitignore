@@ -1,0 +1,20 @@
+# OS/editor noise
+.DS_Store
+Thumbs.db
+
+# Environment / secrets — never tracked (Arivoo D-025 pattern)
+.env
+.env.*
+*.pem
+*.key
+
+# Node (future use)
+node_modules/
+dist/
+.next/
+out/
+
+# Design tool working files (adjust in plan mode)
+*.afdesign
+*.afphoto
+*.sketch
