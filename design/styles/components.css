@@ -116,23 +116,26 @@
 .avatar-lg { width: 40px; height: 40px; font-size: 15px; }
 .avatar-xl { width: 56px; height: 56px; font-size: 20px; }
 
-/* ============ PROGRESS BAR ============ */
+/* ============ PROGRESS BAR (v2 — must read at a glance; REVIEW pass 2) ============ */
 .progress {
-  width: 100%; height: 2px; border-radius: var(--r-pill);
+  width: 100%; height: 3px; border-radius: var(--r-pill);
   background: var(--track); overflow: hidden;
 }
 .progress > i {
   display: block; height: 100%;
   border-radius: var(--r-pill);
   background: var(--fg-1);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.28);
   transition: width var(--dur-panel) var(--ease-glide);
 }
+[data-theme="light"] .progress > i { box-shadow: 0 0 6px rgba(15, 15, 18, 0.18); }
 
 /* ============ SECTION HEADER (are.na anatomy: title + chevron) ============ */
 .section-head {
   display: flex; align-items: baseline; gap: var(--s-3);
   margin-bottom: var(--s-5);
 }
+.section { margin-bottom: 48px; }
 .section-head .count { color: var(--fg-3); font-size: var(--fs-meta); }
 .section-head .spacer { flex: 1; }
 .section-link {
@@ -153,6 +156,8 @@
 .book-card:hover { transform: translateY(-3px); }
 .book-card:active { transform: translateY(-1px) scale(0.99); }
 
+/* covers are ARTWORK: fill + sheen + spine + big centered monogram.
+   No title inside a cover — the title lives once, below (REVIEW pass 2, defect 4). */
 .cover {
   position: relative;
   width: 168px; height: 252px;
@@ -160,29 +165,33 @@
   border: 1px solid var(--border-hair);
   box-shadow: var(--shadow-1), inset -6px 0 12px rgba(0,0,0,.18), inset 2px 0 2px rgba(255,255,255,.07);
   overflow: hidden;
-  display: flex; flex-direction: column; justify-content: flex-end;
-  padding: var(--s-4);
+  display: flex; align-items: center; justify-content: center;
   color: var(--cover-ink);
-  transition: box-shadow var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out);
+  transition: box-shadow var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out);
 }
-.book-card:hover .cover { border-color: var(--border-strong); box-shadow: var(--shadow-2), inset -6px 0 12px rgba(0,0,0,.18); }
-.cover .c-title { font-weight: 700; font-size: 14px; line-height: 1.3; }
-.cover .c-author { font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; opacity: .6; margin-top: 4px; }
-.cover .c-spine { position: absolute; inset: 0 auto 0 0; width: 3px; background: rgba(255,255,255,.10); }
-/* grayscale cover variants */
-.cv-a { background: var(--cover-2); }
+.cover::after {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(120% 90% at 28% 12%, rgba(255,255,255,.14), transparent 55%);
+  pointer-events: none;
+}
+.book-card:hover .cover, .lib-item:hover .cover { border-color: var(--border-strong); box-shadow: var(--shadow-2), inset -6px 0 12px rgba(0,0,0,.18); transform: translateY(-2px); }
+.cover .c-spine { position: absolute; inset: 0 auto 0 0; width: 3px; background: rgba(255,255,255,.14); }
+/* grayscale cover variants — adjacent works must never share a tone */
+.cv-a { background: var(--cover-1); }
 .cv-b { background: var(--cover-3); }
-.cv-c { background: var(--cover-4); }
-.cv-d { background: var(--cover-5); }
-.cv-e { background: var(--cover-6); }
+.cv-c { background: var(--cover-5); }
+.cv-d { background: var(--cover-2); }
+.cv-e { background: var(--cover-4); }
+.cv-f { background: var(--cover-6); }
+/* the monogram: 1–2 letters, light, italic — the placeholder's whole voice */
 .cover .c-mark {
-  position: absolute; top: var(--s-4); right: var(--s-4);
-  font-size: 22px; font-weight: 300; opacity: .5; font-style: italic;
+  font-size: 44px; font-weight: 300; font-style: italic;
+  opacity: .92; letter-spacing: .02em;
+  text-shadow: 0 1px 12px rgba(0,0,0,.35);
 }
-.cover .c-rule { width: 28px; height: 1px; background: rgba(255,255,255,.35); margin-bottom: var(--s-3); }
 
 .book-meta { display: flex; flex-direction: column; gap: 6px; }
-.book-meta .b-title { font-size: var(--fs-meta); font-weight: 700; }
+.book-meta .b-title { font-size: var(--fs-heading); font-weight: 700; line-height: 1.3; }
 .book-meta .b-sub { font-size: 12px; color: var(--fg-3); display: flex; justify-content: space-between; }
 
 /* ============ LIST CARD ============ */
@@ -196,13 +205,19 @@
 .list-card:hover { transform: translateY(-2px); background: var(--surface-glass-strong) !important; border-color: var(--border-strong) !important; }
 .list-card .l-stack { display: flex; }
 .list-card .l-stack .cover-mini {
-  width: 34px; height: 50px; border-radius: 6px;
+  width: 36px; height: 52px; border-radius: 6px;
   border: 1px solid var(--border-strong);
-  background: var(--cover-mini);
   margin-right: -14px;
   box-shadow: var(--shadow-1);
+  transition: transform var(--dur-micro) var(--ease-out);
 }
+.list-card .l-stack .cover-mini:nth-child(1) { background: var(--cover-mini-1); }
+.list-card .l-stack .cover-mini:nth-child(2) { background: var(--cover-mini-2); }
+.list-card .l-stack .cover-mini:nth-child(3) { background: var(--cover-mini-3); }
 .list-card .l-stack .cover-mini:last-child { margin-right: 0; }
+.list-card:hover .cover-mini:nth-child(1) { transform: rotate(-5deg) translateY(-2px); }
+.list-card:hover .cover-mini:nth-child(2) { transform: translateY(-5px); }
+.list-card:hover .cover-mini:nth-child(3) { transform: rotate(5deg) translateY(-2px); }
 .list-card .l-name { font-size: var(--fs-meta); font-weight: 700; }
 .list-card .l-count { font-size: 12px; color: var(--fg-3); margin-top: 2px; }
 
@@ -245,8 +260,8 @@
 .folder-card:hover .f-covers .fc:nth-child(2) { transform: translateY(-5px); }
 .folder-card:hover .f-covers .fc:nth-child(3) { transform: rotate(7deg) translateY(-3px); }
 .fc.cv-a { background: var(--cover-2); }
-.fc.cv-b { background: var(--cover-3); }
-.fc.cv-c { background: var(--cover-4); }
+.fc.cv-b { background: var(--cover-4); }
+.fc.cv-c { background: var(--cover-6); }
 .folder-card .f-caption { display: flex; justify-content: center; gap: 6px; margin-top: var(--s-3); font-size: var(--fs-meta); }
 .folder-card .f-caption b { font-weight: 700; }
 .folder-card .f-caption span { color: var(--fg-3); }

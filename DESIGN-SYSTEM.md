@@ -71,9 +71,11 @@ Three blur levels, as tokens:
 
 Shadows (grayscale only): `--shadow-1 0 2px 8px rgba(0,0,0,.25)` · `--shadow-2 0 12px 32px rgba(0,0,0,.35)` · `--shadow-3 0 24px 64px rgba(0,0,0,.45)`. Inner top highlight on glass: `inset 0 1px 0 rgba(255,255,255,.06)`.
 
+**Canvas law (REVIEW pass 2):** glass panels are only as real as the light behind them — the canvas carries three luminous glow stations (top-left strong, top-right, bottom-center) + noise. If a screenshot reads flat black, the glass has failed: fix the canvas, not the panel alpha.
+
 ### Space, icons, texture
 
-Spacing scale: 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 56 · 72. Icon sizes: 16 / 20 / 24 only (Styleguides ref). Stroke 1.5, round caps. Canvas texture: two fixed radial glows (white @ 3–4% alpha) + SVG noise at ~3.5% opacity — glass needs something to refract.
+Spacing scale: 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 56 · 72. Icon sizes: 16 / 20 / 24 only (Styleguides ref). Stroke 1.5, round caps. Canvas texture: three fixed radial glow stations (white @ 5–11% alpha) + SVG noise at ~3.5% opacity — glass needs something to refract.
 
 ## Motion — THE system (INT-004: "a bit motion blur and transition", "same animation/motion rules... consistency allover", "focus on that blur")
 
@@ -99,28 +101,33 @@ Every component: Default / Hover / Pressed / Disabled / Focus (ring always visib
 
 | Component | File | States | Notes |
 |---|---|---|---|
-| Sidebar (floating glass) | shell.css | collapsed / hover-expanded / pinned | 76px → 268px; hover delay 120ms in / 260ms out |
+| Sidebar (floating glass) | shell.css | collapsed / hover-expanded / pinned | 76px → 268px; hover delay 120ms in / 260ms out (implemented pass 2); active bar is an expanded-state affordance — fades out collapsed |
 | Nav item | shell.css | rest / hover / active | active: 3px rounded indicator + glass-strong pill |
 | Pin button | shell.css | rest / hover / pinned | 28px, top-left, "just small" |
 | Account row → overlay | shell.css | rest / hover / open | overlay grows from bottom-left, same glide family |
-| Overlay panel | shell.css | open / closing | blur level 3, --r-2xl |
+| Overlay panel | shell.css | open / closing | blur level 3, --r-2xl; backdrop alpha 0.38 dark / 0.18 light |
 | Button primary (pill) | components.css | all 5 | white bg, near-black fg |
 | Button ghost / icon | components.css | all 5 | glass, hairline |
 | Filter pill | components.css | rest / hover / active | active = glass-strong + fg-1 |
 | Chip (classification word) | components.css | rest | outlined, free-text words (D-030) |
-| Book card | components.css | rest / hover | cover 2:3, progress bar, meta, Read pill |
-| Folder card | components.css | rest / hover | glass folder, covers peek, "Name · N" |
+| Book card | components.css | rest / hover | cover 2:3 (pure artwork: fill + sheen + spine + monogram — title lives ONCE, below), meta row, progress 3px luminous fill, Read pill |
+| Cover placeholder | components.css | artwork only | cv-a..f = six grayscale tones, silver→graphite; monogram 1–2 letters light-300 italic; adjacent works never share a tone |
+| Folder card | components.css | rest / hover | glass folder, covers peek (distinct tones), "Name · N" |
 | Quote card | components.css | rest / hover | Are.na anatomy: glyph, quote, source, chips |
 | Journal day card | components.css | rest / hover | big numeral, excerpt, entry count |
 | Note card | components.css | rest / hover | raw text, diagram block variant |
 | Concept card | components.css | rest / hover | name, def, linked count, growth bars |
-| Progress bar | components.css | static / animated | 2px track, rounded fill |
+| Progress bar | components.css | static / animated | 3px track (0.18 alpha), white fill + soft luminous edge |
+| List card | components.css | rest / hover | mini-cover stack (3 distinct tones) that fans out on hover |
 | Avatar | components.css | sizes 24/32/40 | monogram grayscale |
 | Toggle | components.css | on / off / focus | Decks-ref softness |
 
 ## Rules — Don't / Do
 
 - **Don't:** introduce any hue, any sharp corner, a new easing curve, a raw hex/px inside a component, an icon outside 16/20/24, a state shipped incomplete, a movement without blur treatment. · **Do:** tokens only; states complete; focus always visible; one family of motion; blur on structural movement.
+- **Don't:** repeat content between a cover and its caption — the title lives ONCE. · **Do:** covers are pure artwork (fill + sheen + spine + monogram); text sits below.
+- **Don't:** end a horizontal scroll row without a continuation cue (right-edge fade). · **Do:** a cut card must visibly dissolve.
+- **Don't:** ship dark glass on a dead-black canvas. · **Do:** keep the canvas glow stations alive (see Canvas law).
 - **Don't:** invent content surfaces the owner didn't name. · **Do:** extend the named ones (Home/Library/Archive/Account) and ledger new intent first (L-06).
 - **Don't:** let a component drift from this file. · **Do:** treat a mismatch as a defect — fix code or spec through Loop 2, never silently.
 
@@ -128,3 +135,4 @@ Every component: Default / Hover / Pressed / Disabled / Focus (ring always visib
 
 - Repo-level: `bash verify.sh` (quarantine, secrets, integrity) before every push.
 - Design-level: rendered browser screenshots at 1440×900 (Loop 4, "verified by run"); the state checklist above per component; contrast sanity on fg roles (fg-1 on bg-0, fg-2 ≥ readable for meta).
+- Iteration log: `design/REVIEW.md` — every pass documents named defects (with evidence) → fixes → re-verification. A pass without a REVIEW entry didn't happen.

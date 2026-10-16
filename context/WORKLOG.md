@@ -124,3 +124,24 @@ Append-only operational memory. Every session reads this before working and appe
 - PREVIEW IS LIVE for the owner (in-chat gateway → port 3000 → design/index.html); serve.sh makes it reproducible.
 - Unfinished (honest, owner-gated per D-007): reading surface + in-reader capture, concepts deep-dive, compounding digest — not painted; more owner references promised (INT-004); owner-side: PAT rotation.
 - verify.sh: 24 checks, green (worklog + STATE freshness restored by this entry).
+
+---
+## Session 6 — 2026-10-14 — INT-006: THE VERDICT ("it sucks") → iteration pass 2, documented as REVIEW.md
+
+**Task ID:** 6 · **Agent:** Super Z (main, GLM host)
+
+**Task:** Owner turn 6 (INT-006) — fresh PAT supplied (pending commits pushed, env-only, unset); the first prototype judged "it sucks"; directive: focus on iteration, refine/iterate, document everything, turn the work into repo growth. "lock that in review repo understand n extract" — Loop 1 first.
+
+**Work Log:**
+- Loop 1: turn-006 ingested (token REDACTED in raw per L-15/D-025; used env-only via one-shot git credential helper, then unset) + INT-006 ledgered; pending session-5 commits + intake pushed (main in sync).
+- Self-review of pass 1 as a designer (Loop 5 discipline on the paint): rendered home/library/archive/overlay/light at 1440×900, critiqued against INT-004 words + the 8 refs; 11 defects NAMED with evidence in the new `design/REVIEW.md` (the iteration log — a pass without a REVIEW entry didn't happen).
+- THE TWO CRITICALS: (1) glass didn't read as glass — dead-black canvas gave panels nothing to refract; (2) covers read as black voids + titles duplicated between cover and caption.
+- Pass 2 implemented: canvas rebuilt as three luminous glow stations (new Canvas law); cover family v2 (six distinct silver→graphitone fills + sheen + spine + big italic monogram, no in-cover text — title lives ONCE); progress v2 (3px, 0.18 track, luminous white fill); collapsed active indicator fades (pill-only state); horizontal rows get right-edge continuation fades; list-card mini stacks get 3 tones + hover fan-out; section rhythm 56→48px; overlay backdrop 0.5→0.38; dead .b-meta-row rule removed; hover lift completed on all card families.
+- DESIGN-SYSTEM.md updated in lockstep (Canvas law, cover component spec, progress spec, registry notes, 3 new Don't/Do pairs, REVIEW.md added to Checks). Pass-2 previews archived (home/library/overlay/light, design/preview/*-pass2.png).
+- VERIFIED BY RUN (Loop 4, fresh browser session — first capture was STALE CACHE, session restarted): zero console errors; hover verified by computed style (lift + border-strong) and screenshot (fan-out); overlay open/close cycle re-confirmed; both themes rendered.
+- Process lessons ratcheted/logged: (a) browser session cache serves stale CSS across agent-browser reloads — restart the session for verification passes; (b) GH_TOKEN env var alone doesn't authenticate git push — one-shot credential helper pattern recorded.
+
+**Stage Summary:**
+- The iteration loop now produces durable assets: REVIEW.md (critique→fix→verify, per pass), DESIGN-SYSTEM updates in lockstep, previews per pass. The repo grows from the work, per INT-006.
+- Pass 2 clears the two criticals: glass refracts, covers are artwork. Awaiting the owner's eye (preview live on port 3000).
+- Open: instrument contrast check; more owner references (INT-004); unpainted layers owner-gated (reading surface + capture, concepts deep-dive, compounding digest).

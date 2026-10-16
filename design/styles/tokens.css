@@ -54,15 +54,17 @@
   /* ---- icon sizes (16/20/24 only) ---- */
   --ic-sm: 16px; --ic-md: 20px; --ic-lg: 24px;
 
-  /* ---- cover fills: placeholder artwork (grayscale, theme-independent —
-         covers are artwork, they do not follow the theme; Loop 5 audit) ---- */
-  --cover-1: linear-gradient(145deg, #3A3A40, #1B1B1F);
-  --cover-2: linear-gradient(160deg, #34343A, #121215 70%);
-  --cover-3: linear-gradient(200deg, #2A2A30, #101013 65%);
-  --cover-4: linear-gradient(140deg, #414147, #151518 75%);
-  --cover-5: linear-gradient(180deg, #222226, #0E0E10);
-  --cover-6: linear-gradient(120deg, #3B3B41, #141417 60%);
-  --cover-mini: linear-gradient(160deg, #2E2E33, #121215);
+  /* ---- cover fills: placeholder artwork v2 (REVIEW pass 2 — six distinct
+         grayscale tones, silver → graphite; covers must never read as voids) ---- */
+  --cover-1: linear-gradient(165deg, #5A5A64, #32323A 55%, #26262E);
+  --cover-2: linear-gradient(155deg, #4E4E58, #2A2A32 60%);
+  --cover-3: linear-gradient(200deg, #44444E, #24242C 65%);
+  --cover-4: linear-gradient(145deg, #3B3B44, #1F1F26 70%);
+  --cover-5: linear-gradient(185deg, #33333B, #1A1A20 60%);
+  --cover-6: linear-gradient(125deg, #2B2B32, #16161B 65%);
+  --cover-mini-1: linear-gradient(160deg, #46464F, #232329);
+  --cover-mini-2: linear-gradient(160deg, #3A3A42, #1E1E24);
+  --cover-mini-3: linear-gradient(160deg, #303038, #191920);
 
   /* ---- blur levels — the Frosted ref (X-14) ---- */
   --blur-glass: 24px;
@@ -93,7 +95,7 @@
   --surface-glass-strong: rgba(255, 255, 255, 0.115);
   --surface-solid: #17171B;
   --surface-raised: #1F1F24;
-  --surface-backdrop: rgba(5, 5, 6, 0.5);
+  --surface-backdrop: rgba(5, 5, 6, 0.38);
 
   --fg-1: #F5F5F7;
   --fg-2: rgba(240, 240, 245, 0.62);
@@ -106,14 +108,17 @@
   --border-focus: rgba(255, 255, 255, 0.5);
 
   --highlight-top: rgba(255, 255, 255, 0.09);
-  --track: rgba(255, 255, 255, 0.12);
+  --track: rgba(255, 255, 255, 0.18);
 
   --shadow-1: 0 2px 8px rgba(0, 0, 0, 0.25);
   --shadow-2: 0 12px 32px rgba(0, 0, 0, 0.35);
   --shadow-3: 0 24px 64px rgba(0, 0, 0, 0.45);
 
-  --glow-a: rgba(255, 255, 255, 0.085);
-  --glow-b: rgba(255, 255, 255, 0.055);
+  /* ---- canvas glows: glass must have luminous structure to refract —
+         if the canvas reads flat black, the glass has failed (REVIEW pass 2) ---- */
+  --glow-a: rgba(255, 255, 255, 0.11);
+  --glow-b: rgba(255, 255, 255, 0.075);
+  --glow-c: rgba(255, 255, 255, 0.05);
   --noise-opacity: 0.035;
   --cover-ink: #EDEDF0;
 }
@@ -129,7 +134,7 @@
   --surface-glass-strong: rgba(255, 255, 255, 0.82);
   --surface-solid: #FFFFFF;
   --surface-raised: #FFFFFF;
-  --surface-backdrop: rgba(20, 20, 22, 0.25);
+  --surface-backdrop: rgba(20, 20, 22, 0.18);
 
   --fg-1: #131315;
   --fg-2: rgba(24, 24, 28, 0.62);
@@ -142,14 +147,15 @@
   --border-focus: rgba(15, 15, 18, 0.5);
 
   --highlight-top: rgba(255, 255, 255, 0.7);
-  --track: rgba(15, 15, 18, 0.14);
+  --track: rgba(15, 15, 18, 0.18);
 
   --shadow-1: 0 2px 8px rgba(20, 20, 24, 0.08);
   --shadow-2: 0 12px 32px rgba(20, 20, 24, 0.12);
   --shadow-3: 0 24px 64px rgba(20, 20, 24, 0.16);
 
-  --glow-a: rgba(20, 20, 24, 0.07);
-  --glow-b: rgba(20, 20, 24, 0.045);
+  --glow-a: rgba(20, 20, 24, 0.08);
+  --glow-b: rgba(20, 20, 24, 0.055);
+  --glow-c: rgba(20, 20, 24, 0.04);
   --noise-opacity: 0.028;
   --cover-ink: #FAFAFB;
 }

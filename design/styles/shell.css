@@ -105,14 +105,19 @@
 .nav-item .icon { flex: none; }
 .nav-item .n-label { font-size: var(--fs-meta); font-weight: 500; }
 
-/* active: rounded indicator + glass-strong pill */
+/* active: rounded indicator + glass-strong pill.
+   The bar is an EXPANDED-state affordance — while collapsed it fades out
+   (a 3px bar glued to the panel edge reads as a seam, REVIEW pass 2). */
 .nav-item.active { background: var(--surface-glass-strong); color: var(--fg-1); }
 .nav-item.active::before {
   content: ""; position: absolute; left: -1px; top: 50%;
   width: 3px; height: 18px; border-radius: var(--r-pill);
   transform: translateY(-50%);
   background: var(--fg-1);
+  opacity: 1;
+  transition: opacity var(--dur-micro) var(--ease-out);
 }
+.sidebar:not(:hover):not(.pinned) .nav-item.active::before { opacity: 0; }
 
 /* ---- account row pinned bottom ---- */
 .sb-account {

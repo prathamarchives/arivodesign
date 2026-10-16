@@ -24,10 +24,9 @@ body {
 .canvas {
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background:
-    radial-gradient(1000px 640px at 6% -6%, var(--glow-a), transparent 58%),
-    radial-gradient(900px 560px at 30% 0%, var(--glow-b), transparent 55%),
-    radial-gradient(1100px 700px at 100% 4%, var(--glow-b), transparent 55%),
-    radial-gradient(900px 900px at 66% 112%, var(--glow-b), transparent 60%),
+    radial-gradient(1100px 700px at 10% -8%, var(--glow-a), transparent 60%),
+    radial-gradient(900px 600px at 88% 2%, var(--glow-b), transparent 55%),
+    radial-gradient(1200px 800px at 55% 115%, var(--glow-c), transparent 60%),
     var(--bg-0);
 }
 .canvas::after {
