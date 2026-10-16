@@ -82,3 +82,17 @@ Interpretations (labeled, not owner words):
 - "first startup the dev" → preview serving becomes a REPO CAPABILITY, not a shell-history artifact: a one-command dev/preview server any agent or the owner can start, so "preview the html here" is reproducible. This closes the gap that session 4's server was ad-hoc.
 - "whats not done" → the audit must also surface UNFINISHED work honestly (evidence-label it), not hide it: known-open items are the unpainted layers (reading surface, capture flows, concepts deep-dive, compounding digest — owner-gated per D-007) and owner-side actions (PAT rotation, more references promised).
 - No visual corrections yet: any defects found in this audit are self-found (Loop 5 → Loop 3/Loop 2 as applicable), codified if mechanically checkable.
+
+---
+
+**INT-006 — THE VERDICT: PROTOTYPE PASS 1 IS NOT GOOD ENOUGH ("it sucks"); ITERATION PHASE OPENS — REFINE, ITERATE, DOCUMENT EVERYTHING, TURN WORK INTO REPO GROWTH; FRESH PUSH TOKEN SUPPLIED — active**
+
+> "from this stage as the repo says focus on the iteration the first prototype you made it .html and all.. but it sucks and we will refine, iterate on it and make sure everything gets documented, and turnt into something in order to repo to grow so get to work lock that in review repo understand n extract..."
+
+Source: owner turn 6, chat 2026-10-14 (`context/raw/turn-006.txt`; PAT redacted per L-15, used env-only). Grounds: (a) a fresh GitHub PAT supplied → pending session-5 commits push NOW; (b) the owner's verdict on paint pass 1 — "it sucks" — the prototype does not clear the bar the owner set in INT-004 ("do better than the refrences", "world class"); (c) the directive is PROCESS, not a list of fixes: "focus on the iteration... we will refine, iterate on it" — the paint cycle (replicate → refine → iterate → change → test) is now the standing mode; (d) "make sure everything gets documented, and turnt into something in order to repo to grow" — every critique and fix must land in the repo as a durable asset (L-02: repo is the only memory; worklog/STATE/spec updates), so iteration compounds instead of evaporating; (e) "lock that in review repo understand n extract" — Loop 1 first (this entry), then work.
+
+Interpretations (labeled, not owner words):
+- "it sucks" is UNQUALIFIED — no specific defects named. The agent must therefore run an honest, world-class-designer self-review (Loop 5 discipline applied to the paint): render every surface, both themes, name concrete defects against the vision words (glass visibility, blur, motion, detailing, hover, typography, grayscale discipline) and the 8 references, then fix them in a refinement pass. Vague guilt is useless; a defect list is the deliverable.
+- The iteration loop must produce ARTIFACTS, not just commits: each pass gets a documented critique → fixes → re-verify cycle (review log), so the repo can replay how the design evolved and why.
+- Self-found defects of the class "a component shipped without a state" or "a value escaped the token system" promote to rules/verify checks per the ratchet (L-09/R-D08) when mechanically checkable.
+- The bar: pass 2 must visibly clear INT-004's words — blur that reads, detailing on hover, covers/cards that don't read as voids, typography with real hierarchy, motion consistency everywhere. "Better than the references" is the acceptance line.
