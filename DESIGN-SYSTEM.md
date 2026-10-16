@@ -47,7 +47,7 @@ Single family. Faces shipped: Light 300, Regular 400 (+Italic), Bold 700, Rounde
 
 | Preset | Spec | Use |
 |---|---|---|
-| display | 300 · 40/1.1 · -0.02em | page titles |
+| display | 500 · 40/1.1 · -0.02em | page titles — INT-012 amendment: 300 was the thin techy voice; R7 speaks at medium |
 | title | 700 · 22/1.25 · **chrome exception: overlay name = 400** | section titles |
 | heading | 700 · 16/1.35 | card titles |
 | body | 400 · 15/1.55 | main text, quotes |
@@ -113,8 +113,8 @@ Every component: Default / Hover / Pressed / Disabled / Focus (ring always visib
 | Button ghost / icon | components.css | all 5 | glass, hairline |
 | Filter pill | components.css | rest / hover / active | active = glass-strong + fg-1 |
 | Chip (classification word) | components.css | rest | outlined, free-text words (D-030) |
-| Book card | components.css | rest / hover | cover 2:3 (pure artwork: fill + sheen + spine + monogram — title lives ONCE, below), meta row, progress 3px luminous fill, Read pill |
-| Cover placeholder | components.css | artwork only | cv-a..f = six grayscale tones, silver→graphite; monogram 1–2 letters light-300 italic; adjacent works never share a tone |
+| Book card | components.css | rest / hover | cover 2:3 RICH (INT-012, supersedes pass-2 "title lives once": 58px upright letter LEFT + title/author INSIDE the cover — the cover's voice; title ALSO below at 600), meta row, progress 4px luminous fill, Read pill (ink-inverted) |
+| Cover placeholder | components.css | artwork only | cv-a..f = six NEUTRAL warm-grey tones (v3, INT-012 — cool cast removed); monogram = ONE letter, upright, light-300; adjacent works never share a tone |
 | Folder card | components.css | rest / hover | glass folder, covers peek (distinct tones), "Name · N" |
 | Quote card | components.css | rest / hover | Are.na anatomy: glyph, quote, source, chips |
 | Journal day card | components.css | rest / hover | big numeral, excerpt, entry count |
