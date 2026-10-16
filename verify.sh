@@ -97,6 +97,51 @@ else
   bad "core.fileMode is not false — run: git config core.fileMode false (mode-churn guard)"
 fi
 
+# ---------------------------------------------------------------- 5e. sidebar pass-3 regression guards (ratcheted 2026-10-16, INT-007)
+# (a) paint-order trap: the aperture glass lives on .sidebar::before; a positioned
+#     pseudo with z auto paints ABOVE non-positioned children — the avatar disc,
+#     hairline and pin were swallowed by their own glass (found in pass-3 browser
+#     verification). z -1 on that pseudo is load-bearing; it must never disappear.
+if grep -A6 '\.sidebar::before' design/styles/shell.css | grep -q 'z-index: -1'; then
+  ok "aperture glass stays behind rail content (::before z -1 present)"
+else
+  bad ".sidebar::before lost z-index: -1 — rail content paints under its own glass (pass-3 failure class)"
+fi
+# (b) chrome bold ban: owner turn-007 — no bold fonts in the sidebar chrome.
+#     (The avatar monogram's 700 lives in components.css = artwork voice, out of scope.)
+if grep -q 'font-weight: 700' design/styles/shell.css; then
+  bad "font-weight: 700 found in shell.css — chrome text must stay <= 400 (INT-007)"
+else
+  ok "no bold in sidebar chrome (shell.css)"
+fi
+# (c) wordmark resurrection ban: owner turn-007 removed it; it must not creep back.
+#     (Precise: the word may appear in comments DOCUMENTING the removal — the
+#     class, the rule, or the token are the resurrection.)
+if grep -qE 'class="wordmark"|\.wordmark|font-wordmark' design/index.html design/styles/*.css 2>/dev/null; then
+  bad "wordmark resurrected (class/rule/token found) — owner removed it (INT-007)"
+else
+  ok "no wordmark in paint or tokens"
+fi
+# (d) content margin-slide ban: expansion is an OVERLAY; the page answers with a
+#     transform breath, never a margin reflow (the old margin-slide is dead — INT-007).
+if grep -q 'margin-left: calc(var(--sidebar-w' design/styles/shell.css; then
+  bad "content margin-slide regression in shell.css — expansion must overlay, not reflow (INT-007)"
+else
+  ok "no content margin-slide (overlay expansion intact)"
+fi
+if grep -q 'transform-origin: left center' design/styles/shell.css; then
+  ok "content breath present (transform-origin: left center)"
+else
+  bad "content breath missing — the page must react to expansion (INT-007)"
+fi
+# (e) geometry tokens: the derived numbers are the law — 64 rail, 224 = 3.5 × 64.
+if grep -q -- '--sidebar-w: 64px' design/styles/tokens.css && \
+   grep -q -- '--sidebar-w-expanded: 224px' design/styles/tokens.css; then
+  ok "sidebar geometry tokens exact (64 / 224)"
+else
+  bad "sidebar geometry tokens missing or altered — 64 / 224 are derived law (INT-007)"
+fi
+
 # ---------------------------------------------------------------- 6. worklog is alive for the latest turn
 latest="$(ls context/raw/turn-*.txt 2>/dev/null | sort | tail -1)"
 if [ -n "$latest" ]; then

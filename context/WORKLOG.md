@@ -145,3 +145,23 @@ Append-only operational memory. Every session reads this before working and appe
 - The iteration loop now produces durable assets: REVIEW.md (critique→fix→verify, per pass), DESIGN-SYSTEM updates in lockstep, previews per pass. The repo grows from the work, per INT-006.
 - Pass 2 clears the two criticals: glass refracts, covers are artwork. Awaiting the owner's eye (preview live on port 3000).
 - Open: instrument contrast check; more owner references (INT-004); unpainted layers owner-gated (reading surface + capture, concepts deep-dive, compounding digest).
+
+---
+
+Task ID: 7 (session 7, owner turn 7)
+Agent: main (arivodesign session)
+Task: INT-007 — the owner's first visual correction: the sidebar. Compact it, pfp to top, overlay expansion (content reacts, doesn't slide), kill wordmark + name + bold, smoother motion with better latency, measure like an architect. Run the owner's 4-step reasoning protocol before executing.
+
+Work Log:
+- L-06 intake first: turn-007 saved verbatim (context/raw/turn-007.txt), 6 reference images archived to context/references/turn-007/ (ref-1 = the master "Skroll" acceptance image), INT-007 ledgered with all corrections quoted.
+- Owner's ordered protocol executed BEFORE code and archived: context/intake/INT-007-extraction.md — (1) six professional perspectives (design engineer, typographer, mathematician, motion designer, product architect, cultural reader) each contributing what the owner is NOT asking for; (2) rawest material = the 40px cell / 64px column / 224 = 3.5×64; (3) cross-field methods (Palladian module, compositing render-layers, optics depth-of-field, HCI 100ms boundary, ADSR envelope, rational ratios, editorial single-voice); (4) seven external arbiters (the ruler, the compositor, the voice, the eyes, the stranger, the reduced-motion user, the repo ratchet).
+- Rebuild: index.html sidebar anatomy (sb-head avatar-top → sb-rule → sb-nav → sb-foot pin); shell.css rewritten (aperture glass ::before, overlay expansion, transform breath, 80/160/380 envelope, 400-weight chrome, active bar deleted, pin to foot); tokens.css (64/224 geometry, --dur-panel 380, --dur-drift 240, wordmark token removed).
+- Browser verification (agent-browser, fresh session): geometry exact by getBoundingClientRect (64/224/40/40/32; rhythm 25→77→90→136); content transition = transform with breath matrix(0.996,0,0,0.996,6,0); ::before width constant 224; delays 0.08s/0.16s measured both states; zero console errors; both themes + hover + pin + overlay + Escape exercised.
+- CRITICAL defect found by the loop (not the owner): aperture ::before with z auto painted OVER non-positioned children — avatar disc, hairline, pin rendered invisible under their own glass. Fixed with load-bearing z-index: -1; failure class ratcheted into verify.sh 5e (a–e: z -1 guard, chrome bold ban, wordmark resurrection ban, margin-slide ban, geometry tokens).
+- Docs lockstep: DESIGN-SYSTEM.md (chrome weight law, envelope, sidebar registry row rewritten, 2 new Don't/Do), REVIEW.md pass-3 entry (7 named defects with evidence → fixes → verification), STATE.md refreshed.
+- Decision documented: overlay keeps "Pratham" as display name (identity DESTINATION surface) de-bolded; the RAIL is the quiet surface (handle only). Avatar monogram keeps 700 as artwork voice — the single chrome exception.
+
+Stage Summary:
+- Sidebar pass 3 painted + verified by run; owner's 9 corrections all land; 4-step protocol becomes standing law for future correction passes (recorded in INT-007 ledger entry).
+- New failure classes ratcheted: verify.sh now 29 checks (5e-a..5e-e added).
+- Pending: push (needs token env-only), owner review of pass 3 in the live preview.

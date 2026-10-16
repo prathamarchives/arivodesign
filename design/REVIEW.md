@@ -50,3 +50,40 @@ Re-render every pass-1 view + hover states; before/after screenshots archived in
 - Hover verified by computed style + screenshot: book-card lifts translateY(−3px) with border-strong; list-card stack fans out (±5° rotation, −2/−5px) while siblings rest.
 - Contrast: fg-1 monogram on lightest cover (--cover-1) — estimated ≈ 4.4:1 (not instrument-checked; decorative glyph, acceptable); to be instrument-checked when the contrast check lands.
 - Console: zero errors, zero warnings. verify.sh: green.
+
+---
+
+## PASS 2 → PASS 3 (2026-10-16, session 7) — triggered by INT-007: the owner's first visual correction (the sidebar)
+
+Reviewed: the sidebar against owner turn-007 + six new references (`context/references/turn-007/`; ref-1 = the acceptance image). The reasoning protocol the owner ordered (perspectives → raw material → cross-field methods → external arbiters) is archived in `context/intake/INT-007-extraction.md`; the geometry below is DERIVED there, not eyeballed.
+
+### Pass-2 defects (named, with evidence)
+
+| # | Defect | Evidence | Severity |
+|---|--------|----------|----------|
+| 1 | **The rail is too wide and announces instead of blends.** 76px collapsed / 268px expanded with a wordmark row, a name row, a bold handle, a 3px active bar — none of it exists in ref-1, and the owner says "too wide" twice. | ref-1 (silent ~80px rail, avatar top, no text), ref-4 (64px rail, 40px cells); owner turn-007 verbatim | CRITICAL |
+| 2 | **Account identity is at the wrong end and says the wrong thing.** PFP lives at the rail's foot with a bold "Pratham" + handle; the owner: pfp to the TOP, identity = `@prathamarchives` only. | ref-1/ref-4 (avatar anchors the top); owner turn-007 | CRITICAL |
+| 3 | **Expansion reflows the page.** `.content` margin-left animates 52→212px — every frame re-lays-out every card, cover and bar. The owner: "only sidebar expands... the homepage just give a little bit motion... not slides all the way." | shell.css (old `.sidebar:hover ~ .content` margin rule); owner turn-007 | CRITICAL |
+| 4 | **Motion latency past the instant window.** Attack 120ms + 480ms glide reads laggy ("can be alot smoother better latency"). | tokens.css old `--dur-panel: 480ms`; HCI ~100ms boundary (extraction §3) | HIGH |
+| 5 | **Bold in the chrome.** `.a-name` 700, `.n-label` 500, overlay title/rows 500–700 — the references set every word in regular. | ref-4 (all labels regular); owner turn-007 "no bold fonts here" | HIGH |
+| 6 | **THE GLASS SWALLOWED ITS OWN CHILDREN (found in pass-3 verification, not by the owner).** Moving the glass onto `.sidebar::before` (aperture refactor) made a positioned pseudo with z auto paint ABOVE non-positioned children: the avatar disc, the hairline and the pin icon rendered invisible under their own glass. Nav items survived only because they are `position: relative`. | `_rail-top.png` (empty rail top) vs getBoundingClientRect showing the avatar at 24,25 40×40 with a cover fill | CRITICAL (new failure class — ratcheted into verify.sh 5e-a) |
+| 7 | **Account overlay origin stale.** The panel still grew from bottom-left after the account moved to the top — origin must follow its trigger. | shell.css old `bottom:` positioning | MEDIUM |
+
+### Pass-3 changes (the fixes, mapped to defects)
+
+1. **Re-derived geometry** (→1): cell 40 (avatar/nav/pin are ONE module) · rail 64 = 11+1+40+1+11 · expanded 224 = 3.5×64 (rational ratio) · rhythm 6px · rows 40px with pad 12 · icon→label gap 12 · radius r-sm cells / r-xl panel. Numbers live in tokens.css (`--sidebar-w`, `--sidebar-w-expanded`) — single source of values.
+2. **Anatomy rebuild** (→2): `avatar TOP → hairline → nav → pin foot`. Wordmark deleted (HTML + CSS + token). Account head = avatar-lg + `@prathamarchives` (13/400/fg-2) + chevron. Pin demoted to a 32px utility at the foot — its `margin-left: 4px` centers it collapsed AND left-aligns it expanded (one number, two states). Hairline divider: 40px collapsed → full width expanded.
+3. **Overlay expansion** (→3): the content margin rule is DELETED. The panel floats above the page (z-sidebar); the page answers with the breath — `translateX(6px) scale(0.996)`, origin left — transform-only, zero reflow. Verified: computed `.content` transition is `transform`; pinned breath matrix `matrix(0.996,0,0,0.996,6,0)`.
+4. **The envelope** (→4): attack 80ms / glide 380ms / release 160ms; labels +120ms in, 60ms out; pinned 0ms. `--dur-panel: 480→380`, `--dur-drift: 280→240`. Verified by computed transition-delay in both destination states.
+5. **One voice** (→5): every word in the rail and overlay is 13px/400 (labels fg-2, active fg-1, handle fg-2); overlay name/rows de-bolded to 400. The avatar monogram keeps 700 — artwork voice, documented as the single exception.
+6. **Aperture glass + z -1** (→1,6): the blur layer is a constant 224px surface anchored left, clipped by the panel (blur region never re-rasterizes mid-animation — the compositor smoothness win), pinned at `z-index: -1` so children paint above it. Failure class ratcheted: verify.sh 5e-a greps for the load-bearing z.
+7. **Overlay origin** (→7): account panel grows from TOP-left (top/left 24px, `transform-origin: top left`, initial `translateY(-8px)`).
+
+### Verification (Loop 4 — verified by run, fresh browser session)
+
+- The ruler: rail 64.0 collapsed / 224.0 pinned; avatar 40.0; nav rows 40.0; pin 32.0; stack rhythm 25→77→90→136 (12/12/6 gaps) — exact.
+- The compositor: `.content` transition = transform; `::before` width constant 224px across states; attack/release delays 0.08s/0.16s measured in both destination states.
+- The voice: zero `font-weight > 400` in the sidebar subtree except the avatar monogram (artwork); wordmark absent from DOM; handle text exactly `@prathamarchives`.
+- The eyes: collapsed rail (dark+light) reads as the ref-1 column — face top, hairline, three glyphs, quiet pin; expanded reads as ref-4/ref-5 — a floating layer over an unreflowed page. Screenshots: `sidebar-rail-dark/expanded-dark/hover-dark/rail-light/expanded-light/account-overlay-top.png` (+ crops).
+- Behavior: real-mouse hover expands; pin toggles; overlay opens from beneath the avatar; Escape closes; theme swap clean in both themes; console clean.
+- not checked — true 60fps feel on real hardware (needs the owner's hand); prefers-reduced-motion not emulated in-browser (the tokens collapse durations to 1ms by construction; function survives as fades); hover attack "feel" judged only by the envelope numbers.

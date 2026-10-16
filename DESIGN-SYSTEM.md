@@ -43,17 +43,18 @@ Light theme swaps values, never roles (`[data-theme="light"]` in tokens.css).
 
 ### Typography — Helvetica (INT-004: "the font we'll be using is helvicta")
 
-Single family. Faces shipped: Light 300, Regular 400 (+Italic), Bold 700, Rounded Bold (wordmark ONLY). Fallback: `"Helvetica Neue", Helvetica, Arial`.
+Single family. Faces shipped: Light 300, Regular 400 (+Italic), Bold 700, Rounded Bold (on disk, unassigned — the wordmark was removed, INT-007). Fallback: `"Helvetica Neue", Helvetica, Arial`.
 
 | Preset | Spec | Use |
 |---|---|---|
 | display | 300 · 40/1.1 · -0.02em | page titles |
-| title | 700 · 22/1.25 | section titles, overlay name |
+| title | 700 · 22/1.25 · **chrome exception: overlay name = 400** | section titles |
 | heading | 700 · 16/1.35 | card titles |
 | body | 400 · 15/1.55 | main text, quotes |
-| meta | 400 · 13/1.4 | secondary rows |
+| meta | 400 · 13/1.4 | secondary rows, sidebar labels, handle |
 | micro | 500 · 11/1 · +0.08em · uppercase | eyebrows, captions |
-| wordmark | Rounded 700 · 15 · +0.02em | "arivo" wordmark only |
+
+**Chrome weight law (INT-007):** sidebar + overlay text is weight 400, maximum. Hierarchy by value (fg-1/2/3), never by weight. The avatar monogram's 700 is artwork voice, not typography.
 
 ### Radius — no sharp corners (INT-004: "no sharp corners")
 
@@ -87,11 +88,13 @@ Three laws:
 
 | Preset | Spec | Use |
 |---|---|---|
-| glide-panel | 480ms · glide | sidebar expand/collapse, account overlay grow |
+| glide-panel | 380ms · glide | sidebar expand/collapse, account overlay grow |
 | rise-page | 320ms · glide | page switch entry (blur+rise) |
-| drift-in | 280ms · glide · +40ms stagger | labels/rows appearing inside structural motion |
+| drift-in | 240ms · glide · +40ms stagger | labels/rows appearing inside structural motion |
 | press-micro | 160ms · out | hover lifts, borders, chips |
 | fade-soft | 200ms · out | tooltips, toggles, backdrop |
+
+**The envelope (INT-007):** an interaction is an ADSR shape — attack 80ms delay (inside the ~100ms "instant" perception window), sustain = the glide, release 160ms delay (a flick-away must not thrash). Pinned state = instant (0ms). Labels ride late: +120ms in, 60ms out (they die into the slide).
 
 `prefers-reduced-motion`: movement collapses to opacity-only fades. Non-negotiable.
 
@@ -101,11 +104,11 @@ Every component: Default / Hover / Pressed / Disabled / Focus (ring always visib
 
 | Component | File | States | Notes |
 |---|---|---|---|
-| Sidebar (floating glass) | shell.css | collapsed / hover-expanded / pinned | 76px → 268px; hover delay 120ms in / 260ms out (implemented pass 2); active bar is an expanded-state affordance — fades out collapsed |
-| Nav item | shell.css | rest / hover / active | active: 3px rounded indicator + glass-strong pill |
-| Pin button | shell.css | rest / hover / pinned | 28px, top-left, "just small" |
-| Account row → overlay | shell.css | rest / hover / open | overlay grows from bottom-left, same glide family |
-| Overlay panel | shell.css | open / closing | blur level 3, --r-2xl; backdrop alpha 0.38 dark / 0.18 light |
+| Sidebar (the 64px rail) | shell.css | collapsed / hover-expanded / pinned | **Geometry (derived, INT-007):** cell 40 · rail 64 = 11+1+40+1+11 · expanded 224 = 3.5×64 · rhythm 6px · radius r-sm on cells, r-xl panel. Anatomy: avatar TOP (identity) → hairline → nav → pin foot (utility). Expansion = OVERLAY: the panel floats above the page (z-sidebar, shadow-1→shadow-3); the page answers with a breath — translateX(6px) scale(.996), transform only, zero reflow. Glass = constant-size ::before revealed by the clipping panel (aperture model — blur region never re-rasterizes mid-animation; `z-index: -1` on the pseudo is LOAD-BEARING: without it the glass paints over its own children). Attack 80ms / release 160ms. |
+| Nav item | shell.css | rest / hover / active | 40px cell · icon 20 (stroke 1.5) · label 13/400; expanded: icon aligns to avatar's left edge; active = glass-strong pill (the old 3px left bar is DELETED — the fill is the indicator) |
+| Pin button | shell.css | rest / hover / pinned | 32px, rail FOOT (utility lives at the bottom, ref-1 pattern); margin-left 4px centers it collapsed AND left-aligns it expanded |
+| Account head → overlay | shell.css | rest / hover / open | avatar-lg (the 40px module) + `@prathamarchives` handle only (13/400, fg-2) — no name, no wordmark; overlay grows from TOP-left (origin follows the trigger) |
+| Overlay panel | shell.css | open / closing | blur level 3, --r-2xl; backdrop alpha 0.38 dark / 0.18 light; name weight 400 |
 | Button primary (pill) | components.css | all 5 | white bg, near-black fg |
 | Button ghost / icon | components.css | all 5 | glass, hairline |
 | Filter pill | components.css | rest / hover / active | active = glass-strong + fg-1 |
@@ -127,6 +130,8 @@ Every component: Default / Hover / Pressed / Disabled / Focus (ring always visib
 - **Don't:** introduce any hue, any sharp corner, a new easing curve, a raw hex/px inside a component, an icon outside 16/20/24, a state shipped incomplete, a movement without blur treatment. · **Do:** tokens only; states complete; focus always visible; one family of motion; blur on structural movement.
 - **Don't:** repeat content between a cover and its caption — the title lives ONCE. · **Do:** covers are pure artwork (fill + sheen + spine + monogram); text sits below.
 - **Don't:** end a horizontal scroll row without a continuation cue (right-edge fade). · **Do:** a cut card must visibly dissolve.
+- **Don't:** let a positioned decorative pseudo paint over content (::before with z auto covers non-positioned children — the rail swallowed its own avatar, pass 3). · **Do:** decorative layers behind content get `z-index: -1` inside a stacking-context parent, verified by screenshot.
+- **Don't:** reflow the page to make room for a panel (margin/width shifts drag every card per frame). · **Do:** panels float OVER the page; the page reacts in `transform` only.
 - **Don't:** ship dark glass on a dead-black canvas. · **Do:** keep the canvas glow stations alive (see Canvas law).
 - **Don't:** invent content surfaces the owner didn't name. · **Do:** extend the named ones (Home/Library/Archive/Account) and ledger new intent first (L-06).
 - **Don't:** let a component drift from this file. · **Do:** treat a mismatch as a defect — fix code or spec through Loop 2, never silently.

@@ -34,7 +34,6 @@
 :root {
   /* ---- typography roles (X-16) ---- */
   --font-sans: "Helvetica", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-wordmark: "Helvetica Rounded", "Helvetica", sans-serif;
 
   --fs-display: 40px;  --lh-display: 1.1;   --ls-display: -0.02em; --fw-display: 300;
   --fs-title: 22px;    --lh-title: 1.25;
@@ -50,6 +49,11 @@
   /* ---- spacing scale ---- */
   --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
   --s-6: 24px; --s-7: 32px; --s-8: 40px; --s-9: 56px; --s-10: 72px;
+
+  /* ---- sidebar geometry (INT-007 — derived, not chosen):
+         cell 40 · rail 64 = 11+1+40+1+11 · expanded 224 = 3.5 × 64 (rational ratio) ---- */
+  --sidebar-w: 64px;
+  --sidebar-w-expanded: 224px;
 
   /* ---- icon sizes (16/20/24 only) ---- */
   --ic-sm: 16px; --ic-md: 20px; --ic-lg: 24px;
@@ -74,9 +78,9 @@
   /* ---- motion: one family (X-11) ---- */
   --ease-glide: cubic-bezier(0.32, 0.72, 0, 1);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur-panel: 480ms;   /* glide-panel */
+  --dur-panel: 380ms;   /* glide-panel (INT-007 envelope: faster travel, same curve) */
   --dur-page: 320ms;    /* rise-page */
-  --dur-drift: 280ms;   /* drift-in */
+  --dur-drift: 240ms;   /* drift-in */
   --dur-micro: 160ms;   /* press-micro */
   --dur-fade: 200ms;    /* fade-soft */
 

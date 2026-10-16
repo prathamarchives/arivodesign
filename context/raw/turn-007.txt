@@ -1,0 +1,24 @@
+# Owner turn 7 — verbatim (received 2026-10-16)
+
+lets start with sidebar, first of all its like too wide. let me attach some refrences in the first one specifically look at the compostioning, and sizing and how well it is blending and aligned with it... and like just replicate this all.... move the account pfp as the top as seen the refrence and align eeverything to tht, motion is decent but can be alot smoother better latency . and when it expands only sidebar expands and the homepage just give a little bit motion and react on it. but not slides all the way on the side. compact the sidebar its too wide rn.. and like remove the arivo wordmark and pratham from the pratham let it be @prathamarchives. no bold fonts here and compact the sizing and alignment of the icons and the text and in between em. measure everything like a world classs design artitecht... attached after that more ui refrences to get closer to the goal, motion goal, appearence, layers and everything specially sidebar as of rightnow... but extract the visuals well and multiple prespectives and times...
+
+reason whatever i said multiple times and reason throuhg with prespectives of and before executing convert everything as a (1) think of all the prepectives of all the fieleds and people what a top professional in this field (cultureally ware, has taste, design engineer, creative, artitecht, mathmatics phd in geometry) would do here that I'm not asking for;
+(2) name the rawest material they would start from instead of what has already been digested for me and then start exec.
+(3) name the specific methods and and techniques connect things from diffrent feilds even if unrelated and make real art and then work on it and iterate and refine
+(4) say what, other than you or me, would show the result is right. and add range of multiple feilds and knowledge... creative, design engineer...
+
+# Attached files (saved to context/references/turn-007/)
+
+- G5Ka2M7a4AEtBOm.jfif → ref-1.jpg — THE master reference ("in the first one specifically look at the compostioning, and sizing and how well it is blending and aligned with it... and like just replicate this all")
+- Clean Design Layout.jfif → ref-2.jpg — pill/squircle component states, black active pill, soft shadows
+- (1) Ali-en on X — Design Inspo 123.jfif → ref-3.jpg — floating glass chips/progress over content
+- mathias coudert (@Mcoudert).jfif → ref-4.jpg — collapsed rail vs expanded panel (avatar top, divider, icon rows, grey active fill, no bold)
+- download (25).jfif → ref-5.jpg — floating glass command panel (layers, blur, active row)
+- Side Menu Mastery.jfif → ref-6.jpg — rail + floating expanded menu card, glyph top, sectioned menu
+
+# Context
+
+- Arrives after INT-006 (pass 2 painted). This is the owner's FIRST specific visual correction — the iteration loop now has a real target: the sidebar.
+- The owner orders a 4-step reasoning protocol BEFORE execution: (1) multi-field professional perspectives incl. what the owner is NOT asking for, (2) name the rawest material to start from, (3) name cross-field methods/techniques and make real art, (4) name external arbiters of correctness beyond owner and agent.
+- Named corrections: sidebar too wide (twice); pfp to TOP as in ref-1 and everything aligns to it; motion smoother + better latency; on expand ONLY the sidebar expands — the homepage gives "a little bit motion and react on it. but not slides all the way on the side"; remove the arivo wordmark; account shows only "@prathamarchives" (drop the "Pratham" name); NO bold fonts here; compact sizing + alignment of icons, text, and the space between them; "measure everything like a world classs design artitecht".
+- More references attached to pull the work toward "the goal, motion goal, appearence, layers" — "specially sidebar as of rightnow". Extraction must happen "well and multiple prespectives and times" (re-extract over iterations, not once).

@@ -96,3 +96,30 @@ Interpretations (labeled, not owner words):
 - The iteration loop must produce ARTIFACTS, not just commits: each pass gets a documented critique → fixes → re-verify cycle (review log), so the repo can replay how the design evolved and why.
 - Self-found defects of the class "a component shipped without a state" or "a value escaped the token system" promote to rules/verify checks per the ratchet (L-09/R-D08) when mechanically checkable.
 - The bar: pass 2 must visibly clear INT-004's words — blur that reads, detailing on hover, covers/cards that don't read as voids, typography with real hierarchy, motion consistency everywhere. "Better than the references" is the acceptance line.
+
+---
+
+**INT-007 — SIDEBAR CORRECTION 1: COMPACT THE RAIL, AVATAR TO TOP, OVERLAY EXPANSION (content reacts, doesn't slide), KILL WORDMARK + NAME + BOLD, MEASURE LIKE AN ARCHITECT — active**
+
+> "lets start with sidebar, first of all its like too wide... move the account pfp as the top as seen the refrence and align eeverything to tht, motion is decent but can be alot smoother better latency . and when it expands only sidebar expands and the homepage just give a little bit motion and react on it. but not slides all the way on the side. compact the sidebar its too wide rn.. and like remove the arivo wordmark and pratham from the pratham let it be @prathamarchives. no bold fonts here and compact the sizing and alignment of the icons and the text and in between em. measure everything like a world classs design artitecht..."
+
+Source: owner turn 7, chat 2026-10-16 (`context/raw/turn-007.txt`), with 6 references (`context/references/turn-007/ref-1..6.jpg`; ref-1 = the master, "specifically look at the compostioning, and sizing and how well it is blending and aligned with it... and like just replicate this all"). Grounds: this is the first specific visual correction after the INT-006 verdict — the iteration loop now has a concrete target (the sidebar) and a reasoning protocol the owner ordered BEFORE execution: (1) perspectives of top professionals across fields, including what they would do that the owner is NOT asking for; (2) name the rawest material to start from; (3) name cross-field methods and techniques, make real art, iterate and refine; (4) name what beyond owner and agent would prove the result right. The reasoning must be written into the repo, then executed.
+
+Owner corrections (verbatim-derived, all mandatory):
+1. Sidebar is too wide — compact it (stated twice).
+2. Account pfp moves to the TOP of the sidebar, as in ref-1 — everything aligns to it.
+3. Motion is "decent but can be alot smoother better latency" — faster response, smoother travel.
+4. On expand, ONLY the sidebar expands; the homepage gives "a little bit motion and react on it. but not slides all the way on the side" — content must not reflow/slide aside; the expansion floats over it.
+5. Remove the arivo wordmark from the sidebar.
+6. Account identity = "@prathamarchives" only — drop the "Pratham" name row.
+7. No bold fonts in the sidebar.
+8. Compact the sizing and alignment of icons, text, and the space between them.
+9. "measure everything like a world classs design artitecht" — geometry must be derived and stated, not eyeballed.
+10. Extract the visuals from the references "well and multiple prespectives and times" — extraction is a standing discipline, redone across iterations.
+
+Interpretations (labeled, not owner words):
+- ref-1 is the acceptance image for the rail: icon-only column, avatar anchoring the top, thin-stroke icons on one centerline, soft rounded-square active fill (not a left bar), no wordmark, everything on one background so the rail blends with the page rather than sitting as a separate slab.
+- ref-4 defines the expanded state's anatomy (avatar+identity top → divider → icon+label rows, regular weight, grey active fill) and ref-5/ref-6 define the expansion's layer nature: the expanded menu is a floating card ABOVE the page, not a column the page must make room for. Together they justify the overlay-expansion reading of correction 4.
+- "little bit motion and react" is implemented as a breath (a few px of translate + a whisper of scale on content), not a margin reflow — a reflow would drag every card and cover, which is exactly the "slides all the way" feel the owner rejects.
+- "measure everything" → the sidebar geometry is specified on a strict grid with named numbers (module sizes, widths as rational multiples, one centerline) in the extraction doc, then verified mechanically in the browser (getBoundingClientRect), not by eye.
+- The reasoning protocol is itself repo law going forward: every future visual correction pass runs the 4-step protocol and archives it under context/intake/.

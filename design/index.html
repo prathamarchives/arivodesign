@@ -37,15 +37,16 @@
 </svg>
 
 <div class="shell">
-  <!-- ============ SIDEBAR ============ -->
+  <!-- ============ SIDEBAR — the 64px rail (INT-007): identity top · nav middle · utility bottom.
+       Everything is the 40px cell; no wordmark; account = @prathamarchives only; no bold. ============ -->
   <aside class="sidebar" id="sidebar">
-    <div class="sb-top">
-      <button class="pin-btn" id="pinBtn" aria-label="Pin sidebar" title="Pin sidebar">
-        <svg class="icon i-pin-closed"><use href="#i-pin-closed"/></svg>
-        <svg class="icon i-pin-open"><use href="#i-pin-open"/></svg>
-      </button>
-      <span class="wordmark drift">arivo</span>
-    </div>
+    <button class="sb-head" id="accountBtn" aria-label="Account" title="Account">
+      <span class="avatar avatar-lg">P</span>
+      <span class="a-handle drift">@prathamarchives</span>
+      <svg class="icon icon-sm a-chev drift"><use href="#i-chev-r"/></svg>
+    </button>
+
+    <span class="sb-rule" aria-hidden="true"></span>
 
     <nav class="sb-nav">
       <button class="nav-item active" data-page="home">
@@ -62,14 +63,12 @@
       </button>
     </nav>
 
-    <button class="sb-account" id="accountBtn">
-      <span class="avatar avatar-md">P</span>
-      <span class="a-texts drift">
-        <span class="a-name" style="display:block">Pratham</span>
-        <span class="a-sub" style="display:block">@prathamarchives</span>
-      </span>
-      <svg class="icon icon-sm a-chev drift"><use href="#i-chev-r"/></svg>
-    </button>
+    <div class="sb-foot">
+      <button class="pin-btn" id="pinBtn" aria-label="Pin sidebar" title="Pin sidebar">
+        <svg class="icon i-pin-closed"><use href="#i-pin-closed"/></svg>
+        <svg class="icon i-pin-open"><use href="#i-pin-open"/></svg>
+      </button>
+    </div>
   </aside>
 
   <!-- ============ CONTENT ============ -->
@@ -419,7 +418,7 @@
   document.querySelectorAll('[data-goto]').forEach(a =>
     a.addEventListener('click', e => { e.preventDefault(); goto(a.dataset.goto); }));
 
-  // ---- sidebar pin (manual small button, top-left) ----
+  // ---- sidebar pin (utility, rail foot) ----
   const sidebar = document.getElementById('sidebar');
   document.getElementById('pinBtn').addEventListener('click', () => {
     sidebar.classList.toggle('pinned');
@@ -427,7 +426,7 @@
     document.getElementById('pinBtn').setAttribute('aria-label', pinned ? 'Unpin sidebar' : 'Pin sidebar');
   });
 
-  // ---- account overlay (grows from bottom-left, same glide family) ----
+  // ---- account overlay (grows from TOP-left — origin follows the avatar trigger) ----
   const overlay = document.getElementById('accountOverlay');
   function openOverlay() { overlay.hidden = false; requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('open'))); }
   function closeOverlay() {
