@@ -87,3 +87,25 @@ Reviewed: the sidebar against owner turn-007 + six new references (`context/refe
 - The eyes: collapsed rail (dark+light) reads as the ref-1 column — face top, hairline, three glyphs, quiet pin; expanded reads as ref-4/ref-5 — a floating layer over an unreflowed page. Screenshots: `sidebar-rail-dark/expanded-dark/hover-dark/rail-light/expanded-light/account-overlay-top.png` (+ crops).
 - Behavior: real-mouse hover expands; pin toggles; overlay opens from beneath the avatar; Escape closes; theme swap clean in both themes; console clean.
 - not checked — true 60fps feel on real hardware (needs the owner's hand); prefers-reduced-motion not emulated in-browser (the tokens collapse durations to 1ms by construction; function survives as fades); hover attack "feel" judged only by the envelope numbers.
+
+---
+
+## PASS 4 — the compacted rail + tactile system (INT-008 → INT-009, 2026-10-16)
+
+**Intake:** the owner saw NOTHING change (turn 8) — diagnosed: pass 3 was unpushed AND the preview server sent no cache headers, so the browser served stale CSS; the served HTML still carried "arivo" ×3 (title/About/footer — pass 3's purge was sidebar-scoped). Then the numeric directive arrived (turn 9). References: ALL 15 viewed for the first time this pass (the turn-8 process failure — references never opened — closed).
+
+**Named defects → fixes:**
+1. **Invisible work** (landing failure) → no-store preview server (`scripts/serve_nocache.py` via true double-fork `scripts/daemon_nocache.py`) + `?v=4` cache-busted asset links. Verified: `Cache-Control: no-store` on every response; daemon survives tool-call boundaries (the setsid/nohup variants were reaped — logged).
+2. **Rail too wide** (64) → derived grid: rail **44** = 1(border)+5+32+5+1; expanded **176** = 4×44. Verified: getBoundingClientRect 44.0 / 176.0 (hover AND pinned).
+3. **Two-axis drift** (avatar center 33 vs icon center 35 — found by measurement, not by eye) → avatar inset (32−28)/2 = 2px releasing to 0 on expand; `--sb-inset` 6px enclosure split from `--sb-pad` 5px rail edge (conflating them put icons 1px off-axis); pin `flex: none` (it shrank to 30 inside the 30px content box). Verified: worst axis diff **0.0px** across avatar/3 icons/pin; pitch exactly **40** (32+8).
+4. **White-on-white selection in light theme** (the "messed up" look) → `--tint-hover`/`--tint-selected` family (ink 4.5%/7.5% light; white-glass 7.5%/13% dark). Verified: active pill rgba(15,15,18,0.075) in light, visible in screenshot.
+5. **"arivo" survivors** (title, About row, footer, favicon monogram) → total purge; identity exactly `@prathamarchives` (title, greeting, overlay title, favicon → neutral book glyph). Verified: body innerText arivo count **0**; served HTML grep 0; overlay title reads `@prathamarchives` at weight 400.
+6. **Handle truncated** in the 176 panel (chevron stole 22px) → chevron deleted (the mathias ref head is avatar + handle, nothing else). Verified: truncated **false**.
+7. **Dead tooltip wiring** (self-caught): rail tooltips could never display — hovering the rail IS the expansion, so `.sidebar:hover` always suppressed them. → Tooltips re-homed where directive B places them: over TEXT CONTENT (`.content [data-tip]`), dark bubble, bottom pointer. Verified: opacity 1 after 260ms delay, `rgb(13,13,14)` = #0D0D0E exact in light, 12px horizontal padding, 8px rotated-square pointer present.
+8. **Motion latency** (380ms read sluggish) → spring solve k=300/c=30/m=0.8 → ζ=0.968, settle ≈213ms → **240ms** glide; attack 50ms/release 100ms/pinned 0; drift 200ms. Content breath **translateX(3px) scale(0.998)** — inside the directive's 2–4px band, transform-only. Verified: computed matrix(0.998,0,0,0.998,3,0) on hover AND pin.
+
+**The eyes:** collapsed dark = the G5Ka column (face top, hairline, three fine-line glyphs, quiet pin) at 44px; expanded light = the mathias panel (avatar+handle head, tinted active row, icon-left-edge alignment) floating over an unreflowed page. Screenshots: `p4-rail-dark.png`, `p4-expanded-dark.png`, `p4-rail-light.png`, `p4-expanded-light.png`, `p4-tooltip-dark.png`, `p4-account-overlay.png`.
+
+**Behavior:** real-mouse hover expands (176); pin holds expansion with breath; tooltip appears over content button; overlay opens top-left, Escape closes; theme swap clean both ways; console + page errors clean.
+
+**not checked** — true 60/120Hz feel on real hardware (needs the owner's hand); reduced-motion not emulated in-browser (tokens collapse by construction); paint-storm instrumentation (structure prevents it: only rail width interpolates, content is transform-only, aperture glass constant-size).

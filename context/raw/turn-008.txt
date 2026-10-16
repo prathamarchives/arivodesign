@@ -1,0 +1,15 @@
+OWNER TURN 8 — 2026-10-16 (chat, verbatim)
+
+"no it has not landed and i cannot see any changes lol?? did you even saw the refrences..??? compostioning is messed up, remove the arivo text the account/profile is messed up. the whole side bar is still so wide cut 1/3th of it. and replicate the sidebar refrences"
+
+ATTACHMENT: G5Ka2M7a4AEtBOm (1).jfif (4096×4096) — the named sidebar reference.
+(Original upload preserved at /home/z/my-project/upload/; converted to PNG in
+context/references/converted/. The pair G5Ka2M7a4AEtBOm.jfif is pixel-identical.)
+
+CONTEXT AT RECEIPT: paint pass 3 (603d972) HAD landed in the repo and the local
+server was serving the new 64px CSS — but (a) the commit was never pushed,
+(b) the python http.server sends no no-store header so the owner's browser
+served stale cached CSS, and (c) the served index.html still contained
+"arivo" ×3 (title, About row, footer) — the wordmark purge was incomplete.
+Owner-verdict classes: VISIBILITY FAILURE (cache/push), COMPOSITION FAILURE,
+INCOMPLETE PURGE, WIDTH (cut 1/3).

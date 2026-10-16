@@ -1,13 +1,15 @@
 /* ============================================================
    arivo — shell.css
-   The 64px rail: identity top · navigation middle · utility bottom
-   (INT-007 anatomy; geometry derived in context/intake/INT-007-extraction.md).
-   Expansion is an OVERLAY: the panel floats above the page; the page
-   answers with a breath (transform only — zero reflow, nothing slides).
-   The glass is a CONSTANT-SIZE surface revealed by a clipping window
-   (aperture model): the blur region never re-rasterizes mid-animation.
-   THE motion laws live here: glide-panel + drift-in (blur marks
-   structural movement). Grounds: INT-004 · INT-007 · X-11 · D-008.
+   The 44px rail: identity top · navigation middle · utility bottom
+   (INT-009 geometry; derivation in context/intake/INT-009-extraction.md).
+   Grid: rail 44 = 6+32+6 · cell 32 (icon 20 + enclosure) · axis x=22 ·
+   avatar 28 top anchor · expanded 176 = 4×44. Expansion is an OVERLAY:
+   the panel floats above the page; the page answers with a 3px breath
+   (transform only — zero reflow, nothing slides). The glass is a
+   CONSTANT-SIZE surface revealed by a clipping window (aperture model).
+   THE motion laws live here: glide-panel 240ms (INT-009 spring render:
+   k300/c30/m0.8 → ζ0.968, settle 213ms) + drift-in (blur marks movement).
+   Grounds: INT-004 · INT-007 · INT-009 · X-11 · D-008.
    ============================================================ */
 
 /* ============ LAYOUT ============ */
@@ -21,30 +23,32 @@
   border-radius: var(--r-xl);
   transform-origin: left center;
   transition: transform var(--dur-panel) var(--ease-glide);
-  transition-delay: 160ms; /* release: the breath exits with the panel */
+  transition-delay: 100ms; /* release: the breath exits with the panel */
 }
 
-/* ---- the breath (INT-007): while the panel crosses it, the page leans 6px
-   and recedes 0.4% — an acknowledgment, not a move. transform = compositor
-   only; the old margin-slide re-laid-out every card each frame. DEAD. ---- */
+/* ---- the breath (INT-009: "2–4px micro-scale compress or light parallax"):
+   while the panel crosses it, the page leans 3px and recedes 0.2% — an
+   acknowledgment, not a move. transform = compositor only; the old
+   margin-slide re-laid-out every card each frame. DEAD. ---- */
 .sidebar:hover ~ .content,
-.sidebar.pinned ~ .content { transform: translateX(6px) scale(0.996); transition-delay: 80ms; }
+.sidebar.pinned ~ .content { transform: translateX(3px) scale(0.998); transition-delay: 50ms; }
 
-/* ============ SIDEBAR — the 64px rail (aperture glass) ============ */
+/* ============ SIDEBAR — the 44px rail (aperture glass) ============ */
 .sidebar {
   position: relative;
   z-index: var(--z-sidebar);
   width: var(--sidebar-w);
   flex: none;
   display: flex; flex-direction: column;
-  padding: var(--s-3) 11px;      /* 11+1 border each side + 40 cell = 64 exactly */
+  padding: var(--sb-pad) var(--sb-pad);   /* 6 + cell 32 + 6 = 44 exactly */
   border-radius: var(--r-xl);
   border: 1px solid var(--border-hair);
   box-shadow: var(--shadow-1);   /* quiet at rest; lifts as it opens */
   overflow: hidden;              /* the aperture: clips the constant glass */
+  will-change: width;            /* isolate the one interpolating layer (INT-009) */
   transition: width var(--dur-panel) var(--ease-glide),
               box-shadow var(--dur-fade) var(--ease-out);
-  transition-delay: 160ms;       /* release: flick-aways don't thrash */
+  transition-delay: 100ms;       /* release: flick-aways don't thrash */
 }
 /* the glass is NOT on the panel — it is a constant-size surface behind the
    clip. Expanding the panel merely REVEALS more of it: identical blur region
@@ -61,22 +65,25 @@
    non-positioned children (avatar disc, hairline, pin were swallowed by their
    own glass — found in pass 3 verification). The rail is a stacking context
    (z-sidebar), so -1 = behind every child, above the page. */
-/* envelope (INT-007): attack 80ms — inside the ~100ms "instant" window;
-   release 160ms; pinned = instant (0ms). Delays live on the destination state. */
-.sidebar:hover { width: var(--sidebar-w-expanded); box-shadow: var(--shadow-3); transition-delay: 80ms; }
+/* envelope (INT-009): attack 50ms — well inside the ~100ms "instant" window;
+   release 100ms; pinned = instant (0ms). Delays live on the destination state. */
+.sidebar:hover { width: var(--sidebar-w-expanded); box-shadow: var(--shadow-3); transition-delay: 50ms; }
 .sidebar.pinned { width: var(--sidebar-w-expanded); box-shadow: var(--shadow-3); transition-delay: 0ms; }
 
-/* ---- head: the avatar anchors the top. Collapsed it IS the rail (40px cell,
-   centered by construction); expanded it is the left edge everything aligns to. ---- */
+/* ---- head: the avatar anchors the top. 28px disc, centered on the rail axis
+   (x = 22) by construction; expanded, its left edge is the row aligning edge. ---- */
 .sb-head {
-  display: flex; align-items: center; gap: 10px;
-  height: 40px; flex: none;
+  display: flex; align-items: center; gap: var(--sb-gap);
+  height: var(--sb-cell); flex: none;
   border-radius: var(--r-sm);
   white-space: nowrap;
   transition: background var(--dur-micro) var(--ease-out);
 }
-.sb-head:hover { background: var(--surface-glass); }
-.sb-head .avatar { flex: none; }   /* avatar-lg: the 40px module, monogram = artwork voice */
+.sb-head:hover { background: var(--tint-hover); }
+.sb-head .avatar-lg { width: 28px; height: 28px; font-size: 12px;   /* 28 = 1.4 × icon */
+  margin-left: 2px;   /* (32−28)/2 — centers the avatar on the icon axis (directive A: one axis) */
+  transition: margin-left var(--dur-panel) var(--ease-glide) 80ms; }
+.sidebar:hover .sb-head .avatar-lg, .sidebar.pinned .sb-head .avatar-lg { margin-left: 0; }   /* expanded: left edges align (mathias ref) */
 .sb-head .a-handle {
   font-size: var(--fs-meta); font-weight: 400; color: var(--fg-2);
   letter-spacing: -0.01em;
@@ -86,75 +93,109 @@
 
 /* ---- the hairline: module-width collapsed, full panel width expanded ---- */
 .sb-rule {
-  flex: none; height: 1px; width: 40px;
-  margin: 12px auto;
+  flex: none; height: 1px; width: var(--sb-cell);
+  margin: 10px auto;
   background: var(--border-hair);
-  transition: width var(--dur-panel) var(--ease-glide) 120ms;
+  transition: width var(--dur-panel) var(--ease-glide) 80ms;
 }
 .sidebar:hover .sb-rule, .sidebar.pinned .sb-rule { width: 100%; }
 
-/* ---- nav: the same 40px cell on a 6px rhythm; one voice — 13px/400 ---- */
-.sb-nav { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+/* ---- nav: the same 32px cell on the 8px rhythm; one voice — 13px/400 ---- */
+.sb-nav { display: flex; flex-direction: column; gap: var(--sb-gap); flex: 1; }
 .nav-item {
   position: relative;
-  display: flex; align-items: center; gap: 12px;
-  height: 40px; padding: 0 10px;  /* 10 centers the 20px icon in the 40px cell */
-  border-radius: var(--r-sm);
+  display: flex; align-items: center; gap: var(--sb-gap);
+  height: var(--sb-cell); padding: 0 var(--sb-inset);  /* the 6px enclosure centers the 20px icon in the 32px cell */
+  border-radius: var(--r-sm);   /* directive A: selected container R = 12px */
   color: var(--fg-2);
   white-space: nowrap;
   transition: background var(--dur-micro) var(--ease-out),
               color var(--dur-micro) var(--ease-out),
-              padding var(--dur-panel) var(--ease-glide) 120ms;
+              padding var(--dur-panel) var(--ease-glide) 80ms;
 }
-/* expanded: rows lose their inset — icon aligns to the avatar's left edge (ref-4) */
+/* expanded: rows lose their inset — icon aligns to the avatar's left edge (mathias ref) */
 .sidebar:hover .nav-item, .sidebar.pinned .nav-item { padding: 0; }
-.nav-item:hover { background: var(--surface-glass); color: var(--fg-1); }
+.nav-item:hover { background: var(--tint-hover); color: var(--fg-1); }
 .nav-item:active { transform: scale(0.96); }
 .nav-item .icon { flex: none; }
 .nav-item .n-label { font-size: var(--fs-meta); font-weight: 400; letter-spacing: -0.01em; }
 
-/* active: the soft glass pill on the cell — ref-1/ref-4. The old left bar is
-   DELETED (a 3px seam glued to the edge; the fill is the indicator now). */
-.nav-item.active { background: var(--surface-glass-strong); color: var(--fg-1); }
+/* active: the soft tint pill on the cell — G5Ka ref (INT-009). The old
+   --surface-glass fill was INVISIBLE in light theme (white on white — the
+   "messed up" selection the owner saw); the tint family fixes both themes. */
+.nav-item.active { background: var(--tint-selected); color: var(--fg-1); }
 
-/* ---- foot: utility lives at the bottom (ref-1 pattern).
-   The pin is 32px; margin-left 4px centers it in the collapsed 40px cell
-   AND left-aligns it expanded — one number, two states, derived. ---- */
-.sb-foot { flex: none; height: 32px; display: flex; }
+/* ---- tooltips (directive B): dark bubble #0D0D0E/#FAFAFA, 12px internal
+   padding, 13px text, directional pointer — floating over TEXT CONTENT.
+   (The rail does NOT get tooltips: hovering the rail IS the expansion —
+   the label arrives with the panel; a bubble there could never show and
+   would be noise. The component lives where the directive places it.) ---- */
+.content [data-tip] { position: relative; }
+.content [data-tip]::after {
+  content: attr(data-tip);
+  position: absolute; left: 50%; bottom: calc(100% + 12px);
+  transform: translateX(-50%) translateY(2px);
+  background: var(--tip-bg); color: var(--tip-fg);
+  font-size: var(--fs-meta); font-weight: 400; letter-spacing: -0.01em;
+  padding: 7px 12px;               /* 12px horizontal internal (directive B) */
+  border-radius: 10px;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--dur-tip-in) var(--ease-out), transform var(--dur-tip-in) var(--ease-out);
+  transition-delay: 0ms;
+  z-index: var(--z-tip);
+}
+/* the directional pointer at the BOTTOM of the bubble (directive B exact) */
+.content [data-tip]::before {
+  content: ""; position: absolute; left: 50%; bottom: calc(100% + 9px);
+  width: 8px; height: 8px;
+  transform: translateX(-50%) rotate(45deg);
+  background: var(--tip-bg);
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--dur-tip-in) var(--ease-out);
+  transition-delay: 0ms;
+  z-index: var(--z-tip);
+}
+.content [data-tip]:hover::after,
+.content [data-tip]:hover::before { opacity: 1; transform: translateX(-50%) translateY(0); transition-delay: var(--tip-delay); }
+
+/* ---- foot: utility lives at the bottom (G5Ka pattern).
+   The pin IS the 32px cell — margin 0 centers it on the axis in both states. ---- */
+.sb-foot { flex: none; height: var(--sb-cell); display: flex; }
 .pin-btn {
-  width: 32px; height: 32px; margin-left: 4px;
+  flex: none;   /* never shrink the cell — the axis depends on its full 32px */
+  width: var(--sb-cell); height: var(--sb-cell); margin: 0;
   display: flex; align-items: center; justify-content: center;
   border-radius: var(--r-pill);
   color: var(--fg-4);
   transition: color var(--dur-micro) var(--ease-out),
               background var(--dur-micro) var(--ease-out),
-              transform var(--dur-micro) var(--ease-out),
-              margin-left var(--dur-panel) var(--ease-glide) 120ms;
+              transform var(--dur-micro) var(--ease-out);
 }
-.pin-btn:hover { color: var(--fg-1); background: var(--surface-glass); }
+.pin-btn:hover { color: var(--fg-1); background: var(--tint-hover); }
 .pin-btn:active { transform: scale(0.92); }
 .pin-btn .icon { width: 16px; height: 16px; }
 .pin-btn .i-pin-open { display: none; }
-.sidebar.pinned .pin-btn { color: var(--fg-1); background: var(--surface-glass-strong); }
+.sidebar.pinned .pin-btn { color: var(--fg-1); background: var(--tint-selected); }
 .sidebar.pinned .pin-btn .i-pin-closed { display: none; }
 .sidebar.pinned .pin-btn .i-pin-open { display: block; }
-.sidebar:hover .pin-btn, .sidebar.pinned .pin-btn { margin-left: 0; }
 
 /* drift-in: labels appear only when expanded, with motion blur.
-   In: +120ms (the panel is already moving). Out: 60ms (labels die INTO the slide). */
+   In: +80ms (the panel is already moving). Out: 60ms (labels die INTO the slide). */
 .sidebar .drift {
   opacity: 0;
   filter: blur(var(--blur-motion));
-  transform: translateX(-8px);
+  transform: translateX(-6px);
   pointer-events: none;
   transition: opacity var(--dur-drift) var(--ease-glide),
               filter var(--dur-drift) var(--ease-glide),
               transform var(--dur-drift) var(--ease-glide);
-  transition-delay: 60ms;
+  transition-delay: 40ms;
 }
 .sidebar:hover .drift, .sidebar.pinned .drift {
   opacity: 1; filter: blur(0); transform: translateX(0);
-  transition-delay: 120ms;
+  transition-delay: 80ms;
 }
 
 /* ============ ACCOUNT OVERLAY — grows from TOP-left (origin follows its
@@ -192,7 +233,7 @@
 }
 
 .acc-head { display: flex; align-items: center; gap: var(--s-4); margin-bottom: var(--s-5); }
-.acc-head .a-title { font-size: var(--fs-title); font-weight: 400; }
+.acc-head .a-title { font-size: var(--fs-title); font-weight: 400; letter-spacing: -0.01em; }
 .acc-head .a-handle { font-size: var(--fs-meta); color: var(--fg-3); margin-top: 2px; }
 .acc-head .plan {
   margin-left: auto; font-size: var(--fs-micro); letter-spacing: 0.06em;

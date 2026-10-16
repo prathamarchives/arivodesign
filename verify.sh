@@ -134,12 +134,62 @@ if grep -q 'transform-origin: left center' design/styles/shell.css; then
 else
   bad "content breath missing — the page must react to expansion (INT-007)"
 fi
-# (e) geometry tokens: the derived numbers are the law — 64 rail, 224 = 3.5 × 64.
-if grep -q -- '--sidebar-w: 64px' design/styles/tokens.css && \
-   grep -q -- '--sidebar-w-expanded: 224px' design/styles/tokens.css; then
-  ok "sidebar geometry tokens exact (64 / 224)"
+# (e) geometry tokens: the derived numbers are the law — 44 rail (owner: cut 1/3
+#     of 64), expanded 176 = 4 × 44 (rational). Supersedes INT-007's 64/224 (INT-009).
+if grep -q -- '--sidebar-w: 44px' design/styles/tokens.css && \
+   grep -q -- '--sidebar-w-expanded: 176px' design/styles/tokens.css; then
+  ok "sidebar geometry tokens exact (44 / 176)"
 else
-  bad "sidebar geometry tokens missing or altered — 64 / 224 are derived law (INT-007)"
+  bad "sidebar geometry tokens missing or altered — 44 / 176 are derived law (INT-009)"
+fi
+
+# ---------------------------------------------------------------- 5f. pass-4 guards (ratcheted 2026-10-16, INT-008/009)
+# (a) TOTAL product-surface purge: the owner removed every visible "arivo" (turn-008:
+#     "remove the arivo text") — HTML must contain the string ZERO times. The old
+#     sidebar-scoped wordmark ban let title/About/footer survive; this closes it.
+if grep -qi 'arivo' design/index.html; then
+  bad "'arivo' found in index.html — the product surface must be 100% purged (INT-008/009)"
+else
+  ok "no 'arivo' anywhere in the product surface (index.html)"
+fi
+# (b) identity exactness: the handle string is the identity, everywhere it appears.
+if grep -q '@prathamarchives' design/index.html; then
+  ok "handle identity @prathamarchives present"
+else
+  bad "handle @prathamarchives missing — identity must be the exact handle string (INT-009 C)"
+fi
+# (c) latency law: the spring render is 240ms; a regression past 280ms is the
+#     "can be alot smoother, better latency" failure returning.
+dur=$(grep -o -- '--dur-panel: [0-9]\+ms' design/styles/tokens.css | grep -o '[0-9]\+' | head -1)
+if [ -n "$dur" ] && [ "$dur" -le 280 ]; then
+  ok "panel latency within the spring render (${dur}ms <= 280ms)"
+else
+  bad "--dur-panel is ${dur:-unset}ms — exceeds the INT-009 latency law (<= 280ms)"
+fi
+# (d) tooltip component: dark bubble + directional pointer must exist (directive B),
+#     and the rail must SPEAK through it (data-tip hooks present).
+if grep -q 'data-tip=' design/index.html && \
+   grep -q -- '--tip-bg' design/styles/tokens.css && \
+   grep -q 'rotate(45deg)' design/styles/shell.css; then
+  ok "tooltip system present (data-tip hooks + tokens + pointer)"
+else
+  bad "tooltip system missing (directive B: dark bubble, pointer, 12px pad, 13px text)"
+fi
+# (e) selection visibility: pass-3's active pill was white-on-white in light theme
+#     (the owner saw it as broken). The tint family is the fix; it must stay wired.
+if grep -q -- '--tint-selected' design/styles/tokens.css && \
+   grep -q 'var(--tint-selected)' design/styles/shell.css; then
+  ok "selection tint wired (visible in both themes)"
+else
+  bad "selection tint missing — light-theme active state was invisible (INT-008 failure class)"
+fi
+# (f) content reaction bound: the breath is 2–4px translate (directive D); a larger
+#     lean means the old push is creeping back.
+breath=$(grep -o 'translateX([0-9]\+px) scale' design/styles/shell.css | grep -o '[0-9]\+' | head -1)
+if [ -n "$breath" ] && [ "$breath" -le 4 ]; then
+  ok "content breath within 2–4px parallax band (${breath}px)"
+else
+  bad "content breath is ${breath:-unset}px — outside the directive's 2–4px band (INT-009 D)"
 fi
 
 # ---------------------------------------------------------------- 6. worklog is alive for the latest turn

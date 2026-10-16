@@ -165,3 +165,20 @@ Stage Summary:
 - Sidebar pass 3 painted + verified by run; owner's 9 corrections all land; 4-step protocol becomes standing law for future correction passes (recorded in INT-007 ledger entry).
 - New failure classes ratcheted: verify.sh now 29 checks (5e-a..5e-e added).
 - Pending: push (needs token env-only), owner review of pass 3 in the live preview.
+
+---
+
+## Session 8 — 2026-10-16 — INT-008 + INT-009: PASS 4, the compacted rail
+
+- Intake first (L-06): turn-008 + turn-009 verbatim in context/raw/; ledger INT-008 (visibility failure, cut 1/3, arivo purge, replicate refs) + INT-009 (the full spatial/micro-motion directive) appended; ALL 15 uploaded references converted to PNG and VIEWED (turn-8 process failure — refs never opened — closed); extraction + 4-part reasoning archived at context/intake/INT-009-extraction.md.
+- Diagnosis of "nothing landed": pass 3 was unpushed + preview server sent no cache headers (stale CSS in the owner's browser) + served HTML still had arivo ×3. Failure class killed with infrastructure: scripts/serve_nocache.py (Cache-Control: no-store) launched via true double-fork scripts/daemon_nocache.py (setsid/nohup variants were reaped by the tool-call boundary — logged), asset links cache-busted ?v=4.
+- Paint pass 4 to the directive's numbers: rail 64→44 ("cut 1/3"), expanded 224→176 (4×44), cell 32 (icon 20 + 6 enclosure), avatar 28 top anchor, ONE axis (worst measured diff 0.0px — required splitting --sb-inset 6 from --sb-pad 5, avatar 2px inset that releases on expand, pin flex:none), gap 8, labels 13/400, R12 selection, --tint-* family (fixes light-theme white-on-white selection), dark tooltips with bottom pointer over CONTENT (rail tooltips would be dead — hover IS expansion, self-caught), --shadow-cta dark-pill elevation, spring-rendered motion 240ms (k300/c30/m0.8 → ζ0.968, settle 213ms; attack 50ms), content breath translateX(3px) scale(0.998) transform-only.
+- Product surface 100% purged of "arivo" (title, greeting, About, footer, favicon); identity exactly @prathamarchives everywhere; head chevron deleted (handle truncated at 176 — mathias ref has no chevron).
+- Palette cross-checked against the constitution (INT-009 order): directive values token-mapped, zero raw hex in components; Helvetica stands (same class as Inter/SF/Geist, INT-004 law).
+- Docs lockstep: DESIGN-SYSTEM.md (registry rows rewritten + Pass-4 law block), REVIEW.md pass-4 entry (8 named defects w/ measured evidence), STATE.md refreshed to pass 4.
+- Ratchet: verify.sh 5e-e re-pinned to 44/176; 5f a–f added (total arivo purge, handle exactness, latency ≤280ms, tooltip presence, tint wiring, breath 2–4px band) — negative-tested by the run (the check itself caught the reduced-motion 1ms false match and a $durms parse bug before landing).
+
+Stage Summary:
+- Pass 4 verified by run in a fresh browser session: rail 44.0, expanded 176.0 (hover + pinned), one axis, pitch 40, tooltip #0D0D0E/#FAFAFA + pointer, tinted selection in both themes, zero arivo, no bold in chrome, console clean. Previews: design/preview/p4-*.png.
+- verify.sh green (35 checks) except WORKLOG entry — closed by this entry.
+- Pending: push (pass 3 603d972 + pass 4) env-only; owner review of pass 4 live (cache-proof preview).

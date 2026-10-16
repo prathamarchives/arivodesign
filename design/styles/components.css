@@ -43,7 +43,7 @@
 .btn:active { transform: scale(0.97); }
 .btn[disabled] { opacity: 0.35; pointer-events: none; }
 
-.btn-primary { background: var(--fg-1); color: var(--fg-on-primary); }
+.btn-primary { background: var(--fg-1); color: var(--fg-on-primary); box-shadow: var(--shadow-cta); }   /* INT-009 B: dark pills carry the elevation */
 .btn-primary:hover { box-shadow: var(--shadow-2); transform: translateY(-1px); }
 
 .btn-ghost {
@@ -365,5 +365,5 @@
   background: var(--fg-2);
   transition: transform var(--dur-fade) var(--ease-glide), background var(--dur-fade) var(--ease-out);
 }
-.toggle.on { background: var(--fg-1); border-color: transparent; }
+.toggle.on { background: var(--fg-1); border-color: transparent; box-shadow: var(--shadow-cta); }   /* INT-009 B: active switch = tactile dark pill */
 .toggle.on::after { transform: translateX(16px); background: var(--fg-on-primary); }

@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>arivo — pre-execution visuals</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2317171B'/%3E%3Ctext x='16' y='22' font-family='Helvetica,Arial' font-size='17' font-weight='700' fill='%23F5F5F7' text-anchor='middle'%3Ea%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="styles/tokens.css">
-<link rel="stylesheet" href="styles/base.css">
-<link rel="stylesheet" href="styles/components.css">
-<link rel="stylesheet" href="styles/shell.css">
-<link rel="stylesheet" href="styles/pages.css">
+<title>@prathamarchives</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2317171B'/%3E%3Cpath d='M9.3 6h11.4a2.6 2.6 0 0 1 2.6 2.6V26H12a2.7 2.7 0 0 1-2.7-2.7Z' fill='none' stroke='%23F5F5F7' stroke-width='1.6'/%3E%3Cpath d='M13.3 11.3h6' stroke='%23F5F5F7' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles/tokens.css?v=4">
+<link rel="stylesheet" href="styles/base.css?v=4">
+<link rel="stylesheet" href="styles/components.css?v=4">
+<link rel="stylesheet" href="styles/shell.css?v=4">
+<link rel="stylesheet" href="styles/pages.css?v=4">
 </head>
 <body>
 <div class="canvas"></div>
@@ -37,13 +37,14 @@
 </svg>
 
 <div class="shell">
-  <!-- ============ SIDEBAR — the 64px rail (INT-007): identity top · nav middle · utility bottom.
-       Everything is the 40px cell; no wordmark; account = @prathamarchives only; no bold. ============ -->
+  <!-- ============ SIDEBAR — the 44px rail (INT-009): identity top · nav middle · utility bottom.
+       Everything is the 32px cell on one axis (avatar.cx = icon.cx = pin.cx); avatar 28 anchors
+       the top; handle = @prathamarchives only; no wordmark; no bold; hovering the rail IS the
+       expansion (labels arrive with the panel — tooltips live in CONTENT, not here). ============ -->
   <aside class="sidebar" id="sidebar">
     <button class="sb-head" id="accountBtn" aria-label="Account" title="Account">
       <span class="avatar avatar-lg">P</span>
       <span class="a-handle drift">@prathamarchives</span>
-      <svg class="icon icon-sm a-chev drift"><use href="#i-chev-r"/></svg>
     </button>
 
     <span class="sb-rule" aria-hidden="true"></span>
@@ -79,7 +80,7 @@
       <header class="page-head">
         <div>
           <p class="micro ph-eyebrow">Home</p>
-          <h1 class="display">Good evening, Pratham</h1>
+          <h1 class="display">Good evening, @prathamarchives</h1>
         </div>
         <span class="ph-meta">Tuesday, October 14</span>
       </header>
@@ -100,7 +101,7 @@
               <div class="progress"><i style="width:68%"></i></div>
               <div style="display:flex;gap:8px;margin-top:6px">
                 <button class="btn btn-primary" style="height:32px;padding:0 16px;font-size:13px">Read</button>
-                <button class="btn btn-icon" aria-label="More"><svg class="icon icon-sm"><use href="#i-chev-d"/></svg></button>
+                <button class="btn btn-icon" data-tip="More options" aria-label="More options"><svg class="icon icon-sm"><use href="#i-chev-d"/></svg></button>
               </div>
             </div>
           </article>
@@ -384,8 +385,8 @@
     <header class="acc-head">
       <span class="avatar avatar-xl">P</span>
       <div>
-        <div class="a-title">Pratham</div>
-        <div class="a-handle">@prathamarchives</div>
+        <div class="a-title">@prathamarchives</div>
+        <div class="a-handle">reading · study · reflection</div>
       </div>
       <span class="plan">LOCAL + CLOUD</span>
     </header>
@@ -395,11 +396,11 @@
       <button class="acc-row"><svg class="icon"><use href="#i-plug"/></svg>MCP / API<svg class="icon icon-sm a-chev"><use href="#i-chev-r"/></svg></button>
       <button class="acc-row"><svg class="icon"><use href="#i-download"/></svg>Import sources<svg class="icon icon-sm a-chev"><use href="#i-chev-r"/></svg></button>
       <button class="acc-row"><svg class="icon"><use href="#i-theme"/></svg>Appearance<span class="toggle on" id="themeToggle" role="switch" aria-checked="true"></span></button>
-      <button class="acc-row"><svg class="icon"><use href="#i-info"/></svg>About arivo<svg class="icon icon-sm a-chev"><use href="#i-chev-r"/></svg></button>
+      <button class="acc-row"><svg class="icon"><use href="#i-info"/></svg>About<svg class="icon icon-sm a-chev"><use href="#i-chev-r"/></svg></button>
     </nav>
     <div class="acc-rule"></div>
     <footer class="acc-foot">
-      <span>arivo · v0.1 pre-execution visuals</span>
+      <span>v0.1 · pre-execution visuals</span>
       <span class="sync"><span class="dot"></span>synced · local</span>
     </footer>
   </aside>

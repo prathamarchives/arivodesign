@@ -123,3 +123,34 @@ Interpretations (labeled, not owner words):
 - "little bit motion and react" is implemented as a breath (a few px of translate + a whisper of scale on content), not a margin reflow — a reflow would drag every card and cover, which is exactly the "slides all the way" feel the owner rejects.
 - "measure everything" → the sidebar geometry is specified on a strict grid with named numbers (module sizes, widths as rational multiples, one centerline) in the extraction doc, then verified mechanically in the browser (getBoundingClientRect), not by eye.
 - The reasoning protocol is itself repo law going forward: every future visual correction pass runs the 4-step protocol and archives it under context/intake/.
+
+---
+
+**INT-008 — "NOTHING LANDED": VISIBILITY FAILURE + SIDEBAR STILL TOO WIDE (CUT 1/3) + INCOMPLETE arivo PURGE + ACCOUNT/PROFILE MESSED UP + REPLICATE THE SIDEBAR REFERENCES — active**
+
+> "no it has not landed and i cannot see any changes lol?? did you even saw the refrences..??? compostioning is messed up, remove the arivo text the account/profile is messed up. the whole side bar is still so wide cut 1/3th of it. and replicate the sidebar refrences"
+
+Source: owner turn 8, chat 2026-10-16 (`context/raw/turn-008.txt`), with the sidebar reference `G5Ka2M7a4AEtBOm (1).jfif` (4096×4096; archived `context/references/converted/`; the pair `G5Ka2M7a4AEtBOm.jfif` is pixel-identical). Grounds: (a) pass 3 existed in the repo and on the local server but was never PUSHED, and the preview server sent no no-store header so the owner's browser served stale cached CSS — a VISIBILITY failure counts as a landing failure (L-13: unverifiable work is not done); (b) the served HTML still contained "arivo" ×3 (title, About row, footer) — the pass-3 purge was sidebar-scoped and therefore INCOMPLETE; (c) the rail is still too wide — cut ONE THIRD; (d) composition/account/profile "messed up" — replicate the sidebar references.
+
+Owner corrections (verbatim-derived, all mandatory):
+1. Landing = the owner can SEE it. Push + no-cache preview + cache-busted asset links are part of the definition of done, not extras.
+2. Cut the sidebar width by one third.
+3. Remove ALL "arivo" text (not just the sidebar wordmark).
+4. Fix the account/profile composition (replicate the reference: avatar top-left anchor, handle identity).
+5. Replicate the sidebar references — the references are the acceptance images, and they must actually be VIEWED (the agent had not yet opened a single one at turn 8 — process failure logged).
+
+---
+
+**INT-009 — THE SPATIAL UI ARCHITECTURE & MICRO-MOTION DIRECTIVE (detailed version of INT-007/008; verify colour against the constitution) — active**
+
+> "resume but also consider this too a more detailed version verify the colour and everything with arivos consittution… AI Execution Directive: Spatial UI Architecture & Micro-Motion System…"
+
+Source: owner turn 9, chat 2026-10-16 (`context/raw/turn-009.txt` — FULL verbatim directive including all four specification sections). Grounds: this is the authoritative numeric spec for the sidebar pass; where INT-007/008 were directional, this is measured. The constitution (PRINCIPLES.md, DESIGN-SYSTEM.md) remains the validity field — directive values must be cross-checked against it, conflicts resolved in favour of the owner's latest words, documented in the extraction doc.
+
+Binding numbers (subsets, full text in raw file):
+- A: collapsed rail = just wide enough for one icon stack, 12–16px inline padding; avatar = circular PFP at top-left origin of the canvas; every rail icon aligns to the avatar's central vertical axis; icons = fine-line 1.5px stroke; selected = soft rounded-rect container, minimal tint, R = 12px.
+- B: white #FFFFFF containers over off-white #F4F4F6–#FAFAFA; dark elevated states #18181B/black with directional shadows Y 4–8px, blur 12–16px, opacity 15–20%; dark tooltips #0D0D0E bg / #FAFAFA text, bottom pointer, 12px padding, 13px text, inline arrow.
+- C: no bold anywhere; regular-to-medium sans (Inter / SF Pro / Geist class — the constitution's Helvetica satisfies this class and is law); tracking −0.01em to −0.02em; identity = exactly "@prathamarchives"; remove ALL mentions of "arivo"; labels 12–14px; icon→label gap ≤ 8–10px.
+- D: only the sidebar's width layer interpolates; content reacts with a subtle 2–4px micro-scale compress / parallax translation, never a push; spring physics stiffness 300 / damping 30 / mass 0.8; sub-16ms frames, no layout jank.
+- Validation: perceptual ergonomics (balance, zero scan friction, hierarchy) + performance (60/120Hz consistency).
+- Protocol: the 4-step reasoning (perspectives → raw material → cross-field methods → external validators) remains mandatory before execution; the colour palette must be verified against the constitution.

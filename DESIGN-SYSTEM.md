@@ -104,10 +104,10 @@ Every component: Default / Hover / Pressed / Disabled / Focus (ring always visib
 
 | Component | File | States | Notes |
 |---|---|---|---|
-| Sidebar (the 64px rail) | shell.css | collapsed / hover-expanded / pinned | **Geometry (derived, INT-007):** cell 40 · rail 64 = 11+1+40+1+11 · expanded 224 = 3.5×64 · rhythm 6px · radius r-sm on cells, r-xl panel. Anatomy: avatar TOP (identity) → hairline → nav → pin foot (utility). Expansion = OVERLAY: the panel floats above the page (z-sidebar, shadow-1→shadow-3); the page answers with a breath — translateX(6px) scale(.996), transform only, zero reflow. Glass = constant-size ::before revealed by the clipping panel (aperture model — blur region never re-rasterizes mid-animation; `z-index: -1` on the pseudo is LOAD-BEARING: without it the glass paints over its own children). Attack 80ms / release 160ms. |
-| Nav item | shell.css | rest / hover / active | 40px cell · icon 20 (stroke 1.5) · label 13/400; expanded: icon aligns to avatar's left edge; active = glass-strong pill (the old 3px left bar is DELETED — the fill is the indicator) |
-| Pin button | shell.css | rest / hover / pinned | 32px, rail FOOT (utility lives at the bottom, ref-1 pattern); margin-left 4px centers it collapsed AND left-aligns it expanded |
-| Account head → overlay | shell.css | rest / hover / open | avatar-lg (the 40px module) + `@prathamarchives` handle only (13/400, fg-2) — no name, no wordmark; overlay grows from TOP-left (origin follows the trigger) |
+| Sidebar (the 44px rail) | shell.css | collapsed / hover-expanded / pinned | **Geometry (derived, INT-009 — supersedes INT-007's 64/224):** cell 32 (icon 20 + 6 enclosure) · rail 44 = 6+32+6 (owner: "cut 1/3") · expanded 176 = 4×44 · axis x=22 (ONE centerline: avatar, icons, pin) · rhythm 8px · radius r-sm (=12, directive A) on cells, r-xl panel. Anatomy: avatar 28 TOP (identity anchor) → hairline → nav → pin foot (utility). Expansion = OVERLAY: the panel floats above the page (z-sidebar, shadow-1→shadow-3); the page answers with a breath — translateX(3px) scale(.998) (directive D: 2–4px band), transform only, zero reflow. Glass = constant-size ::before revealed by the clipping panel (aperture model — blur region never re-rasterizes mid-animation; `z-index: -1` on the pseudo is LOAD-BEARING: without it the glass paints over its own children). Spring render (k300/c30/m0.8 → ζ0.968, settle ≈213ms): 240ms glide · attack 50ms / release 100ms / pinned 0ms. Collapsed rail SPEAKS THROUGH dark tooltips (bubble + directional pointer); `will-change: width` isolates the interpolating layer. |
+| Nav item | shell.css | rest / hover / active | 32px cell · icon 20 (stroke 1.5) · label 13/400 · icon→label gap 8px (directive C: ≤10); expanded: icon aligns to avatar's left edge; active = `--tint-selected` pill R12 (the pass-3 glass-strong fill was WHITE-ON-WHITE in light theme — invisible; the tint family is theme-correct in both); tooltips carry labels while collapsed |
+| Pin button | shell.css | rest / hover / pinned | 32px = the cell itself, rail FOOT (utility lives at the bottom, G5Ka pattern); margin 0 — centered on the axis in both states |
+| Account head → overlay | shell.css | rest / hover / open | avatar 28 (shell override of avatar-lg; 28 = 1.4 × icon) + `@prathamarchives` handle only (13/400, fg-2) — no name, no wordmark; overlay grows from TOP-left (origin follows the trigger); overlay title = the handle itself (INT-009 C supersedes pass-3's "display-name destination" decision) |
 | Overlay panel | shell.css | open / closing | blur level 3, --r-2xl; backdrop alpha 0.38 dark / 0.18 light; name weight 400 |
 | Button primary (pill) | components.css | all 5 | white bg, near-black fg |
 | Button ghost / icon | components.css | all 5 | glass, hairline |
@@ -141,3 +141,17 @@ Every component: Default / Hover / Pressed / Disabled / Focus (ring always visib
 - Repo-level: `bash verify.sh` (quarantine, secrets, integrity) before every push.
 - Design-level: rendered browser screenshots at 1440×900 (Loop 4, "verified by run"); the state checklist above per component; contrast sanity on fg roles (fg-1 on bg-0, fg-2 ≥ readable for meta).
 - Iteration log: `design/REVIEW.md` — every pass documents named defects (with evidence) → fixes → re-verification. A pass without a REVIEW entry didn't happen.
+
+## Pass 4 — INT-008/009 compaction & tactile system (2026-10-16)
+
+The owner's numeric directive (INT-009) supersedes the directional pass-3 values. **Derived grid (stated once, in `context/intake/INT-009-extraction.md`):** rail 44 = 6+32+6 · cell 32 (icon 20 + 6 enclosure) · expanded 176 = 4×44 · avatar 28 on axis x=22 · nav rhythm 8 · gap 8 · labels 13/400 · R12 selection.
+
+New laws this pass (all ratcheted into verify.sh 5f):
+1. **Total product-surface purge** — "arivo" appears ZERO times in `index.html` (title, greeting, About row, footer, favicon all carried it after pass 3's sidebar-scoped ban; the ban is now whole-file). Identity is exactly `@prathamarchives` everywhere it appears.
+2. **Selection must be VISIBLE in both themes** — active/hover fills use the `--tint-*` family (ink-based in light, white-glass in dark). The pass-3 glass-strong active pill was white-on-white in light theme — the owner's "account/profile is messed up" class of defect.
+3. **Dark tooltips with a directional pointer** (directive B exact: #0D0D0E/#FAFAFA light-theme, 12px horizontal padding, 13px text, rotated-square pointer) — the collapsed rail's voice. Suppressed while expanded.
+4. **Latency law** — `--dur-panel ≤ 280ms`; the spring render is 240ms (k=300, c=30, m=0.8 → ζ=0.968 near-critical, settle ≈213ms; NO bouncy curve — that would be ζ≈0.6, which the directive's constants explicitly are not). Attack 50ms.
+5. **Breath band** — content reaction stays within translateX 2–4px (+ ≤0.3% scale); a larger lean is the dead margin-push returning in disguise.
+6. **Landing = visible** — the preview server sends `Cache-Control: no-store` and asset links carry `?v=`; unverifiable-by-owner work is not done (L-13).
+
+Colour verification (directive ↔ constitution): #FFFFFF/#F4F4F6–#FAFAFA = `--surface-solid`/`--bg-0`/`--bg-1` exact; #18181B-class dark pills = `--fg-1`-driven + `--shadow-cta` (Y6/blur14/18% — inside the directive band); Inter/SF/Geist class = the constitution's self-hosted Helvetica (INT-004 law stands, same grotesk class). Zero raw hex entered component CSS.
