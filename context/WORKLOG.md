@@ -182,3 +182,17 @@ Stage Summary:
 - Pass 4 verified by run in a fresh browser session: rail 44.0, expanded 176.0 (hover + pinned), one axis, pitch 40, tooltip #0D0D0E/#FAFAFA + pointer, tinted selection in both themes, zero arivo, no bold in chrome, console clean. Previews: design/preview/p4-*.png.
 - verify.sh green (35 checks) except WORKLOG entry — closed by this entry.
 - Pending: push (pass 3 603d972 + pass 4) env-only; owner review of pass 4 live (cache-proof preview).
+
+---
+
+## Session 9 — 2026-10-16 — INT-010 + INT-011: PLAN MODE, the layer decomposition
+
+- Intake first (L-06): turns 10+11 verbatim (context/raw/turn-010.txt, turn-011.txt); dark-home reference archived (context/references/converted/dark-home-ref.png); ledger INT-010 (acceptance image + named conflict: ref pixels show "arivo"/"Pratham" — verbal orders supersede) + INT-011 (plan mode; axes = layers/shadows/motion/vibe).
+- Re-viewed the ENTIRE corpus with the layer lens: 15 unique refs (7 dups mapped), including the acceptance image.
+- Deliverable: context/references/DECOMPOSITION.md — per-ref layer atlases → synthesis S1–S9 (depth ladder L0–L4, ink inversion, glass ladder, selection, type voice, icon language, motion vocabulary, palette, vibe equation) → gap map G1–G10 with file:line + preview evidence → pass-5 plan P1–P5.
+- Core mechanical finding: dark depth fails because 25–45% black shadows sit on #09090A (imperceptible); refs lift the surface one step FIRST (panel ≈ #131316 over ≈ #0A0A0B) then confirm with shadow. Cover anatomy, display voice (300 vs 500), and the homebound motion vocabulary complete the gap. Geometry 44/176 stays.
+- Docs lockstep: STATE.md (plan-mode position + next action), REVIEW.md (plan-mode entry, no-paint), 3 constitution amendments proposed for owner ruling (fw-display 300→500; pass-2 cover law superseded by R7; dark --bg-panel token).
+- No design/ files touched this turn (plan mode honored).
+
+Stage Summary:
+- Pass 5 "DEPTH" fully scoped and evidenced; awaiting owner go + amendment rulings; preview still serves pass 4.

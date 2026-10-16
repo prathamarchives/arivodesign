@@ -109,3 +109,17 @@ Reviewed: the sidebar against owner turn-007 + six new references (`context/refe
 **Behavior:** real-mouse hover expands (176); pin holds expansion with breath; tooltip appears over content button; overlay opens top-left, Escape closes; theme swap clean both ways; console + page errors clean.
 
 **not checked** — true 60/120Hz feel on real hardware (needs the owner's hand); reduced-motion not emulated in-browser (tokens collapse by construction); paint-storm instrumentation (structure prevents it: only rail width interpolates, content is transform-only, aperture glass constant-size).
+
+---
+
+## PLAN MODE — the reference decomposition (INT-010 → INT-011, 2026-10-16) — NO PAINT THIS TURN
+
+**Intake:** the owner saw pass 4 (the cache fix held — work is visible now) and ruled "really is this you what replicated?" against the DARK HOME reference (now `context/references/converted/dark-home-ref.png`, the acceptance image per INT-010), then ordered plan mode: break ALL references into layers — shadows, motion, vibe — "cz i can't see those in our design."
+
+**Deliverable:** `context/references/DECOMPOSITION.md` — per-reference layer atlases (15 unique refs after dedup), synthesis systems S1–S9 (depth ladder, ink inversion, glass ladder, selection language, type voice, icon language, motion vocabulary, palette, vibe equation), evidence-cited gap map G1–G10, pass-5 plan P1–P5.
+
+**The finding that matters:** the owner is mechanically right. Our dark theme puts 25–45% BLACK shadows on a #09090A canvas — physically imperceptible (G1/G2); the refs get dark depth from a one-step SURFACE LIFT first (panel ≈ #131316 over ≈ #0A0A0B), shadow second. Sidebar material (G3), cover anatomy (G4 — R7 puts letter+title+author INSIDE neutral covers; pass-2's "no title inside a cover" law is superseded by the acceptance image), display weight 300 vs R7's medium voice (G5), and the never-propagated motion vocabulary (G7) complete the gap.
+
+**Constitution amendments proposed (owner rules in plan mode):** (1) `--fw-display` 300→500; (2) pass-2 cover law superseded by R7; (3) dark theme gains a registered PANEL surface token + dark-tuned shadow ladder.
+
+**Next:** pass 5 "DEPTH" (P1 tokens → P2 sidebar material → P3 home to R7 → P4 visible motion → P5 ratchet), geometry 44/176 untouched.

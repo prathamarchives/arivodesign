@@ -154,3 +154,30 @@ Binding numbers (subsets, full text in raw file):
 - D: only the sidebar's width layer interpolates; content reacts with a subtle 2–4px micro-scale compress / parallax translation, never a push; spring physics stiffness 300 / damping 30 / mass 0.8; sub-16ms frames, no layout jank.
 - Validation: perceptual ergonomics (balance, zero scan friction, hierarchy) + performance (60/120Hz consistency).
 - Protocol: the 4-step reasoning (perspectives → raw material → cross-field methods → external validators) remains mandatory before execution; the colour palette must be verified against the constitution.
+
+---
+
+**INT-010 — "REALLY, IS THIS WHAT YOU REPLICATED?": THE DARK HOMEPAGE REFERENCE IS THE ACCEPTANCE IMAGE, AND OURS DOES NOT MATCH IT — active**
+
+> "really is this you what replicated?"
+
+Source: owner turn 10, chat 2026-10-16 (`context/raw/turn-010.txt`), with attachment archived `context/references/converted/dark-home-ref.png`. Grounds: after pass 4 became visible to the owner (cache fix held), the verdict is that the build does not read as a replication of the references. The attached dark homepage is now the acceptance image for the HOME surface: near-black canvas, floating dark panel sidebar, greeting header composition, currently-reading card row with covers/progress/Read pill, soft depth on every elevated element, quiet premium atmosphere.
+
+Named conflict (resolved by rule): the reference image contains the "arivo" wordmark and the "Pratham" name row — both were explicitly REMOVED by owner verbal order (INT-007: "remove the arivo wordmark… let it be @prathamarchives"; INT-008: "remove ALL arivo text"). Owner's explicit verbal orders supersede pixels inside reference images; the reference is accepted for composition, depth, material, motion and vibe ONLY. Documented in the decomposition.
+
+Interpretations (labeled, not owner words):
+- This is a vibe/depth failure, not a geometry failure: pass 4 fixed sidebar geometry (44/176, one axis) but the surfaces still read flat — the reference's layered darks, soft directional shadows and material quality are absent.
+- Dark-first: the acceptance image is dark mode; INT-004 already leaned dark ("blackish gray/and white black mode/dark mode") — dark is the lead theme for the next pass.
+
+---
+
+**INT-011 — PLAN MODE: DECOMPOSE ALL REFERENCES INTO LAYERS (SHADOWS, MOTION, VIBE) — THE OWNER CANNOT SEE THEM IN OUR DESIGN — active**
+
+> "plan mode. first breakdown all the refrences into layers, the shadows, the motion, the vibe, cz i can;t see those in our design"
+
+Source: owner turn 11, chat 2026-10-16 (`context/raw/turn-011.txt`). Grounds: (a) PLAN MODE is explicitly set — no paint until the breakdown exists and lands; (b) the decomposition scope is ALL references, not just the latest; (c) the decomposition axes are named by the owner: LAYERS, SHADOWS, MOTION, VIBE — depth, motion and atmosphere are the qualities he cannot see in our build, so they are the acceptance axes; (d) the deliverable is a durable repo artifact (L-02), not a chat message: every future pass extracts against it.
+
+Interpretations (labeled, not owner words):
+- The decomposition must be per-reference AND synthesized: each image gets a layer atlas (composition / surface+depth / material / typography / iconography / color / motion / vibe), then a cross-reference synthesis states what is COMMON (the Arivo look) versus what is reference-specific.
+- The gap map must be honest: layer → what the references do → what our build does (with file/preview evidence) → delta → the pass-5 plan. Claims about our build cite the actual CSS/preview files.
+- This document becomes the standing extraction baseline: future correction passes measure against it (it operationalizes INT-007.10 "extract the visuals well, multiple perspectives and times").

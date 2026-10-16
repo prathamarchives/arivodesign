@@ -1,0 +1,5 @@
+OWNER TURN 11 — 2026-10-16 — verbatim (L-06)
+
+> plan mode. first breakdown all the refrences into layers, the shadows, the motion, the vibe, cz i can;t see those in our design
+
+Directive: PLAN MODE — no paint. Decompose ALL references into LAYERS: the shadows, the motion, the vibe — explicitly because those qualities are NOT visible in our current design. The breakdown is the deliverable of this turn; the gap it names (depth/motion/vibe missing from our build) is the acceptance target for the next pass.
