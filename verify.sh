@@ -87,6 +87,16 @@ else
   ok "css selector brackets balanced per line"
 fi
 
+# ---------------------------------------------------------------- 5d. git fileMode off (ratcheted 2026-10-14, session 6)
+# (the sandbox chmods files to 755 behind the agent's back; with core.fileMode on,
+# every commit silently sweeps 25+ unrelated "mode change" entries — real content
+# gets buried in mode churn. Modes carry no meaning in this repo: docs + web assets.)
+if [ "$(git config core.fileMode || echo on)" = "false" ]; then
+  ok "core.fileMode=false (mode churn cannot pollute commits)"
+else
+  bad "core.fileMode is not false — run: git config core.fileMode false (mode-churn guard)"
+fi
+
 # ---------------------------------------------------------------- 6. worklog is alive for the latest turn
 latest="$(ls context/raw/turn-*.txt 2>/dev/null | sort | tail -1)"
 if [ -n "$latest" ]; then
