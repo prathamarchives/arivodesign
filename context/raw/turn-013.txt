@@ -1,0 +1,22 @@
+# TURN 13 — verbatim intake (L-06)
+
+Date: 2026-10-16 (session continues; preview gateway live)
+Source: owner chat message (IM gateway, zai-web)
+
+## Verbatim message
+
+> this is the v1 prototype i made. now just replace it, replicate it one on one with motion effects and everything else and restart in dev server
+
+## Attachment
+
+- file_name: figma-export.zip
+- Storage location: /home/z/my-project/upload/figma-export.zip
+- Contents (unzipped inventory): 6 pages as HTML — home.html, home-dark.html, library.html, archive.html, journal-day-references.html, reader-passage-deep-note.html — plus styles.css (~214 KB) and images/ (SVG vectors).
+
+## Reading (governance, not authority — the verbatim text above is the authority)
+
+- The owner's own Figma v1 prototype is now the ACCEPTANCE ARTIFACT — it supersedes the dark-home reference (R7) as the thing to replicate, because it is newer, it is the owner's own hand, and the directive says "replace it".
+- "replicate it one on one" = pixel/structure fidelity to the prototype's 6 pages.
+- "with motion effects and everything else" = the static Figma export must come ALIVE — motion per the standing decomposition (DECOMPOSITION.md S7 vocabulary) and the harness's motion laws; "everything else" = the full kernel discipline (tokens, verify, previews, push).
+- "restart in dev server" = restart the preview daemon so the owner sees the new build (cache-bust bumped).
+- T12's "pfp on top" verbal order stands unless the prototype itself places it there (check first — if the prototype already has it on top, there is no conflict at all).

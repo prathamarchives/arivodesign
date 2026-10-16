@@ -144,3 +144,44 @@ Reviewed: the sidebar against owner turn-007 + six new references (`context/refe
 **The eyes:** `p5-home-dark.png` (panel step, cover shadows, letter anatomy), `p5-expanded-dark.png` (176 float, handle top, tinted selection), `p5-home-light.png` (white card on grey field, black Read pill).
 **Behavior:** hover expands 44→176 (verified 176 pinned); theme swap clean; console clean; entrance/fill computed running.
 **not checked** — real-hardware frame pacing; tooltip visual re-check (mechanical check green).
+
+---
+
+## PASS 6 — THE PROTOTYPE IS THE PRODUCT (INT-013, 2026-10-16) — one-on-one replication with motion
+
+Trigger: the owner uploaded their own Figma v1 prototype (figma-export.zip → `context/references/figma-v1/`) and ordered: "just replace it, replicate it one on one with motion effects and everything else and restart in dev server." This is a REPLACEMENT order — the 6 exported pages supersede the derived design of passes 1–5 for every surface they depict. The decomposition (INT-011) and its synthesis S1–S9 remain the motion/vibe vocabulary; the export owns the visuals.
+
+### What the export is (mechanical read)
+
+- 1026 used classes / 213 base groups across 6 pages; Inter normal×277 + 500×70 (NO 600, NO 700 — the prototype's voice is calmer than pass 5's), Lora for reader prose only (18–19px, 180–185% lh).
+- The rail math is DECODED from the export's own percentages: avatar 28px = 87.5% of the 32px collapsed inner ⇒ rail **48px**; avatar 28px = 17.07% of the 164px expanded inner ⇒ rail **176px**. The owner adjusted pass-4's 44 → 48 in their own hand; 176 stands.
+- The whole app is ONE rounded object: study-shell radius 24 (#222222 dark w/ #484846 border, #F7F7F5 light w/ white border) floating on a page canvas; the rail (#292929/#EFEFED, radius 18) sits INSIDE the shell; a workspace-header (breadcrumb @prathamarchives / page + search ⌘K + theme toggle) tops the content column.
+- Covers are ILLUSTRATED OBJECTS: author microtype top, a drawn graphic center (DoET door+handle, Deep Work hairline rule, Thinking in Systems circle marks), title bottom, 5px spine strip on the right, radius 3, border rgba(0,0,0,.082), shadow 0 3px 9px rgba(0,0,0,.5).
+- Identity: "pa" avatar top-of-rail on every page (T12 satisfied natively), @prathamarchives breadcrumb on every page, NO wordmark. The journal page carries the owner's own `arivo://works/design/p14#paragraph-2` URI — the INT-008 total-arivo-purge is amended by the artifact itself (no arivo EXCEPT the owner's URIs).
+
+### The reconstruction problem (named, with evidence)
+
+The export CANNOT render as designed raw: Figma HTML exports drop frame-level layout. Evidence: study-shell-2 has no display rule; book-cover-39 has no width (its 6px/13px children collapse it); progress-track has no size; body has no canvas color. The fix honors the replacement order while keeping the artifact frozen:
+
+| Layer | Role | Rule |
+|---|---|---|
+| `styles/prototype.css` | the owner's export, byte-verbatim (minus its :root + @font-face stubs) | FROZEN — never edited |
+| `styles/tokens.css` | every color literal + font faces + page canvases | the only home of literals |
+| `styles/shell.css` | scaffold ONLY: shell grid (48px slot + content), rail slot + overlay panel, cover dims (118/72/56), 4px progress tracks, pill backgrounds the export dropped (action-56 ink-inverted; 888/352/587/666 #252525), one-axis centering at rest, pinned layout claim (128px), hover breath (3px/0.998) | values from the export's own math |
+| `styles/motion.css` + `motion.js` | the life: entrance rise stagger (shell children, ~60ms), hover lift −2px + shadow bloom to the export's own floating pair (0 12px 28px + 0 2px 4px), press .98, progress fill-in scaleX, ink-inverted tooltips (fade+rise), rail label stagger, caret pulse, pointer nudge | transform/opacity only; reduced-motion gated |
+
+### Composition decisions (the frames the export doesn't specify)
+
+- index = home-dark (dark-first per INT-004/INT-010); theme toggle navigates dark↔light; other pages light (as shipped by the artifact).
+- Rail: collapsed 48 everywhere + hover opens the 176 overlay (labels/account/"All changes saved" injected with the archive frame's own classes); archive SHIPS PINNED = its frame state one-on-one at rest; pin (tilt 45° + tint) holds it; pinned pages claim 128px of layout (padding, not margin — hover never reflows, INT-009 D preserved).
+- Reader: prose measure 640 centered; floating deep-note (rgba(255,255,255,.949), radius 24, the export's big shadow) floats OVER the right of the prose (faithful to its "floating" class + 0.949 alpha); selection toolbar anchors under the captured passage; page pill bottom-center.
+- Journal: authored page (620 measure) with breathing caret; format toolbar in the writing-tool slot; source-preview (dark #252525 card) + pointer notch + reference picker anchored under the caret line; day-context right; footer bottom-left.
+
+### Verification
+
+- verify.sh re-ratcheted: 5e (rail 48/176 overlay, no margin-slide, 400/500 voice, breath, identity ×6, pa ×6), 5f (arivo-except-URI, latency 260≤280ms, tooltips, frozen prototype header, fonts local, page graph), 5g (motion layer, motion.js ×6, cover dims, progress tracks, v6 cache-bust, zero external resources). All green.
+- Fresh-session browser evidence: p6-home-dark / -light / library / archive / journal / reader / -rail-open / -card-hover. Console clean; entrance + fill animations computed; pinned archive matches its frame; hover expansion overlays with shadow, content breathes 3px.
+
+### Carried to the owner
+
+- The pin's hover/pin model, the tooltip chip voices, and the two overlap-faithful floats (deep-note over prose, toolbar over paragraph) are the build's judgment calls inside the replacement order — each is documented above and trivially reversible by a correction turn.

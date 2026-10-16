@@ -1,299 +1,392 @@
 /* ============================================================
-   arivo — shell.css
-   The 44px rail: identity top · navigation middle · utility bottom
-   (INT-009 geometry; derivation in context/intake/INT-009-extraction.md).
-   Grid: rail 44 = 6+32+6 · cell 32 (icon 20 + enclosure) · axis x=22 ·
-   avatar 28 top anchor · expanded 176 = 4×44. Expansion is an OVERLAY:
-   the panel floats above the page; the page answers with a 3px breath
-   (transform only — zero reflow, nothing slides). The glass is a
-   CONSTANT-SIZE surface revealed by a clipping window (aperture model).
-   THE motion laws live here: glide-panel 240ms (INT-009 spring render:
-   k300/c30/m0.8 → ζ0.968, settle 213ms) + drift-in (blur marks movement).
-   Grounds: INT-004 · INT-007 · INT-009 · X-11 · D-008.
+   shell.css — INT-013 layout glue  (master: scripts/design-glue/)
+   The Figma export specifies every component but omits the page
+   scaffold (Figma exports drop frame-level layout context). This
+   layer reconstructs ONLY the scaffolding, using values from the
+   prototype's own system. Component visuals stay 100% verbatim
+   in prototype.css.
+   ------------------------------------------------------------
+   Rail model (from the export's own math):
+   collapsed rail = 48px (avatar 28 = 87.5% of the 32px inner)
+   expanded rail  = 176px (avatar 28 = 17.07% of the 164px inner)
+   The rail is a fixed 48px SLOT with an overlay PANEL that opens
+   to 176 on hover / pin (archive ships pinned = its frame state).
+   One axis: icons/avatar/pin share one x at rest, left-align open.
    ============================================================ */
 
-/* ============ LAYOUT ============ */
-.shell { position: relative; z-index: 1; display: flex; height: 100vh; padding: var(--s-3); gap: var(--s-3); }
-
-.content {
-  flex: 1; min-width: 0;
-  position: relative; z-index: 1;
-  padding: var(--s-6) var(--s-7) var(--s-8);
-  overflow-y: auto;
-  border-radius: var(--r-xl);
-  transform-origin: left center;
-  transition: transform var(--dur-panel) var(--ease-glide);
-  transition-delay: 100ms; /* release: the breath exits with the panel */
+/* ---------- page canvas + root wrapper ---------- */
+body > div {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 24px;
 }
 
-/* ---- the breath (INT-009: "2–4px micro-scale compress or light parallax"):
-   while the panel crosses it, the page leans 3px and recedes 0.2% — an
-   acknowledgment, not a move. transform = compositor only; the old
-   margin-slide re-laid-out every card each frame. DEAD. ---- */
-.sidebar:hover ~ .content,
-.sidebar.pinned ~ .content { transform: translateX(3px) scale(0.998); transition-delay: 50ms; }
-
-/* ============ SIDEBAR — the 44px rail (aperture glass) ============ */
-.sidebar {
+/* ---------- study shell: the whole app as one object ---------- */
+body > div > [class^="study-shell-"] {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  column-gap: 24px;
+  row-gap: 24px;
+  padding: 14px 18px 18px 14px;
+  flex: 1;
+  min-height: 0;
   position: relative;
-  z-index: var(--z-sidebar);
-  width: var(--sidebar-w);
-  flex: none;
-  display: flex; flex-direction: column;
-  padding: var(--sb-pad) var(--sb-pad);   /* 6 + cell 32 + 6 = 44 exactly */
-  border-radius: var(--r-xl);
-  border: 1px solid var(--border-hair);
-  /* INT-012 (S1/L1): the panel is a SURFACE, not a void — one lightness step
-     up from the canvas, top edge-lit, resting on a visible shadow. In dark
-     themes the STEP carries the depth; the shadow confirms it. */
-  background: var(--bg-panel);
-  box-shadow: inset 0 1px 0 var(--highlight-top), var(--shadow-panel);   /* quiet at rest; lifts as it opens */
-  overflow: hidden;              /* the aperture: clips the constant glass */
-  will-change: width;            /* isolate the one interpolating layer (INT-009) */
-  transition: width var(--dur-panel) var(--ease-glide),
-              box-shadow var(--dur-fade) var(--ease-out);
-  transition-delay: 100ms;       /* release: flick-aways don't thrash */
 }
-/* the glass is NOT on the panel — it is a constant-size surface behind the
-   clip. Expanding the panel merely REVEALS more of it: identical blur region
-   in every frame, so no re-rasterization storm (the smoothness win). */
-.sidebar::before {
-  content: ""; position: absolute; top: 0; left: 0; z-index: -1;
-  width: var(--sidebar-w-expanded); height: 100%;
-  background: var(--sb-glass);   /* whisper tint OVER the panel color (INT-012) */
-  backdrop-filter: blur(var(--blur-glass-strong)) saturate(1.5);
-  -webkit-backdrop-filter: blur(var(--blur-glass-strong)) saturate(1.5);
-  pointer-events: none;
-}
-/* z -1 is LOAD-BEARING: a positioned ::before with z auto would paint ABOVE
-   non-positioned children (avatar disc, hairline, pin were swallowed by their
-   own glass — found in pass 3 verification). The rail is a stacking context
-   (z-sidebar), so -1 = behind every child, above the page. */
-/* envelope (INT-009): attack 50ms — well inside the ~100ms "instant" window;
-   release 100ms; pinned = instant (0ms). Delays live on the destination state. */
-.sidebar:hover { width: var(--sidebar-w-expanded); box-shadow: inset 0 1px 0 var(--highlight-top), var(--shadow-3); transition-delay: 50ms; }
-.sidebar.pinned { width: var(--sidebar-w-expanded); box-shadow: inset 0 1px 0 var(--highlight-top), var(--shadow-3); transition-delay: 0ms; }
 
-/* ---- head: the avatar anchors the top. 28px disc, centered on the rail axis
-   (x = 22) by construction; expanded, its left edge is the row aligning edge. ---- */
-.sb-head {
-  display: flex; align-items: center; gap: var(--sb-gap);
-  height: var(--sb-cell); flex: none;
-  border-radius: var(--r-sm);
-  white-space: nowrap;
-  transition: background var(--dur-micro) var(--ease-out);
-}
-.sb-head:hover { background: var(--tint-hover); }
-.sb-head .avatar-lg { width: 28px; height: 28px; font-size: 12px;   /* 28 = 1.4 × icon */
-  margin-left: 2px;   /* (32−28)/2 — centers the avatar on the icon axis (directive A: one axis) */
-  transition: margin-left var(--dur-panel) var(--ease-glide) 80ms; }
-.sidebar:hover .sb-head .avatar-lg, .sidebar.pinned .sb-head .avatar-lg { margin-left: 0; }   /* expanded: left edges align (mathias ref) */
-.sb-head .a-handle {
-  font-size: var(--fs-meta); font-weight: 400; color: var(--fg-2);
-  letter-spacing: -0.01em;
-  min-width: 0; overflow: hidden; text-overflow: ellipsis;
-}
-.sb-head .a-chev { margin-left: auto; width: 14px; height: 14px; color: var(--fg-4); }
-
-/* ---- the hairline: module-width collapsed, full panel width expanded ---- */
-.sb-rule {
-  flex: none; height: 1px; width: var(--sb-cell);
-  margin: 10px auto;
-  background: var(--border-hair);
-  transition: width var(--dur-panel) var(--ease-glide) 80ms;
-}
-.sidebar:hover .sb-rule, .sidebar.pinned .sb-rule { width: 100%; }
-
-/* ---- nav: the same 32px cell on the 8px rhythm; one voice — 13px/400 ---- */
-.sb-nav { display: flex; flex-direction: column; gap: var(--sb-gap); flex: 1; }
-.nav-item {
+/* ---------- rail: slot + overlay panel ---------- */
+body > div > [class^="study-shell-"] > [class^="navigation-rail-"],
+body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
+  grid-column: 1;
+  grid-row: 1 / -1;
   position: relative;
-  display: flex; align-items: center; gap: var(--sb-gap);
-  height: var(--sb-cell); padding: 0 var(--sb-inset);  /* the 6px enclosure centers the 20px icon in the 32px cell */
-  border-radius: var(--r-sm);   /* directive A: selected container R = 12px */
-  color: var(--fg-2);
-  white-space: nowrap;
-  transition: background var(--dur-micro) var(--ease-out),
-              color var(--dur-micro) var(--ease-out),
-              padding var(--dur-panel) var(--ease-glide) 80ms;
-}
-/* expanded: rows lose their inset — icon aligns to the avatar's left edge (mathias ref) */
-.sidebar:hover .nav-item, .sidebar.pinned .nav-item { padding: 0; }
-.nav-item:hover { background: var(--tint-hover); color: var(--fg-1); }
-.nav-item:active { transform: scale(0.96); }
-.nav-item .icon { flex: none; }
-.nav-item .n-label { font-size: var(--fs-meta); font-weight: 400; letter-spacing: -0.01em; }
-
-/* active: the soft tint pill on the cell — G5Ka ref (INT-009). The old
-   --surface-glass fill was INVISIBLE in light theme (white on white — the
-   "messed up" selection the owner saw); the tint family fixes both themes. */
-.nav-item.active { background: var(--tint-selected); color: var(--fg-1); }
-
-/* ---- tooltips (directive B): dark bubble #0D0D0E/#FAFAFA, 12px internal
-   padding, 13px text, directional pointer — floating over TEXT CONTENT.
-   (The rail does NOT get tooltips: hovering the rail IS the expansion —
-   the label arrives with the panel; a bubble there could never show and
-   would be noise. The component lives where the directive places it.) ---- */
-.content [data-tip] { position: relative; }
-.content [data-tip]::after {
-  content: attr(data-tip);
-  position: absolute; left: 50%; bottom: calc(100% + 12px);
-  transform: translateX(-50%) translateY(2px);
-  background: var(--tip-bg); color: var(--tip-fg);
-  font-size: var(--fs-meta); font-weight: 400; letter-spacing: -0.01em;
-  padding: 7px 12px;               /* 12px horizontal internal (directive B) */
-  border-radius: 10px;
-  white-space: nowrap;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
-  opacity: 0; pointer-events: none;
-  transition: opacity var(--dur-tip-in) var(--ease-out), transform var(--dur-tip-in) var(--ease-out);
-  transition-delay: 0ms;
-  z-index: var(--z-tip);
-}
-/* the directional pointer at the BOTTOM of the bubble (directive B exact) */
-.content [data-tip]::before {
-  content: ""; position: absolute; left: 50%; bottom: calc(100% + 9px);
-  width: 8px; height: 8px;
-  transform: translateX(-50%) rotate(45deg);
-  background: var(--tip-bg);
-  opacity: 0; pointer-events: none;
-  transition: opacity var(--dur-tip-in) var(--ease-out);
-  transition-delay: 0ms;
-  z-index: var(--z-tip);
-}
-.content [data-tip]:hover::after,
-.content [data-tip]:hover::before { opacity: 1; transform: translateX(-50%) translateY(0); transition-delay: var(--tip-delay); }
-
-/* ---- foot: utility lives at the bottom (G5Ka pattern).
-   The pin IS the 32px cell — margin 0 centers it on the axis in both states. ---- */
-.sb-foot { flex: none; height: var(--sb-cell); display: flex; }
-.pin-btn {
-  flex: none;   /* never shrink the cell — the axis depends on its full 32px */
-  width: var(--sb-cell); height: var(--sb-cell); margin: 0;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: var(--r-pill);
-  color: var(--fg-4);
-  transition: color var(--dur-micro) var(--ease-out),
-              background var(--dur-micro) var(--ease-out),
-              transform var(--dur-micro) var(--ease-out);
-}
-.pin-btn:hover { color: var(--fg-1); background: var(--tint-hover); }
-.pin-btn:active { transform: scale(0.92); }
-.pin-btn .icon { width: 16px; height: 16px; }
-.pin-btn .i-pin-open { display: none; }
-.sidebar.pinned .pin-btn { color: var(--fg-1); background: var(--tint-selected); }
-.sidebar.pinned .pin-btn .i-pin-closed { display: none; }
-.sidebar.pinned .pin-btn .i-pin-open { display: block; }
-
-/* drift-in: labels appear only when expanded, with motion blur.
-   In: +80ms (the panel is already moving). Out: 60ms (labels die INTO the slide). */
-.sidebar .drift {
-  opacity: 0;
-  filter: blur(var(--blur-motion));
-  transform: translateX(-6px);
-  pointer-events: none;
-  transition: opacity var(--dur-drift) var(--ease-glide),
-              filter var(--dur-drift) var(--ease-glide),
-              transform var(--dur-drift) var(--ease-glide);
-  transition-delay: 40ms;
-}
-.sidebar:hover .drift, .sidebar.pinned .drift {
-  opacity: 1; filter: blur(0); transform: translateX(0);
-  transition-delay: 80ms;
+  z-index: 40;
+  width: auto;
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  align-self: stretch;
 }
 
-/* ============ ACCOUNT OVERLAY — grows from TOP-left (origin follows its
-   trigger: the avatar now anchors the top — INT-007). Same glide family. ==== */
-.overlay-root { position: fixed; inset: 0; z-index: var(--z-overlay); }
-.overlay-root[hidden] { display: none; }
-
-.overlay-backdrop {
-  position: absolute; inset: 0;
-  background: var(--surface-backdrop);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  opacity: 0;
-  transition: opacity var(--dur-fade) var(--ease-out);
-}
-.overlay-root.open .overlay-backdrop { opacity: 1; }
-
-.account-panel {
+.rail-panel {
   position: absolute;
-  left: calc(var(--s-3) + 12px); top: calc(var(--s-3) + 12px);
-  width: 344px;
-  border-radius: var(--r-2xl);
-  padding: var(--s-6);
-  transform-origin: top left;
-  transform: scale(0.96) translateY(-8px);
-  filter: blur(var(--blur-motion));
+  top: 0; left: 0; bottom: 0;
+  width: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 6px 14px 6px;
+  border-radius: 18px;
+  overflow: hidden;
+  transition: width 0.26s cubic-bezier(0.3, 1, 0.36, 1),
+              box-shadow 0.22s ease;
+  z-index: 41;
+}
+body.theme-dark  .rail-panel { background-color: #292929; }
+body.theme-light .rail-panel { background-color: #EFEFED; }
+
+body.nav-open .rail-panel,
+body.pinned  .rail-panel {
+  width: 176px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* identity: avatar fixed 28px (both states, per export math) */
+.rail-panel [class^="avatar-"] {
+  width: 28px;
+  height: 28px;
+  flex: none;
+}
+.rail-panel [class^="avatar-"] p { white-space: nowrap; }
+
+/* collapsed: one axis — everything centered */
+.rail-panel [class^="identity-"] {
+  justify-content: center;
+  padding: 0;
+  gap: 9px;
+}
+.rail-panel [class^="navigation-item-"] {
+  justify-content: center;
+  padding: 0;
+}
+body.nav-open .rail-panel [class^="identity-"],
+body.pinned  .rail-panel [class^="identity-"],
+body.nav-open .rail-panel [class^="navigation-item-"],
+body.pinned  .rail-panel [class^="navigation-item-"] {
+  justify-content: flex-start;
+  padding: 0 7px;
+}
+body.nav-open .rail-panel [class^="identity-"],
+body.pinned  .rail-panel [class^="identity-"] {
+  padding: 0 2px;
+}
+
+/* expansion-only elements: labels, account details, save state */
+.rail-panel .nav-label,
+.rail-panel .nav-meta,
+.rail-panel [class^="account-details-"] {
   opacity: 0;
-  transition: transform var(--dur-panel) var(--ease-glide),
-              filter var(--dur-panel) var(--ease-glide),
-              opacity var(--dur-panel) var(--ease-glide);
+  transform: translateX(-6px);
+  transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.3, 1, 0.36, 1);
+  transition-delay: 0ms;
+  pointer-events: none;
+  white-space: nowrap;
+  min-width: 0;
 }
-.overlay-root.open .account-panel {
-  transform: scale(1) translateY(0);
-  filter: blur(0); opacity: 1;
-}
-
-.acc-head { display: flex; align-items: center; gap: var(--s-4); margin-bottom: var(--s-5); }
-.acc-head .a-title { font-size: var(--fs-title); font-weight: 400; letter-spacing: -0.01em; }
-.acc-head .a-handle { font-size: var(--fs-meta); color: var(--fg-3); margin-top: 2px; }
-.acc-head .plan {
-  margin-left: auto; font-size: var(--fs-micro); letter-spacing: 0.06em;
-  color: var(--fg-2); border: 1px solid var(--border-hair);
-  padding: 5px 10px; border-radius: var(--r-pill); white-space: nowrap;
-}
-
-.acc-menu { display: flex; flex-direction: column; gap: 2px; margin: 0 calc(var(--s-6) * -1); }
-.acc-row {
-  display: flex; align-items: center; gap: var(--s-4);
-  height: 44px; padding: 0 var(--s-6);
-  color: var(--fg-2); font-size: var(--fs-meta); font-weight: 400;
-  transition: background var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out);
-}
-.acc-row:hover { background: var(--surface-glass); color: var(--fg-1); }
-.acc-row:active { transform: scale(0.99); }
-.acc-row .icon { color: var(--fg-3); }
-.acc-row .a-chev { margin-left: auto; color: var(--fg-4); }
-.acc-row .toggle { margin-left: auto; }
-
-.acc-rule { height: 1px; background: var(--border-hair); margin: var(--s-3) 0; }
-.acc-foot {
-  display: flex; align-items: center; gap: var(--s-2);
-  margin: 0 calc(var(--s-6) * -1); padding: 0 var(--s-6);
-  height: 40px; font-size: 12px; color: var(--fg-4);
-}
-.acc-foot .sync { display: flex; align-items: center; gap: 6px; margin-left: auto; }
-.acc-foot .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--fg-2); box-shadow: 0 0 8px rgba(255,255,255,.4); }
-
-/* overlay close rows drift in, staggered (drift-in +40ms each) */
-.overlay-root.open .acc-head, .overlay-root.open .acc-row, .overlay-root.open .acc-rule, .overlay-root.open .acc-foot {
-  animation: drift-in var(--dur-drift) var(--ease-glide) both;
-  animation-delay: 60ms;
-}
-.overlay-root.open .acc-row:nth-of-type(1) { animation-delay: 90ms; }
-.overlay-root.open .acc-row:nth-of-type(2) { animation-delay: 130ms; }
-.overlay-root.open .acc-row:nth-of-type(3) { animation-delay: 170ms; }
-.overlay-root.open .acc-row:nth-of-type(4) { animation-delay: 210ms; }
-.overlay-root.open .acc-row:nth-of-type(5) { animation-delay: 250ms; }
-.overlay-root.open .acc-row:nth-of-type(6) { animation-delay: 290ms; }
-@keyframes drift-in {
-  from { opacity: 0; filter: blur(6px); transform: translateY(6px); }
-  to   { opacity: 1; filter: blur(0); transform: translateY(0); }
+body.nav-open .rail-panel .nav-label,
+body.pinned  .rail-panel .nav-label,
+body.nav-open .rail-panel .nav-meta,
+body.pinned  .rail-panel .nav-meta,
+body.nav-open .rail-panel [class^="account-details-"],
+body.pinned  .rail-panel [class^="account-details-"] {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  transition-delay: calc(var(--i, 0) * 30ms + 60ms);
 }
 
-/* ============ PAGE TRANSITIONS — rise-page (same family) ============ */
-.page { display: none; }
-.page.active { display: block; animation: rise-page var(--dur-page) var(--ease-glide) both; }
-@keyframes rise-page {
-  from { opacity: 0; filter: blur(6px); transform: translateY(10px); }
-  to   { opacity: 1; filter: blur(0); transform: translateY(0); }
+/* theme-correct expansion colors */
+body.theme-dark  .nav-label { color: var(--text-rgb-238-238-234); }
+body.theme-dark  .nav-meta  { color: var(--text-rgb-161-161-156); }
+body.theme-dark  .rail-panel .account-details-327 .text-328 { color: var(--text-rgb-238-238-234); }
+body.theme-dark  .rail-panel .account-details-327 .text-329 { color: var(--text-rgb-161-161-156); }
+.rail-panel .account-details-327 { flex-shrink: 0; }
+
+/* ---------- workspace header + content cells ---------- */
+body > div > [class^="study-shell-"] > [class^="workspace-header-"] {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
 }
 
-/* staggered section entry inside a page (drift-in) */
-.page.active .section { animation: drift-in var(--dur-drift) var(--ease-glide) both; }
-.page.active .section:nth-child(2) { animation-delay: 60ms; }
-.page.active .section:nth-child(3) { animation-delay: 120ms; }
-.page.active .section:nth-child(4) { animation-delay: 180ms; }
-.page.active .section:nth-child(5) { animation-delay: 240ms; }
+/* home / library / archive: content in row 2 */
+.home-content-21, .home-content-853,
+.library-content-656,
+.archive-content-347 {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+  width: 100%;
+  min-height: 0;
+}
+
+/* reader: two stacked bars + prose */
+.study-shell-499 { grid-template-rows: auto auto minmax(0, 1fr); }
+.study-shell-499 > .workspace-header-622 { grid-column: 2; grid-row: 1; }
+.study-shell-499 > .reader-heading-610   { grid-column: 2; grid-row: 2; min-width: 0; }
+.study-shell-499 > .reading-page-594     { grid-column: 2; grid-row: 3; min-width: 0; }
+
+/* journal: header / authored page / day navigation */
+.study-shell-175 { grid-template-rows: auto auto auto minmax(0, 1fr); }
+.study-shell-175 > .workspace-header-306  { grid-column: 2; grid-row: 1; }
+.study-shell-175 > .authored-day-page-284 {
+  grid-column: 2; grid-row: 2;
+  width: min(620px, 100%);
+  margin: 0 auto;
+}
+.study-shell-175 > .day-navigation-292 {
+  grid-column: 2; grid-row: 3;
+  width: min(620px, 100%);
+  margin: 0 auto;
+  align-self: start;
+}
+.study-shell-175 { position: relative; }
+
+/* ---------- home overview columns ---------- */
+.study-overview-31, .study-overview-863 { min-width: 0; }
+.reading-space-32, .reading-space-864 {
+  flex: 1.55 1 0%;
+  min-width: 0;
+}
+.reflection-space-134, .reflection-space-966 {
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+/* ---------- links inherit prototype voice ---------- */
+a { color: inherit; text-decoration: none; }
+a:focus-visible, [data-tip]:focus-visible {
+  outline: 2px solid var(--text-rgb-161-161-156);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+/* ---------- reader / journal overlay anchoring ---------- */
+.study-shell-499 { position: relative; }
+.study-shell-499 > .floating-deep-note-532 {
+  position: absolute;
+  right: 24px;
+  top: 120px;
+  z-index: 30;
+  max-width: 420px;
+}
+.study-shell-499 > .node-518 {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+}
+.study-shell-499 > .node-577 {
+  position: absolute;
+  top: auto;
+  bottom: 268px;
+  left: calc(50% - 30px);
+  transform: translateX(-50%);
+  z-index: 31;
+}
+
+.study-shell-175 > .node-249 {
+  position: absolute;
+  top: 168px;
+  left: calc(50% + 64px);
+  transform: translateX(-50%);
+  z-index: 31;
+}
+.study-shell-175 > .node-196 {
+  position: absolute;
+  bottom: 190px;
+  left: calc(50% - 512px);
+  z-index: 30;
+  width: 340px;
+}
+/* pointer notch: the preview anchors toward the caret */
+.preview-pointer-197 {
+  position: absolute;
+  top: -5px;
+  right: 28px;
+  width: 10px;
+  height: 10px;
+  background: #252525;
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+.study-shell-175 > .reference-picker-213 {
+  position: absolute;
+  bottom: 56px;
+  left: calc(50% - 148px);
+  z-index: 30;
+  width: 360px;
+}
+.study-shell-175 > .day-context-272 {
+  position: absolute;
+  top: 96px;
+  right: 0px;
+  width: 300px;
+  z-index: 20;
+}
+.study-shell-175 > .day-page-footer-194 {
+  position: absolute;
+  left: 72px;
+  bottom: 22px;
+  width: auto;
+  z-index: 20;
+}
+
+/* ---------- pinned state claims layout space ---------- */
+body.pinned [class^="study-shell-"] > [class^="workspace-header-"],
+body.pinned [class^="study-shell-"] > [class^="home-content-"],
+body.pinned [class^="study-shell-"] > [class^="library-content-"],
+body.pinned [class^="study-shell-"] > [class^="archive-content-"],
+body.pinned [class^="study-shell-"] > [class^="reader-heading-"],
+body.pinned [class^="study-shell-"] > [class^="reading-page-"],
+body.pinned [class^="study-shell-"] > [class^="authored-day-page-"],
+body.pinned [class^="study-shell-"] > [class^="day-navigation-"] {
+  padding-left: 128px; /* 48 slot + 128 = the 176 panel */
+  transition: padding-left 0.26s cubic-bezier(0.3, 1, 0.36, 1);
+}
+
+/* ---------- hover-open breath: content leans, never reflows (INT-009 D) ---------- */
+body.nav-open:not(.pinned) [class^="study-shell-"] > [class^="workspace-header-"],
+body.nav-open:not(.pinned) [class^="study-shell-"] > [class^="home-content-"],
+body.nav-open:not(.pinned) [class^="study-shell-"] > [class^="library-content-"],
+body.nav-open:not(.pinned) [class^="study-shell-"] > [class^="archive-content-"],
+body.nav-open:not(.pinned) [class^="study-shell-"] > [class^="reader-heading-"],
+body.nav-open:not(.pinned) [class^="study-shell-"] > [class^="reading-page-"],
+body.nav-open:not(.pinned) [class^="study-shell-"] > [class^="authored-day-page-"],
+body.nav-open:not(.pinned) [class^="study-shell-"] > [class^="day-navigation-"] {
+  transform: translateX(3px) scale(0.998);
+  transform-origin: left center;
+  transition: transform 0.26s cubic-bezier(0.3, 1, 0.36, 1);
+}
+
+/* ---------- book covers: the export lost frame dimensions ----------
+   Restored from the export's own anatomy: author top, graphic
+   center (door / rule / system marks), title bottom, spine strip. */
+[class^="book-cover-"] {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex: none;
+  overflow: hidden;
+}
+/* large: continue-reading card */
+.book-cover-39, .book-cover-871 { width: 118px; height: 164px; padding: 10px 12px; }
+/* medium: reading-card / library shelf */
+.book-cover-62, .book-cover-894,
+.book-cover-727, .book-cover-741, .book-cover-754, .book-cover-767 {
+  width: 72px; height: 102px; padding: 7px 8px;
+}
+/* small: list stacks + picker result */
+.book-cover-82, .book-cover-98, .book-cover-914, .book-cover-930,
+.book-cover-88, .book-cover-105, .book-cover-920, .book-cover-937,
+.book-cover-222 {
+  width: 56px; height: 78px; padding: 6px 7px;
+}
+[class^="book-cover-"] p { min-width: 0; }
+[class^="book-cover-"] p:last-of-type { margin-top: auto; }
+
+/* spine: right-edge strip */
+[class^="spine-"] {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 5px;
+  border-radius: 0 3px 3px 0;
+}
+
+/* door-study: the DoET door graphic with handle */
+[class^="door-study-"] {
+  position: relative;
+  align-self: center;
+  width: 44%;
+  aspect-ratio: 0.58;
+  border-radius: 2px 14px 2px 2px;
+  flex: none;
+}
+[class^="handle-"] {
+  position: absolute;
+  right: 18%;
+  top: 46%;
+  width: 14%;
+  aspect-ratio: 1;
+  border-radius: 99px;
+}
+
+/* rule: Deep Work hairline */
+[class^="rule-"] {
+  align-self: center;
+  width: 56%;
+  height: 1px;
+  flex: none;
+}
+
+/* system marks (Thinking in Systems) */
+[class^="system-"] { width: 20px; height: 20px; flex: none; }
+.book-cover-767 [class^="system-"], .book-cover-105 [class^="system-"] { width: 22px; height: 22px; }
+
+/* book stacks: fan the back cover behind-right */
+[class^="book-stack-"] { position: relative; display: flex; }
+[class^="back-cover-"] { position: relative; margin-left: -14px; margin-top: 8px; z-index: 0; }
+[class^="back-cover-"] [class^="book-cover-"] { width: 50px; height: 70px; padding: 5px 6px; }
+[class^="book-stack-"] > [class^="book-cover-"] { z-index: 1; }
+
+/* ---------- progress track / fill ---------- */
+[class^="progress-track-"] { width: 100%; height: 4px; border-radius: 2px; }
+[class^="progress-fill-"] { height: 4px; border-radius: 2px; }
+
+/* ---------- passage marker: vertical tick ---------- */
+[class^="passage-marker-"] { width: 2px; align-self: stretch; border-radius: 1px; flex: none; }
+
+/* ---------- action pills: the export dropped backgrounds ---------- */
+.action-56 { background-color: var(--text-rgb-238-238-234); } /* dark home CTA: ink inversion */
+.action-888, .action-352, .action-587, .action-666 { background-color: #252525; }
+.action-685, .list-view-688 { background-color: #FFFFFF; border: 1px solid #DEDEDB; }
+.action-146, .action-978 { flex-direction: row; }
+[class^="action-"] p, .node-518 p { white-space: nowrap; }
+
+/* ---------- reader composition ---------- */
+.reading-page-594 { width: min(640px, 100%); margin: 0 auto; }
+.reader-heading-610 { width: min(880px, 100%); margin: 0 auto; }
+
+/* ---------- light-theme border voices (shell frames) ---------- */
+.study-shell-175, .study-shell-499, .study-shell-637, .study-shell-834, .study-shell-321 {
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.16);
+}
+.study-shell-2 {
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.5);
+}

@@ -97,140 +97,145 @@ else
   bad "core.fileMode is not false — run: git config core.fileMode false (mode-churn guard)"
 fi
 
-# ---------------------------------------------------------------- 5e. sidebar pass-3 regression guards (ratcheted 2026-10-16, INT-007)
-# (a) paint-order trap: the aperture glass lives on .sidebar::before; a positioned
-#     pseudo with z auto paints ABOVE non-positioned children — the avatar disc,
-#     hairline and pin were swallowed by their own glass (found in pass-3 browser
-#     verification). z -1 on that pseudo is load-bearing; it must never disappear.
-if grep -A6 '\.sidebar::before' design/styles/shell.css | grep -q 'z-index: -1'; then
-  ok "aperture glass stays behind rail content (::before z -1 present)"
+# ---------------------------------------------------------------- 5e. prototype rail guards (re-ratcheted 2026-10-16, INT-013)
+# The owner's Figma v1 prototype REPLACED the derived design (turn-013: "replace
+# it, replicate it one on one"). The rail truths now come from the export's own
+# math: 48px collapsed slot, 176px expanded panel, 28px avatar, ONE axis.
+# (a) expansion is an OVERLAY panel in a fixed 48px slot — hover must never reflow;
+#     the old margin-slide is dead.
+if grep -q 'width: 48px' design/styles/shell.css && grep -q 'width: 176px' design/styles/shell.css && \
+   grep -q 'position: absolute' design/styles/shell.css; then
+  ok "rail slot/panel present (48 slot, 176 panel, overlay)"
 else
-  bad ".sidebar::before lost z-index: -1 — rail content paints under its own glass (pass-3 failure class)"
+  bad "rail overlay model missing — 48 slot + 176 panel required (INT-013)"
 fi
-# (b) chrome bold ban: owner turn-007 — no bold fonts in the sidebar chrome.
-#     (The avatar monogram's 700 lives in components.css = artwork voice, out of scope.)
-if grep -q 'font-weight: 700' design/styles/shell.css; then
-  bad "font-weight: 700 found in shell.css — chrome text must stay <= 400 (INT-007)"
-else
-  ok "no bold in sidebar chrome (shell.css)"
-fi
-# (c) wordmark resurrection ban: owner turn-007 removed it; it must not creep back.
-#     (Precise: the word may appear in comments DOCUMENTING the removal — the
-#     class, the rule, or the token are the resurrection.)
-if grep -qE 'class="wordmark"|\.wordmark|font-wordmark' design/index.html design/styles/*.css 2>/dev/null; then
-  bad "wordmark resurrected (class/rule/token found) — owner removed it (INT-007)"
-else
-  ok "no wordmark in paint or tokens"
-fi
-# (d) content margin-slide ban: expansion is an OVERLAY; the page answers with a
-#     transform breath, never a margin reflow (the old margin-slide is dead — INT-007).
 if grep -q 'margin-left: calc(var(--sidebar-w' design/styles/shell.css; then
-  bad "content margin-slide regression in shell.css — expansion must overlay, not reflow (INT-007)"
+  bad "content margin-slide regression in shell.css — hover expansion must overlay (INT-007/013)"
 else
   ok "no content margin-slide (overlay expansion intact)"
 fi
+# (b) chrome weight discipline: the prototype speaks normal + 500 — no 700 in paint or glue
+if grep -q 'font-weight: 700\|font-weight:700' design/styles/shell.css design/styles/motion.css design/styles/tokens.css context/references/figma-v1/styles.css 2>/dev/null; then
+  bad "font-weight 700 found — prototype voice is 400/500 only (INT-013)"
+else
+  ok "no bold in paint or glue (400/500 voice)"
+fi
+# (c) content breath on hover-open: 3px lean, transform-only (INT-009 D band)
 if grep -q 'transform-origin: left center' design/styles/shell.css; then
   ok "content breath present (transform-origin: left center)"
 else
-  bad "content breath missing — the page must react to expansion (INT-007)"
+  bad "content breath missing — hover-open must lean the content, transform-only (INT-009 D)"
 fi
-# (e) geometry tokens: the derived numbers are the law — 44 rail (owner: cut 1/3
-#     of 64), expanded 176 = 4 × 44 (rational). Supersedes INT-007's 64/224 (INT-009).
-if grep -q -- '--sidebar-w: 44px' design/styles/tokens.css && \
-   grep -q -- '--sidebar-w-expanded: 176px' design/styles/tokens.css; then
-  ok "sidebar geometry tokens exact (44 / 176)"
+# (d) identity: the handle string on every page, avatar monogram pa in every rail
+pages_ok=0
+for pg in design/index.html design/home-light.html design/library.html design/archive.html design/journal.html design/reader.html; do
+  grep -q '@prathamarchives' "$pg" && pages_ok=$((pages_ok+1))
+done
+if [ "$pages_ok" -eq 6 ]; then
+  ok "identity @prathamarchives on all 6 pages"
 else
-  bad "sidebar geometry tokens missing or altered — 44 / 176 are derived law (INT-009)"
+  bad "identity missing on $((6-pages_ok))/6 pages (INT-013)"
+fi
+pa=$(grep -l '>pa</span>' design/*.html | wc -l)
+if [ "$pa" -eq 6 ]; then
+  ok "avatar monogram pa in all 6 rails"
+else
+  bad "avatar monogram missing on $((6-pa))/6 pages"
 fi
 
-# ---------------------------------------------------------------- 5f. pass-4 guards (ratcheted 2026-10-16, INT-008/009)
-# (a) TOTAL product-surface purge: the owner removed every visible "arivo" (turn-008:
-#     "remove the arivo text") — HTML must contain the string ZERO times. The old
-#     sidebar-scoped wordmark ban let title/About/footer survive; this closes it.
-if grep -qi 'arivo' design/index.html; then
-  bad "'arivo' found in index.html — the product surface must be 100% purged (INT-008/009)"
+# ---------------------------------------------------------------- 5f. prototype surface guards (re-ratcheted 2026-10-16, INT-013)
+# (a) 'arivo' surface law, amended by the owner's own hand: the prototype uses the
+#     arivo:// URI scheme in the journal (the owner wrote it). The amendment:
+#     pages must not contain 'arivo' EXCEPT the owner's arivo:// URI strings.
+arivo_bad="$(grep -l 'arivo' design/index.html design/home-light.html design/library.html design/archive.html design/reader.html 2>/dev/null || true)"
+arivo_journal_bad="$(grep 'arivo' design/journal.html 2>/dev/null | grep -v 'arivo://' || true)"
+if [ -n "$arivo_bad" ] || [ -n "$arivo_journal_bad" ]; then
+  bad "'arivo' outside the owner's arivo:// URIs — product surface stays identity-only (INT-008, amended INT-013)"
 else
-  ok "no 'arivo' anywhere in the product surface (index.html)"
+  ok "arivo absent except the owner's arivo:// URIs (journal)"
 fi
-# (b) identity exactness: the handle string is the identity, everywhere it appears.
-if grep -q '@prathamarchives' design/index.html; then
-  ok "handle identity @prathamarchives present"
+# (b) latency law: rail render 260ms — a regression past 280ms is the old failure
+rdur=$(grep -o 'width 0\.[0-9]\+s' design/styles/shell.css | head -1 | grep -o '0\.[0-9]\+')
+if [ -n "$rdur" ]; then
+  rms=$(python3 -c "print(int(round(float('$rdur')*1000)))")
+  if [ "$rms" -le 280 ]; then
+    ok "rail latency within the law (${rms}ms <= 280ms)"
+  else
+    bad "rail latency ${rms}ms > 280ms (INT-009 law)"
+  fi
 else
-  bad "handle @prathamarchives missing — identity must be the exact handle string (INT-009 C)"
+  bad "rail width transition missing — latency unpinnable (INT-009)"
 fi
-# (c) latency law: the spring render is 240ms; a regression past 280ms is the
-#     "can be alot smoother, better latency" failure returning.
-dur=$(grep -o -- '--dur-panel: [0-9]\+ms' design/styles/tokens.css | grep -o '[0-9]\+' | head -1)
-if [ -n "$dur" ] && [ "$dur" -le 280 ]; then
-  ok "panel latency within the spring render (${dur}ms <= 280ms)"
+# (c) tooltip system: data-tip hooks + ink-inverted chip in the motion layer
+if grep -q 'data-tip=' design/index.html && grep -q 'data-tip\]::after' design/styles/motion.css; then
+  ok "tooltip system present (data-tip hooks + motion chip)"
 else
-  bad "--dur-panel is ${dur:-unset}ms — exceeds the INT-009 latency law (<= 280ms)"
+  bad "tooltip system missing (INT-009 B, INT-013 motion layer)"
 fi
-# (d) tooltip component: dark bubble + directional pointer must exist (directive B),
-#     and the rail must SPEAK through it (data-tip hooks present).
-if grep -q 'data-tip=' design/index.html && \
-   grep -q -- '--tip-bg' design/styles/tokens.css && \
-   grep -q 'rotate(45deg)' design/styles/shell.css; then
-  ok "tooltip system present (data-tip hooks + tokens + pointer)"
+# (d) prototype.css frozen: the verbatim export header must be intact
+if head -1 design/styles/prototype.css | grep -q 'VERBATIM Figma v1 export'; then
+  ok "prototype.css verbatim header intact (frozen artifact)"
 else
-  bad "tooltip system missing (directive B: dark bubble, pointer, 12px pad, 13px text)"
+  bad "prototype.css was edited — it is a FROZEN artifact of the owner's export (INT-013)"
 fi
-# (e) selection visibility: pass-3's active pill was white-on-white in light theme
-#     (the owner saw it as broken). The tint family is the fix; it must stay wired.
-if grep -q -- '--tint-selected' design/styles/tokens.css && \
-   grep -q 'var(--tint-selected)' design/styles/shell.css; then
-  ok "selection tint wired (visible in both themes)"
+# (e) fonts self-hosted: no Google CDN, local woff2 present
+if grep -q 'fonts.googleapis' design/*.html 2>/dev/null; then
+  bad "Google Fonts CDN link present — fonts must be self-hosted (INT-013)"
 else
-  bad "selection tint missing — light-theme active state was invisible (INT-008 failure class)"
+  ok "no font CDN in pages"
 fi
-# (f) content reaction bound: the breath is 2–4px translate (directive D); a larger
-#     lean means the old push is creeping back.
-breath=$(grep -o 'translateX([0-9]\+px) scale' design/styles/shell.css | grep -o '[0-9]\+' | head -1)
-if [ -n "$breath" ] && [ "$breath" -le 4 ]; then
-  ok "content breath within 2–4px parallax band (${breath}px)"
+for f in design/assets/fonts/inter-400.woff2 design/assets/fonts/inter-500.woff2 design/assets/fonts/lora-400.woff2; do
+  if [ -s "$f" ]; then ok "font present: $(basename "$f")"; else bad "font missing: $f (INT-013)"; fi
+done
+# (f) page graph: 6 pages, nav anchors wired
+nlinks=$(grep -o 'class="navigation-item-[0-9]*" href=' design/*.html | wc -l)
+if [ "$nlinks" -ge 15 ] && [ -s design/library.html ] && [ -s design/archive.html ] && [ -s design/journal.html ] && [ -s design/reader.html ]; then
+  ok "page graph wired (nav anchors: $nlinks, 6 pages)"
 else
-  bad "content breath is ${breath:-unset}px — outside the directive's 2–4px band (INT-009 D)"
+  bad "page graph incomplete (nav anchors: $nlinks/15+)"
 fi
 
-# ---------------------------------------------------------------- 5g. pass-5 guards (ratcheted 2026-10-16, INT-012 — the DEPTH pass)
-# (a) the dark PANEL step exists and is wired: dark depth = surface step first (S1/L1),
-#     the sidebar must live on --bg-panel, not on bare canvas glass
-grep -q -- '--bg-panel' design/styles/tokens.css \
-  && bad_missing_panel=0 || bad_missing_panel=1
-if [ "$bad_missing_panel" -eq 0 ] && grep -q 'background: var(--bg-panel)' design/styles/shell.css; then
-  ok "panel surface step present (--bg-panel wired into the sidebar)"
+# ---------------------------------------------------------------- 5g. INT-013 motion + integrity guards (ratcheted 2026-10-16)
+# (a) the motion layer exists: entrance rise, progress fill-in, press, reduced-motion gate
+if grep -q '\.rise' design/styles/motion.css && grep -q 'fill-anim' design/styles/motion.css \
+   && grep -q 'prefers-reduced-motion' design/styles/motion.css && grep -q 'scale(0.98)' design/styles/motion.css; then
+  ok "motion layer present (rise + fill + press, reduced-motion gated)"
 else
-  bad "panel step missing — the dark sidebar must be a SURFACE, not a void (INT-012, S1/L1)"
+  bad "motion layer incomplete — 'with motion effects' is part of the directive (INT-013)"
 fi
-# (b) the R7 cover anatomy: reading-row covers carry the identity INSIDE (letter + title + author)
-rich=$(grep -c 'cover rich cv-' design/index.html)
-if [ "$rich" -eq 4 ] && grep -q 'c-author' design/index.html && grep -q 'cover.rich' design/styles/components.css; then
-  ok "R7 cover anatomy present (4 rich covers, identity inside)"
+# (b) motion.js wired on every page
+mjs=$(grep -l 'motion.js' design/*.html | wc -l)
+if [ "$mjs" -eq 6 ]; then
+  ok "motion.js wired on all 6 pages"
 else
-  bad "cover anatomy regressed — rich covers: ${rich:-0}/4 or c-author/c Missing (INT-012)"
+  bad "motion.js missing on $((6-mjs))/6 pages"
 fi
-# (c) the display voice: 300-light is dead; the greeting speaks at 500 (S5/R7)
-grep -q -- '--fw-display: 500' design/styles/tokens.css \
-  && ok "display weight 500 (the confident voice)" \
-  || bad "display weight regressed to thin — must be 500 (INT-012 amendment 1)"
-# (d) the motion vocabulary reached the PAGE: entrance stagger + progress fill-in, gated for reduced motion
-if grep -q 'rise-section' design/styles/pages.css && grep -q 'fill-in' design/styles/pages.css \
-   && grep -q 'prefers-reduced-motion' design/styles/pages.css; then
-  ok "page motion present (entrance stagger + progress fill-in, reduced-motion gated)"
+# (c) cover anatomy restored: the export lost frame dims — glue must size them
+if grep -q 'book-cover-39' design/styles/shell.css && grep -q '118px' design/styles/shell.css; then
+  ok "cover dimensions restored in glue (large 118 / medium 72 / small 56)"
 else
-  bad "page motion missing — hover bloom alone is not the S7 vocabulary (INT-012)"
+  bad "cover dims missing — the export's covers collapse without them (INT-013)"
 fi
-# (e) shadow visibility floor: shadow-1 lifts at least 4px (a 2px black-on-black whisper is the G2 failure class)
-s1=$(grep -- '--shadow-1:' design/styles/tokens.css | head -1 | sed 's/.*--shadow-1: 0 \([0-9]*\)px.*/\1/')
-if [ -n "$s1" ] && [ "$s1" -ge 4 ]; then
-  ok "shadow ladder above the visibility floor (shadow-1 y=${s1}px)"
+# (d) progress tracks visible: 4px track + fill heights
+if grep -q 'progress-track-' design/styles/shell.css && grep -q 'height: 4px' design/styles/shell.css; then
+  ok "progress track/fill sized (4px, visible tracks)"
 else
-  bad "shadow-1 too shallow (${s1:-unset}px) — black-on-black invisibility class (INT-012 G2)"
+  bad "progress tracks unsized — invisible progress was the G-class failure (INT-013)"
 fi
-# (f) cache-bust version bumped with the paint (?v=5) — the INT-008 landing-failure class
-grep -q 'styles/tokens.css?v=5' design/index.html \
-  && ok "asset links cache-busted at v5" \
-  || bad "asset links not re-busted — owner may see stale CSS (INT-008 class)"
+# (e) cache-bust version bumped with the paint (?v=6) — the INT-008 landing-failure class
+vb=$(grep -o 'tokens.css?v=[0-9]*' design/index.html | grep -o '[0-9]*$')
+if [ "$vb" = "6" ]; then
+  ok "asset links cache-busted at v6"
+else
+  bad "asset links not re-busted at v6 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
+fi
+# (f) no external resource references — everything local (the export's only CDN was fonts)
+ext="$(grep -hEo 'src="http[^"]*"|href="http[^"]*"' design/*.html 2>/dev/null | grep -v '^$' || true)"
+if [ -n "$ext" ]; then
+  bad "external resource reference(s) in pages: $ext"
+else
+  ok "zero external resources (fully local prototype)"
+fi
 
 # ---------------------------------------------------------------- 6. worklog is alive for the latest turn
 latest="$(ls context/raw/turn-*.txt 2>/dev/null | sort | tail -1)"

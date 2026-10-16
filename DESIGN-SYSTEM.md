@@ -1,4 +1,17 @@
-# DESIGN-SYSTEM — arivo visual language (v0.1)
+# DESIGN-SYSTEM — arivo visual language
+
+> **AMENDED INT-013 (2026-10-16):** the owner's own Figma v1 prototype REPLACED the
+> derived visual spec ("just replace it, replicate it one on one"). The sections below
+> document the v0.1 language and its reasoning; they remain historical grounds, but the
+> OPERATIVE spec is now the prototype itself:
+> `design/styles/prototype.css` (verbatim export, frozen) + `design/styles/tokens.css`
+> (its literals) + `design/styles/shell.css` (reconstructed scaffold) +
+> `design/styles/motion.css` (the motion vocabulary). Where the old spec and the
+> prototype disagree, the prototype wins. Standing laws that SURVIVE (the prototype
+> carries them natively): identity-only surface (@prathamarchives, no wordmark except
+> the owner's arivo:// URIs), pfp top, 48/176 rail math, 400/500 voice, breath band
+> 2–4px, latency ≤280ms, tooltips, reduced-motion gating, verify ratchets.
+
 
 The locked spec for what things look like and how they move. Written from the owner's vision words (INT-004) and the eight references in `context/refs/`. Every value here traces to an owner word or a reference — nothing invented without a label. Implementation lives in `design/` and must match this file; this file wins.
 

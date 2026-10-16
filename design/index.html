@@ -1,451 +1,284 @@
+
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>@prathamarchives</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2317171B'/%3E%3Cpath d='M9.3 6h11.4a2.6 2.6 0 0 1 2.6 2.6V26H12a2.7 2.7 0 0 1-2.7-2.7Z' fill='none' stroke='%23F5F5F7' stroke-width='1.6'/%3E%3Cpath d='M13.3 11.3h6' stroke='%23F5F5F7' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="styles/tokens.css?v=5">
-<link rel="stylesheet" href="styles/base.css?v=5">
-<link rel="stylesheet" href="styles/components.css?v=5">
-<link rel="stylesheet" href="styles/shell.css?v=5">
-<link rel="stylesheet" href="styles/pages.css?v=5">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Exported from Figma">
+  <title>Home · @prathamarchives</title>
+
+  <link rel="stylesheet" href="styles/tokens.css?v=6">
+  <link rel="stylesheet" href="styles/prototype.css?v=6">
+  <link rel="stylesheet" href="styles/shell.css?v=6">
+  <link rel="stylesheet" href="styles/motion.css?v=6">
+  <script src="motion.js?v=6" defer></script>
 </head>
-<body>
-<div class="canvas"></div>
-
-<!-- ============ ICONS (round caps — X-13; sizes 16/20/24) ============ -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 10.5 12 3.5l8.5 7V19a1.5 1.5 0 0 1-1.5 1.5h-4.5V15h-5v5.5H5A1.5 1.5 0 0 1 3.5 19Z"/></symbol>
-    <symbol id="i-library" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 4.5v15M9.5 4.5v15M14 5.5l3.8 13.6"/><path d="M4 20h17"/></symbol>
-    <symbol id="i-archive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="16" height="12" rx="2.5"/><path d="M4 8.5a2.5 2.5 0 0 1 2.5-2.5h11A2.5 2.5 0 0 1 20 8.5M10 12.5h4"/></symbol>
-    <symbol id="i-chev-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m9.5 6 6 6-6 6"/></symbol>
-    <symbol id="i-chev-d" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m6 9.5 6 6 6-6"/></symbol>
-    <symbol id="i-pin-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3.5" y="5" width="17" height="14" rx="3"/><path d="M9.5 5v14m-1.8-7-1.2 0" stroke-linecap="round"/></symbol>
-    <symbol id="i-pin-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3.5" y="5" width="17" height="14" rx="3"/><path d="M9.5 5v14m-1.2-7h2.4" stroke-linecap="round"/></symbol>
-    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 6.5l11 11m0-11-11 11"/></symbol>
-    <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20a7.2 7.2 0 0 1 14 0"/></symbol>
-    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3.5 19 6v5.3c0 4.6-3 7.7-7 9.2-4-1.5-7-4.6-7-9.2V6Z"/></symbol>
-    <symbol id="i-plug" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m9 8-4 4 4 4M15 8l4 4-4 4"/></symbol>
-    <symbol id="i-theme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor" stroke="none" opacity=".4"/></symbol>
-    <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v10m-4-4 4 4 4-4M5 19.5h14"/></symbol>
-    <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8.5"/><path d="M12 11.5V16"/><path d="M12 8.2v.1" stroke-width="2.2"/></symbol>
-    <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 4.5h8.5a2 2 0 0 1 2 2v13H9a2 2 0 0 1-2-2Z"/><path d="M10 8.5h4.5"/></symbol>
-    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5.5v13M5.5 12h13"/></symbol>
-  </defs>
-</svg>
-
-<div class="shell">
-  <!-- ============ SIDEBAR — the 44px rail (INT-009): identity top · nav middle · utility bottom.
-       Everything is the 32px cell on one axis (avatar.cx = icon.cx = pin.cx); avatar 28 anchors
-       the top; handle = @prathamarchives only; no wordmark; no bold; hovering the rail IS the
-       expansion (labels arrive with the panel — tooltips live in CONTENT, not here). ============ -->
-  <aside class="sidebar" id="sidebar">
-    <button class="sb-head" id="accountBtn" aria-label="Account" title="Account">
-      <span class="avatar avatar-lg">P</span>
-      <span class="a-handle drift">@prathamarchives</span>
-    </button>
-
-    <span class="sb-rule" aria-hidden="true"></span>
-
-    <nav class="sb-nav">
-      <button class="nav-item active" data-page="home">
-        <svg class="icon"><use href="#i-home"/></svg>
-        <span class="n-label drift">Home</span>
-      </button>
-      <button class="nav-item" data-page="library">
-        <svg class="icon"><use href="#i-library"/></svg>
-        <span class="n-label drift">Library</span>
-      </button>
-      <button class="nav-item" data-page="archive">
-        <svg class="icon"><use href="#i-archive"/></svg>
-        <span class="n-label drift">Archive</span>
-      </button>
-    </nav>
-
-    <div class="sb-foot">
-      <button class="pin-btn" id="pinBtn" aria-label="Pin sidebar" title="Pin sidebar">
-        <svg class="icon i-pin-closed"><use href="#i-pin-closed"/></svg>
-        <svg class="icon i-pin-open"><use href="#i-pin-open"/></svg>
-      </button>
-    </div>
-  </aside>
-
-  <!-- ============ CONTENT ============ -->
-  <main class="content" id="content">
-
-    <!-- ======== HOME ======== -->
-    <section class="page active" data-page="home">
-      <header class="page-head">
-        <div>
-          <p class="micro ph-eyebrow">Home</p>
-          <h1 class="display">Good evening, @prathamarchives</h1>
-        </div>
-        <span class="ph-meta">Tuesday, October 14</span>
-      </header>
-
-      <section class="section">
-        <div class="section-head">
-          <h2 class="title">Currently reading</h2>
-          <span class="count">4</span>
-          <span class="spacer"></span>
-          <a class="section-link" href="#" data-goto="library">Library <svg class="icon"><use href="#i-chev-r"/></svg></a>
-        </div>
-        <div class="reading-row no-scrollbar">
-          <article class="book-card">
-            <div class="cover rich cv-a"><span class="c-spine"></span><span class="c-mark">M</span><span class="c-id"><span class="c-title">Meditations</span><span class="c-author">Marcus Aurelius</span></span></div>
-            <div class="book-meta">
-              <span class="b-title">Meditations</span>
-              <span class="b-sub"><span>Book 7 · page 182</span><span>68%</span></span>
-              <div class="progress"><i style="width:68%"></i></div>
-              <div style="display:flex;gap:8px;margin-top:6px">
-                <button class="btn btn-primary" style="height:32px;padding:0 16px;font-size:13px">Read</button>
-                <button class="btn btn-icon" data-tip="More options" aria-label="More options"><svg class="icon icon-sm"><use href="#i-chev-d"/></svg></button>
-              </div>
-            </div>
-          </article>
-          <article class="book-card">
-            <div class="cover rich cv-b"><span class="c-spine"></span><span class="c-mark">D</span><span class="c-id"><span class="c-title">Deep Work</span><span class="c-author">Cal Newport</span></span></div>
-            <div class="book-meta">
-              <span class="b-title">Deep Work</span>
-              <span class="b-sub"><span>Rule 2 · page 96</span><span>34%</span></span>
-              <div class="progress"><i style="width:34%"></i></div>
-            </div>
-          </article>
-          <article class="book-card">
-            <div class="cover rich cv-c"><span class="c-spine"></span><span class="c-mark">D</span><span class="c-id"><span class="c-title">The Design of Everyday Things</span><span class="c-author">Don Norman</span></span></div>
-            <div class="book-meta">
-              <span class="b-title">The Design of Everyday Things</span>
-              <span class="b-sub"><span>Ch. 4 · page 210</span><span>82%</span></span>
-              <div class="progress"><i style="width:82%"></i></div>
-            </div>
-          </article>
-          <article class="book-card">
-            <div class="cover rich cv-d"><span class="c-spine"></span><span class="c-mark">S</span><span class="c-id"><span class="c-title">Thinking in Systems</span><span class="c-author">Donella Meadows</span></span></div>
-            <div class="book-meta">
-              <span class="b-title">Thinking in Systems</span>
-              <span class="b-sub"><span>Introduction</span><span>12%</span></span>
-              <div class="progress"><i style="width:12%"></i></div>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-head">
-          <h2 class="title">Lists</h2>
-          <span class="count">4</span>
-        </div>
-        <div class="h-row no-scrollbar">
-          <button class="list-card glass">
-            <span class="l-stack"><span class="cover-mini"></span><span class="cover-mini cv-b"></span><span class="cover-mini cv-c"></span></span>
-            <span><span class="l-name" style="display:block">Stoicism</span><span class="l-count">12 works · 3 in progress</span></span>
-          </button>
-          <button class="list-card glass">
-            <span class="l-stack"><span class="cover-mini"></span><span class="cover-mini cv-d"></span><span class="cover-mini cv-a"></span></span>
-            <span><span class="l-name" style="display:block">Design fundamentals</span><span class="l-count">8 works · 1 in progress</span></span>
-          </button>
-          <button class="list-card glass">
-            <span class="l-stack"><span class="cover-mini"></span><span class="cover-mini cv-e"></span><span class="cover-mini cv-b"></span></span>
-            <span><span class="l-name" style="display:block">Second brain</span><span class="l-count">15 works · 2 in progress</span></span>
-          </button>
-          <button class="list-card glass">
-            <span class="l-stack"><span class="cover-mini"></span><span class="cover-mini cv-c"></span><span class="cover-mini cv-d"></span></span>
-            <span><span class="l-name" style="display:block">Night reading</span><span class="l-count">6 works</span></span>
-          </button>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-head">
-          <h2 class="title">Recent highlights</h2>
-          <span class="count">128</span>
-          <span class="spacer"></span>
-          <a class="section-link" href="#" data-goto="archive">Archive <svg class="icon"><use href="#i-chev-r"/></svg></a>
-        </div>
-        <div class="highlights-grid">
-          <article class="quote-card glass">
-            <div class="q-glyph">&ldquo;</div>
-            <p class="q-text">You have power over your mind — not outside events. Realize this, and you will find strength.</p>
-            <div class="q-src"><svg class="icon"><use href="#i-book"/></svg><span><em>Meditations</em> · Marcus Aurelius</span></div>
-            <div class="q-foot"><span class="chip">quote</span><span class="q-time">2h ago</span></div>
-          </article>
-          <article class="quote-card glass">
-            <div class="q-glyph">&ldquo;</div>
-            <p class="q-text">Good design is actually a lot harder to notice than poor design. A well-designed object fits the task so well that the object is as if invisible.</p>
-            <div class="q-src"><svg class="icon"><use href="#i-book"/></svg><span><em>The Design of Everyday Things</em></span></div>
-            <div class="q-foot"><span class="chip">concept</span><span class="q-time">5h ago</span></div>
-          </article>
-          <article class="quote-card glass">
-            <div class="q-glyph">&ldquo;</div>
-            <p class="q-text">The best moments usually occur when a person's body or mind is stretched to its limits in a voluntary effort to accomplish something difficult and worthwhile.</p>
-            <div class="q-src"><svg class="icon"><use href="#i-book"/></svg><span><em>Deep Work</em> · quoting flow</span></div>
-            <div class="q-foot"><span class="chip">fact</span><span class="q-time">yesterday</span></div>
-          </article>
-          <article class="quote-card glass">
-            <div class="q-glyph">&ldquo;</div>
-            <p class="q-text">Every system is perfectly designed to get the results it gets. If you don't like the results, change the structure.</p>
-            <div class="q-src"><svg class="icon"><use href="#i-book"/></svg><span><em>Thinking in Systems</em></span></div>
-            <div class="q-foot"><span class="chip">concept</span><span class="q-time">yesterday</span></div>
-          </article>
-          <article class="quote-card glass">
-            <div class="q-glyph">&ldquo;</div>
-            <p class="q-text">You do not rise to the level of your goals. You fall to the level of your systems.</p>
-            <div class="q-src"><svg class="icon"><use href="#i-book"/></svg><span><em>Atomic Habits</em> · James Clear</span></div>
-            <div class="q-foot"><span class="chip">quote</span><span class="q-time">2d ago</span></div>
-          </article>
-          <article class="quote-card glass">
-            <div class="q-glyph">&ldquo;</div>
-            <p class="q-text">The obstacle in the path becomes the path. Never forget, within every obstacle is an opportunity to improve our condition.</p>
-            <div class="q-src"><svg class="icon"><use href="#i-book"/></svg><span><em>The Obstacle Is the Way</em></span></div>
-            <div class="q-foot"><span class="chip">quote</span><span class="q-time">2d ago</span></div>
-          </article>
-        </div>
-      </section>
-    </section>
-
-    <!-- ======== LIBRARY ======== -->
-    <section class="page" data-page="library">
-      <header class="page-head">
-        <div>
-          <p class="micro ph-eyebrow">Library</p>
-          <h1 class="display">Library</h1>
-        </div>
-        <button class="btn btn-ghost import-btn"><svg class="icon icon-sm"><use href="#i-plus"/></svg>Import</button>
-      </header>
-
-      <section class="section">
-        <div class="pill-row" role="tablist">
-          <button class="pill active">All</button>
-          <button class="pill">Books</button>
-          <button class="pill">Articles</button>
-          <button class="pill">Research</button>
-          <button class="pill">Writings</button>
-          <button class="pill">Posts</button>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-head">
-          <h2 class="title">Folders</h2>
-          <span class="count">5</span>
-        </div>
-        <div class="h-row no-scrollbar">
-          <div class="folder-card">
-            <div class="f-well"><span class="f-tab"></span><div class="f-covers"><span class="fc cv-a"></span><span class="fc cv-b"></span><span class="fc cv-c"></span></div></div>
-            <div class="f-caption"><b>Books</b><span>· 24</span></div>
-          </div>
-          <div class="folder-card">
-            <div class="f-well"><span class="f-tab"></span><div class="f-covers"><span class="fc cv-b"></span><span class="fc cv-c"></span><span class="fc cv-a"></span></div></div>
-            <div class="f-caption"><b>Articles</b><span>· 51</span></div>
-          </div>
-          <div class="folder-card">
-            <div class="f-well"><span class="f-tab"></span><div class="f-covers"><span class="fc cv-c"></span><span class="fc cv-a"></span><span class="fc cv-b"></span></div></div>
-            <div class="f-caption"><b>Research</b><span>· 12</span></div>
-          </div>
-          <div class="folder-card">
-            <div class="f-well"><span class="f-tab"></span><div class="f-covers"><span class="fc cv-a"></span><span class="fc cv-c"></span><span class="fc cv-b"></span></div></div>
-            <div class="f-caption"><b>Writings</b><span>· 5</span></div>
-          </div>
-          <div class="folder-card">
-            <div class="f-well"><span class="f-tab"></span><div class="f-covers"><span class="fc cv-b"></span><span class="fc cv-a"></span><span class="fc cv-c"></span></div></div>
-            <div class="f-caption"><b>Posts</b><span>· 8</span></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-head">
-          <h2 class="title">All works</h2>
-          <span class="count">104</span>
-        </div>
-        <div class="lib-grid">
-          <article class="lib-item"><div class="cover cv-a"><span class="c-spine"></span><span class="c-mark">M</span></div><span class="li-title">Meditations</span><span class="li-sub"><span class="chip">book</span> 2d ago</span></article>
-          <article class="lib-item"><div class="cover cv-b"><span class="c-spine"></span><span class="c-mark">DW</span></div><span class="li-title">Deep Work</span><span class="li-sub"><span class="chip">book</span> 4d ago</span></article>
-          <article class="lib-item"><div class="cover cv-c"><span class="c-spine"></span><span class="c-mark">DE</span></div><span class="li-title">The Design of Everyday Things</span><span class="li-sub"><span class="chip">book</span> 1w ago</span></article>
-          <article class="lib-item"><div class="cover cv-d"><span class="c-spine"></span><span class="c-mark">Z</span></div><span class="li-title">Zero to One</span><span class="li-sub"><span class="chip">book</span> 2w ago</span></article>
-          <article class="lib-item"><div class="cover cv-e"><span class="c-spine"></span><span class="c-mark">SA</span></div><span class="li-title">Steal Like an Artist</span><span class="li-sub"><span class="chip">book</span> 2w ago</span></article>
-          <article class="lib-item"><div class="cover cv-f"><span class="c-spine"></span><span class="c-mark">MS</span></div><span class="li-title">Man's Search for Meaning</span><span class="li-sub"><span class="chip">book</span> 3w ago</span></article>
-          <article class="lib-item"><div class="cover cv-b"><span class="c-spine"></span><span class="c-mark">SU</span></div><span class="li-title">Shape Up</span><span class="li-sub"><span class="chip">article</span> 3w ago</span></article>
-          <article class="lib-item"><div class="cover cv-d"><span class="c-spine"></span><span class="c-mark">LS</span></div><span class="li-title">Letters from a Stoic</span><span class="li-sub"><span class="chip">book</span> 1mo ago</span></article>
-          <article class="lib-item"><div class="cover cv-e"><span class="c-spine"></span><span class="c-mark">AL</span></div><span class="li-title">The Art of Learning</span><span class="li-sub"><span class="chip">book</span> 1mo ago</span></article>
-          <article class="lib-item"><div class="cover cv-a"><span class="c-spine"></span><span class="c-mark">LY</span></div><span class="li-title">Letters to a Young Poet</span><span class="li-sub"><span class="chip">book</span> 1mo ago</span></article>
-        </div>
-      </section>
-    </section>
-
-    <!-- ======== ARCHIVE ======== -->
-    <section class="page" data-page="archive">
-      <header class="page-head">
-        <div>
-          <p class="micro ph-eyebrow">Archive</p>
-          <h1 class="display">Archive</h1>
-        </div>
-        <span class="ph-meta">your raw thinking</span>
-      </header>
-
-      <section class="section">
-        <div class="section-head">
-          <h2 class="title">Journal</h2>
-          <span class="count">this week</span>
-        </div>
-        <div class="h-row no-scrollbar">
-          <div class="day-card glass">
-            <div class="d-num">14</div><div class="d-month">October · Today</div><div class="d-line"></div>
-            <p class="d-excerpt">the reading session clarified how capture should feel — nothing between the thought and the page.</p>
-            <div class="d-count">3 entries</div>
-          </div>
-          <div class="day-card glass">
-            <div class="d-num">13</div><div class="d-month">October</div><div class="d-line"></div>
-            <p class="d-excerpt">concepts are the real output. books are inputs. the wiki between my ears is the product.</p>
-            <div class="d-count">2 entries</div>
-          </div>
-          <div class="day-card glass">
-            <div class="d-num">12</div><div class="d-month">October</div><div class="d-line"></div>
-            <p class="d-excerpt">drew the highlight flow on paper first. raw pen beats the perfect tool, every time.</p>
-            <div class="d-count">5 entries</div>
-          </div>
-          <div class="day-card glass">
-            <div class="d-num">11</div><div class="d-month">October</div><div class="d-line"></div>
-            <p class="d-excerpt">quiet day. one thought worth keeping: progress matters more than perfection.</p>
-            <div class="d-count">1 entry</div>
-          </div>
-          <button class="journal-open-card"><svg class="icon icon-lg"><use href="#i-chev-r"/></svg>Open journal</button>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-head">
-          <h2 class="title">Notes</h2>
-          <span class="count">46</span>
-        </div>
-        <div class="notes-grid">
-          <article class="note-card glass">
-            <p class="n-text">capture must be one gesture — highlight, word, gone. the taxonomy question can wait; the thought can't.</p>
-            <div class="n-foot"><span class="at">@ Meditations</span><span>·</span><span>Oct 14</span></div>
-          </article>
-          <article class="note-card glass">
-            <p class="n-text">how highlights flow into concepts —</p>
-            <div class="n-diagram">
-              <svg width="220" height="64" viewBox="0 0 220 64" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--fg-3)">
-                <rect x="6" y="20" width="52" height="24" rx="8"/><rect x="84" y="20" width="52" height="24" rx="8"/><rect x="162" y="20" width="52" height="24" rx="8"/>
-                <path d="M58 32h20m6 0 6 0M140 32h16" stroke-linecap="round"/><path d="m154 28 6 4-6 4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <div class="n-foot"><span class="at">@ Thinking in Systems</span><span>·</span><span>Oct 12</span></div>
-          </article>
-          <article class="note-card glass">
-            <p class="n-text">concepts are the real output. books are inputs; the wiki between my ears is the product.</p>
-            <div class="n-foot"><span class="at">@ Deep Work</span><span>·</span><span>Oct 13</span></div>
-          </article>
-          <article class="note-card glass">
-            <p class="n-text">raw first, structure later. the note is a sketch, not a document. if it takes effort to save a thought, the tool is wrong.</p>
-            <div class="n-foot"><span>Oct 12</span></div>
-          </article>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-head">
-          <h2 class="title">Knowledge base</h2>
-          <span class="count">18 concepts</span>
-        </div>
-        <div class="concepts-grid">
-          <article class="concept-card glass">
-            <div class="k-name">Compounding knowledge</div>
-            <p class="k-def">small inputs, connected daily, outscale intensity. the digest is the proof.</p>
-            <div class="k-foot"><span class="k-links">23 links · 4 works</span><span class="k-growth"><i></i><i></i><i></i><i></i><i></i></span></div>
-          </article>
-          <article class="concept-card glass">
-            <div class="k-name">Habit loops</div>
-            <p class="k-def">cue → craving → response → reward. design the cue, not the willpower.</p>
-            <div class="k-foot"><span class="k-links">17 links · 3 works</span><span class="k-growth"><i></i><i></i><i></i><i></i><i style="background:var(--fg-2)"></i></span></div>
-          </article>
-          <article class="concept-card glass">
-            <div class="k-name">Via negativa</div>
-            <p class="k-def">improvement by removal; what you cut defines the shape of what stays.</p>
-            <div class="k-foot"><span class="k-links">14 links · 2 works</span><span class="k-growth"><i></i><i></i><i></i><i></i><i></i></span></div>
-          </article>
-          <article class="concept-card glass">
-            <div class="k-name">Desire and suffering</div>
-            <p class="k-def">the gap between expectation and reality is where friction lives.</p>
-            <div class="k-foot"><span class="k-links">9 links · 2 works</span><span class="k-growth"><i></i><i></i><i></i><i></i><i></i></span></div>
-          </article>
-        </div>
-      </section>
-    </section>
-  </main>
+<body class="theme-dark" data-page="index.html">
+<div class="home-dark-1">
+<div class="study-shell-2">
+<div class="navigation-rail-3">
+<div class="rail-panel">
+<div class="navigation-4">
+<div class="identity-5">
+<div class="avatar-6" data-tip="prathamarchives · Personal space">
+<p class="text-7"><span class="text-rgb-60-60-58">pa</span></p>
+</div>
+<div class="account-details-327"><p class="text-328 nav-meta">prathamarchives</p><p class="text-329 nav-meta">Personal space</p></div>
+</div>
+<div class="destinations-8">
+<a class="navigation-item-9" href="index.html">
+<div class="house-10" data-tip="Home">
+<img src="images/vector-11.svg" class="vector-11" alt="vector" />
+</div>
+<p class="text-334 nav-label">Home</p>
+</a>
+<a class="navigation-item-12" href="library.html">
+<div class="book-open-13" data-tip="Library">
+<img src="images/vector-14.svg" class="vector-14" alt="vector" />
+</div>
+<p class="text-338 nav-label">Library</p>
+</a>
+<a class="navigation-item-15" href="archive.html">
+<div class="archive-16" data-tip="Archive">
+<img src="images/vector-17.svg" class="vector-17" alt="vector" />
+</div>
+<p class="text-342 nav-label">Archive</p>
+</a>
+</div>
+</div>
+<div class="rail-tools-18">
+<p class="text-344 nav-meta">All changes saved</p>
+<div class="pin-19" data-tip="Pin rail">
+<img src="images/vector-20.svg" class="vector-20" alt="vector" />
+</div>
+</div>
+  </div><!--/rail-panel--></div>
+<div class="home-content-21">
+<div class="welcome-22">
+<div class="greeting-23">
+<p class="text-24"><span class="text-rgb-161-161-156">FRIDAY, OCTOBER 16</span></p>
+<p class="text-25"><span class="text-rgb-238-238-234">A little further, a little clearer.</span></p>
+<p class="text-26"><span class="text-rgb-161-161-156">Pick up a book. Stay with a thought. Make something of it.</span></p>
+</div>
+<div class="action-27">
+<div class="plus-28">
+<img src="images/vector-29.svg" class="vector-29" alt="vector" />
+</div>
+<p class="text-30"><span class="text-rgb-238-238-234">Import a work</span></p>
+</div>
+</div>
+<div class="study-overview-31">
+<div class="reading-space-32">
+<div class="currently-reading-33">
+<div class="section-heading-34">
+<p class="text-35"><span class="text-rgb-238-238-234">Currently reading</span></p>
+<a class="text-36 sec-link" href="library.html"><span class="text-rgb-161-161-156">Your library  ↗</span></a>
+</div>
+<div class="reading-cards-37">
+<div class="continue-reading-38">
+<div class="book-cover-39">
+<p class="text-40"><span class="text-rgb-34-34-34">DON NORMAN</span></p>
+<div class="door-study-41">
+<div class="handle-42"></div>
+</div>
+<p class="text-43"><span class="text-rgb-34-34-34">THE DESIGN
+OF EVERYDAY
+THINGS</span></p>
+<div class="spine-44"></div>
+</div>
+<div class="work-details-45">
+<div class="book-information-46">
+<p class="text-47"><span class="text-rgb-161-161-156">PICK UP WHERE YOU LEFT OFF</span></p>
+<p class="text-48"><span class="text-rgb-238-238-234">The Design of Everyday Things</span></p>
+<p class="text-49"><span class="text-rgb-161-161-156">Don Norman</span></p>
+</div>
+<div class="reading-progress-50">
+<div class="progress-labels-51">
+<p class="text-52"><span class="text-rgb-161-161-156">Page 14 of 368</span></p>
+<p class="text-53"><span class="text-rgb-161-161-156">4%</span></p>
+</div>
+<div class="progress-track-54">
+<div class="progress-fill-55 fill-anim" style="width:4%"></div>
+</div>
+<div class="action-56">
+<div class="arrow-up-right-57">
+<img src="images/vector-58.svg" class="vector-58" alt="vector" />
+</div>
+<p class="text-59"><span class="text-rgb-36-36-36">Continue reading</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="reading-card-60">
+<div class="work-identity-61">
+<div class="book-cover-62">
+<p class="text-63"><span class="text-rgb-242-242-238">CAL NEWPORT</span></p>
+<div class="rule-64"></div>
+<p class="text-65"><span class="text-rgb-242-242-238">DEEP
+WORK</span></p>
+<div class="spine-66"></div>
+</div>
+<div class="book-information-67">
+<p class="text-68"><span class="text-rgb-238-238-234">Deep Work</span></p>
+<p class="text-69"><span class="text-rgb-161-161-156">Cal Newport</span></p>
+</div>
+</div>
+<p class="text-70"><span class="text-rgb-161-161-156">A place for focus, away from everything else.</span></p>
+<div class="reading-position-71">
+<p class="text-72"><span class="text-rgb-161-161-156">Page 135 · 45%</span></p>
+<div class="arrow-up-right-73">
+<img src="images/vector-74.svg" class="vector-74" alt="vector" />
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="reading-lists-75">
+<div class="section-heading-76">
+<p class="text-77"><span class="text-rgb-238-238-234">Reading lists</span></p>
+<a class="text-78 sec-link" href="library.html"><span class="text-rgb-161-161-156">View all  ↗</span></a>
+</div>
+<div class="lists-79">
+<div class="reading-list-80">
+<div class="book-stack-81">
+<div class="book-cover-82">
+<p class="text-83"><span class="text-rgb-242-242-238">CAL NEWPORT</span></p>
+<div class="rule-84"></div>
+<p class="text-85"><span class="text-rgb-242-242-238">DEEP
+WORK</span></p>
+<div class="spine-86"></div>
+</div>
+<div class="back-cover-87">
+<div class="book-cover-88">
+<p class="text-89"><span class="text-rgb-41-41-41">MARCUS AURELIUS</span></p>
+<div class="rule-90"></div>
+<p class="text-91"><span class="text-rgb-41-41-41">Meditations</span></p>
+<div class="spine-92"></div>
+</div>
+</div>
+</div>
+<div class="list-details-93">
+<p class="text-94"><span class="text-rgb-238-238-234">On attention &amp; intention</span></p>
+<p class="text-95"><span class="text-rgb-161-161-156">4 works · Curated by you</span></p>
+</div>
+</div>
+<div class="reading-list-96">
+<div class="book-stack-97">
+<div class="book-cover-98">
+<p class="text-99"><span class="text-rgb-34-34-34">DON NORMAN</span></p>
+<div class="door-study-100">
+<div class="handle-101"></div>
+</div>
+<p class="text-102"><span class="text-rgb-34-34-34">THE DESIGN
+OF EVERYDAY
+THINGS</span></p>
+<div class="spine-103"></div>
+</div>
+<div class="back-cover-104">
+<div class="book-cover-105">
+<p class="text-106"><span class="text-rgb-49-49-49">DONELLA H. MEADOWS</span></p>
+<img src="images/system-107.svg" class="system-107" alt="system" />
+<img src="images/system-108.svg" class="system-108" alt="system" />
+<p class="text-109"><span class="text-rgb-49-49-49">Thinking
+in Systems</span></p>
+<div class="spine-110"></div>
+</div>
+</div>
+</div>
+<div class="list-details-111">
+<p class="text-112"><span class="text-rgb-238-238-234">How things make sense</span></p>
+<p class="text-113"><span class="text-rgb-161-161-156">6 works · Curated by you</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="recent-highlights-114">
+<div class="section-heading-115">
+<p class="text-116"><span class="text-rgb-238-238-234">Recent highlights</span></p>
+<a class="text-117 sec-link" href="archive.html"><span class="text-rgb-161-161-156">Open archive  ↗</span></a>
+</div>
+<div class="highlight-118">
+<div class="passage-marker-119"></div>
+<div class="passage-120">
+<p class="text-121"><span class="text-rgb-238-238-234">“Affordances define what actions are possible. Signifiers specify how people discover those possibilities.”</span></p>
+<div class="provenance-122">
+<p class="text-123"><span class="text-rgb-161-161-156">The Design of Everyday Things · p. 14</span></p>
+<p class="text-124"><span class="text-rgb-161-161-156">1 deep note</span></p>
+</div>
+</div>
+<p class="text-125"><span class="text-rgb-114-114-112">Today</span></p>
+</div>
+<div class="highlight-126">
+<div class="passage-marker-127"></div>
+<div class="passage-128">
+<p class="text-129"><span class="text-rgb-238-238-234">A useful question to return to: what in the environment makes the next action easier?</span></p>
+<div class="provenance-130">
+<p class="text-131"><span class="text-rgb-161-161-156">Thinking in Systems · p. 87</span></p>
+<p class="text-132"><span class="text-rgb-161-161-156">Your annotation</span></p>
+</div>
+</div>
+<p class="text-133"><span class="text-rgb-114-114-112">Yesterday</span></p>
+</div>
+</div>
+</div>
+<div class="reflection-space-134">
+<div class="today-s-journal-135">
+<div class="journal-header-136">
+<div class="notebook-pen-137">
+<img src="images/vector-138.svg" class="vector-138" alt="vector" />
+</div>
+<p class="text-139"><span class="text-rgb-161-161-156">16 OCT 2026</span></p>
+</div>
+<div class="journal-excerpt-140">
+<p class="text-141"><span class="text-rgb-238-238-234">Today’s page</span></p>
+<p class="text-142"><span class="text-rgb-161-161-156">Clarity isn’t about adding more instructions. It might be about making the next step visible.</span></p>
+</div>
+<div class="referenced-work-143">
+<p class="text-144"><span class="text-rgb-238-238-234">@</span></p>
+<p class="text-145"><span class="text-rgb-161-161-156">The Design of Everyday Things</span></p>
+</div>
+<a class="action-146" href="journal.html"><div class="arrow-up-right-147">
+<img src="images/vector-148.svg" class="vector-148" alt="vector" />
+</div><p class="text-149"><span class="text-rgb-238-238-234">Open journal</span></p></a>
+</div>
+<div class="return-to-a-thought-150">
+<p class="text-151"><span class="text-rgb-161-161-156">RETURN TO A THOUGHT</span></p>
+<p class="text-152"><span class="text-rgb-238-238-234">Make the next action legible</span></p>
+<p class="text-153"><span class="text-rgb-161-161-156">A good cue reduces the distance between intention and action.</span></p>
+<p class="text-154"><span class="text-rgb-161-161-156">From Don Norman · p. 14
+Deep note · Edited today</span></p>
+<div class="note-link-155">
+<p class="text-156"><span class="text-rgb-238-238-234">Continue the thought</span></p>
+<div class="arrow-right-157">
+<img src="images/vector-158.svg" class="vector-158" alt="vector" />
+</div>
+</div>
+</div>
+<p class="text-159"><span class="text-rgb-114-114-112">Your space, at your pace.
+Everything here is saved to your archive.</span></p>
+</div>
+</div>
+</div>
+<div class="workspace-header-160">
+<div class="location-161">
+<p class="text-162"><span class="text-rgb-238-238-234">@prathamarchives</span></p>
+<p class="text-163"><span class="text-rgb-114-114-112">/</span></p>
+<p class="text-164"><span class="text-rgb-161-161-156">Home</span></p>
+</div>
+<div class="workspace-tools-165">
+<div class="search-166" data-tip="Search anything">
+<div class="search-167">
+<img src="images/vector-168.svg" class="vector-168" alt="vector" />
+</div>
+<p class="text-169"><span class="text-rgb-161-161-156">Search anything</span></p>
+<p class="text-170"><span class="text-rgb-114-114-112">⌘ K</span></p>
+</div>
+<div class="divider-171"></div>
+<a class="moon-172" title="Switch theme" href="home-light.html"><img src="images/vector-173.svg" class="vector-173" alt="vector" /></a>
+</div>
+</div>
+</div>
 </div>
 
-<!-- ============ ACCOUNT OVERLAY — grows from the account row, same motion family ============ -->
-<div class="overlay-root" id="accountOverlay" hidden>
-  <div class="overlay-backdrop" id="overlayBackdrop"></div>
-  <aside class="account-panel glass-strong" role="dialog" aria-label="Account">
-    <header class="acc-head">
-      <span class="avatar avatar-xl">P</span>
-      <div>
-        <div class="a-title">@prathamarchives</div>
-        <div class="a-handle">reading · study · reflection</div>
-      </div>
-      <span class="plan">LOCAL + CLOUD</span>
-    </header>
-    <nav class="acc-menu">
-      <button class="acc-row"><svg class="icon"><use href="#i-user"/></svg>Account settings<svg class="icon icon-sm a-chev"><use href="#i-chev-r"/></svg></button>
-      <button class="acc-row"><svg class="icon"><use href="#i-shield"/></svg>Auth &amp; security<svg class="icon icon-sm a-chev"><use href="#i-chev-r"/></svg></button>
-      <button class="acc-row"><svg class="icon"><use href="#i-plug"/></svg>MCP / API<svg class="icon icon-sm a-chev"><use href="#i-chev-r"/></svg></button>
-      <button class="acc-row"><svg class="icon"><use href="#i-download"/></svg>Import sources<svg class="icon icon-sm a-chev"><use href="#i-chev-r"/></svg></button>
-      <button class="acc-row"><svg class="icon"><use href="#i-theme"/></svg>Appearance<span class="toggle on" id="themeToggle" role="switch" aria-checked="true"></span></button>
-      <button class="acc-row"><svg class="icon"><use href="#i-info"/></svg>About<svg class="icon icon-sm a-chev"><use href="#i-chev-r"/></svg></button>
-    </nav>
-    <div class="acc-rule"></div>
-    <footer class="acc-foot">
-      <span>v0.1 · pre-execution visuals</span>
-      <span class="sync"><span class="dot"></span>synced · local</span>
-    </footer>
-  </aside>
-</div>
-
-<script>
-  // ---- page switching (rise-page transition lives in shell.css) ----
-  const navItems = document.querySelectorAll('.nav-item');
-  const pages = document.querySelectorAll('.page');
-  function goto(name) {
-    navItems.forEach(b => b.classList.toggle('active', b.dataset.page === name));
-    pages.forEach(p => p.classList.toggle('active', p.dataset.page === name));
-    document.getElementById('content').scrollTop = 0;
-  }
-  navItems.forEach(b => b.addEventListener('click', () => goto(b.dataset.page)));
-  document.querySelectorAll('[data-goto]').forEach(a =>
-    a.addEventListener('click', e => { e.preventDefault(); goto(a.dataset.goto); }));
-
-  // ---- sidebar pin (utility, rail foot) ----
-  const sidebar = document.getElementById('sidebar');
-  document.getElementById('pinBtn').addEventListener('click', () => {
-    sidebar.classList.toggle('pinned');
-    const pinned = sidebar.classList.contains('pinned');
-    document.getElementById('pinBtn').setAttribute('aria-label', pinned ? 'Unpin sidebar' : 'Pin sidebar');
-  });
-
-  // ---- account overlay (grows from TOP-left — origin follows the avatar trigger) ----
-  const overlay = document.getElementById('accountOverlay');
-  function openOverlay() { overlay.hidden = false; requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('open'))); }
-  function closeOverlay() {
-    overlay.classList.remove('open');
-    overlay.addEventListener('transitionend', () => { overlay.hidden = true; }, { once: true });
-  }
-  document.getElementById('accountBtn').addEventListener('click', openOverlay);
-  document.getElementById('overlayBackdrop').addEventListener('click', closeOverlay);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !overlay.hidden) closeOverlay(); });
-
-  // ---- theme (Appearance toggle; grayscale both ways — X-12) ----
-  const themeToggle = document.getElementById('themeToggle');
-  themeToggle.addEventListener('click', () => {
-    const dark = document.documentElement.dataset.theme === 'dark';
-    document.documentElement.dataset.theme = dark ? 'light' : 'dark';
-    themeToggle.classList.toggle('on', !dark);
-    themeToggle.setAttribute('aria-checked', String(!dark));
-  });
-</script>
 </body>
 </html>

@@ -212,3 +212,21 @@ Stage Summary:
 
 Stage Summary:
 - The owner's three axes (shadows/motion/vibe) now have mechanical evidence; preview serves pass 5 (?v=5). Awaiting owner's live review.
+
+---
+
+## Session 10 — 2026-10-16 — INT-013: the owner's v1 prototype replaces the design
+
+- Intake first (L-06): turn-013 verbatim + zip archived to context/references/figma-v1/ (6 pages + styles.css + images); INT-013 ledgered with 5 grounds + amendments (arivo:// URI scheme, pfp-top native, covers-with-inside-identity).
+- Extraction: context/intake/INT-013-extraction/css-digest.md — all 1026 used classes / 213 base groups parsed from the 214KB export; font census (Inter normal×277 + 500×70, Lora prose ×4); the rail math DECODED from the export's percentages: avatar 87.5% of 32px inner ⇒ 48px collapsed; 17.07% of 164px inner ⇒ 176px expanded; avatar 28px both states. Pass-4 geometry survives, owner-adjusted 44→48.
+- Mechanical finding: Figma HTML exports DROP frame-level layout (no display on the shell, no cover dims, no page canvas) — the export cannot render as designed raw. Response: prototype.css frozen verbatim (components own the visuals), tokens.css centralizes every literal, shell.css reconstructs ONLY the scaffold (grid 48+1fr, rail slot + overlay panel, cover dims restored: large 118 / medium 72 / small 56, progress 4px tracks), motion.css + motion.js add the life (rise stagger, hover bloom, press .98, fill-in, ink-inverted tooltips, caret pulse, pointer nudge; reduced-motion gated).
+- Pages: index=home-dark (landing, dark-first), home-light, library, archive (ships PINNED = its frame state), journal, reader; nav items → anchors; theme toggle navigates dark↔light; section links wired; fonts self-hosted (Inter 400/500 from the Arivo repo, Lora fetched; zero CDN).
+- Rail: 48 slot + overlay panel opening 176 on hover (labels/account/save-state injected with classes lifted from archive's expanded frame), pin holds (tilt 45° + tint), pinned pages claim 128px of layout (archive at rest = 1:1), hover-open breathes content 3px/0.998 transform-only (INT-009 D preserved).
+- Failure caught by verify/iteration: scaffold wipe deleted the glue masters → restructured: masters live in /home/z/my-project/scripts/design-glue/, scaffold copies them in (rebuild is now idempotent: scaffold → transform → shoot).
+- Ratchet: verify.sh 5e/5f/5g rewritten to the INT-013 truth (rail 48/176 overlay, 400/500 voice, breath band, identity ×6 + pa ×6, arivo-except-URI, latency ≤280ms, tooltips, frozen prototype header, fonts local, page graph, motion layer, cover dims, v6 cache-bust, zero external resources).
+- Docs lockstep: INTENT-LEDGER INT-013, STATE, REVIEW pass-6 entry, DESIGN-SYSTEM amendment note, design/README.
+- Dev server restarted: daemon_nocache.py 3000 (no-store), links ?v=6; previews p6-*.png (6 pages + rail-open + card-hover).
+
+Stage Summary:
+- The owner's prototype IS the product now, one-on-one, alive. Preview: port 81 → 3000, ?v=6.
+- Open: owner review of pass 6; remaining pages get correction turns; PAT rotation still advised.

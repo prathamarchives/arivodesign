@@ -1,220 +1,54 @@
 /* ============================================================
-   arivo — tokens.css
-   The single source of visual values. Purpose-named, never raw.
-   Components may reference tokens ONLY (DESIGN-SYSTEM.md rules).
-   Grounds: INT-004 · D-008 · X-11..X-16
+   tokens.css — the owner's Figma v1 prototype values (INT-013)
+   Every color literal + font family of the prototype lives here.
+   prototype.css is the VERBATIM export (frozen artifact) and may
+   only reference these variables. Page canvases added for the
+   shell scaffold (values consistent with the prototype palette).
    ============================================================ */
 
 @font-face {
-  font-family: "Helvetica";
-  src: url("../assets/fonts/helvetica-light.ttf") format("truetype");
-  font-weight: 300; font-style: normal; font-display: swap;
-}
-@font-face {
-  font-family: "Helvetica";
-  src: url("../assets/fonts/helvetica-regular.ttf") format("truetype");
+  font-family: 'Inter';
+  src: url('../assets/fonts/inter-400.woff2') format('woff2');
   font-weight: 400; font-style: normal; font-display: swap;
 }
 @font-face {
-  font-family: "Helvetica";
-  src: url("../assets/fonts/helvetica-italic.ttf") format("truetype");
-  font-weight: 400; font-style: italic; font-display: swap;
+  font-family: 'Inter';
+  src: url('../assets/fonts/inter-500.woff2') format('woff2');
+  font-weight: 500; font-style: normal; font-display: swap;
 }
 @font-face {
-  font-family: "Helvetica";
-  src: url("../assets/fonts/helvetica-bold.ttf") format("truetype");
-  font-weight: 700; font-style: normal; font-display: swap;
-}
-@font-face {
-  font-family: "Helvetica Rounded";
-  src: url("../assets/fonts/helvetica-rounded-bold.otf") format("opentype");
-  font-weight: 700; font-style: normal; font-display: swap;
+  font-family: 'Lora';
+  src: url('../assets/fonts/lora-400.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
 }
 
 :root {
-  /* ---- typography roles (X-16) ---- */
-  --font-sans: "Helvetica", "Helvetica Neue", Helvetica, Arial, sans-serif;
-
-  --fs-display: 40px;  --lh-display: 1.1;   --ls-display: -0.02em; --fw-display: 500;
-  --fs-title: 22px;    --lh-title: 1.25;
-  --fs-heading: 16px;  --lh-heading: 1.35;
-  --fs-body: 15px;     --lh-body: 1.55;
-  --fs-meta: 13px;     --lh-meta: 1.4;
-  --fs-micro: 11px;    --lh-micro: 1;       --ls-micro: 0.08em;
-
-  /* ---- radius: no sharp corners (X-13) ---- */
-  --r-xs: 8px; --r-sm: 12px; --r-md: 16px; --r-lg: 20px;
-  --r-xl: 24px; --r-2xl: 28px; --r-pill: 999px;
-
-  /* ---- spacing scale ---- */
-  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
-  --s-6: 24px; --s-7: 32px; --s-8: 40px; --s-9: 56px; --s-10: 72px;
-
-  /* ---- sidebar geometry (INT-009 — derived, not chosen; supersedes INT-007's 64/224):
-         rail 44 = 6 + 32 + 6 (owner: "cut 1/3" of 64 → 44 = −31.25%)
-         cell 32 = icon 20 + 2×6 enclosure (Gestalt enclosure hugs the glyph)
-         expanded 176 = 4 × 44 (rational ratio — the grid survives both states)
-         axis x = 22 (rail centerline); avatar 28 = 1.4 × icon, anchored top ---- */
-  --sidebar-w: 44px;
-  --sidebar-w-expanded: 176px;
-  --sb-pad: 5px;          /* rail edge padding: 44 = 1(border) + 5 + cell 32 + 5 + 1(border) —
-                             the cell is EXACTLY 32 with the border inside the 44 (box-sizing) */
-  --sb-cell: 32px;        /* the collapsed module: icon 20 + enclosure each side */
-  --sb-inset: 6px;        /* the enclosure: (32 − 20) / 2 — centers the 20px icon in the 32px cell */
-  --sb-gap: 8px;          /* icon→label gap AND nav row gap (directive: ≤ 8–10px) */
-
-  /* ---- icon sizes (16/20/24 only) ---- */
-  --ic-sm: 16px; --ic-md: 20px; --ic-lg: 24px;
-
-  /* ---- cover fills: placeholder artwork v3 (INT-012 — R7 acceptance anatomy:
-         NEUTRAL warm-grey night tones, cool cast removed; adjacent works never share a tone) ---- */
-  --cover-1: linear-gradient(165deg, #565452, #31302E 55%, #262524);
-  --cover-2: linear-gradient(155deg, #4C4A48, #2A2928 60%);
-  --cover-3: linear-gradient(200deg, #454341, #242322 65%);
-  --cover-4: linear-gradient(145deg, #3C3A38, #1F1E1D 70%);
-  --cover-5: linear-gradient(185deg, #343231, #1A1918 60%);
-  --cover-6: linear-gradient(125deg, #2C2B29, #161514 65%);
-  --cover-mini-1: linear-gradient(160deg, #454341, #232221);
-  --cover-mini-2: linear-gradient(160deg, #3A3836, #1E1D1C);
-  --cover-mini-3: linear-gradient(160deg, #302F2D, #191817);
-
-  /* ---- blur levels — the Frosted ref (X-14) ---- */
-  --blur-glass: 24px;
-  --blur-glass-strong: 40px;
-  --blur-motion: 8px;
-
-  /* ---- motion: one family (X-11). INT-009 spring solve: k=300 c=30 m=0.8 →
-         ω₀=19.36 rad/s, ζ=0.968 (near-critical), settle ≈ 213ms → CSS render =
-         240ms glide, NO elastic wobble (a bouncy curve would be ζ≈0.6, not the spec) ---- */
-  --ease-glide: cubic-bezier(0.32, 0.72, 0, 1);
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur-panel: 240ms;   /* glide-panel (INT-009 spring render; was 380 — too slow) */
-  --dur-page: 280ms;    /* rise-page */
-  --dur-drift: 200ms;   /* drift-in */
-  --dur-micro: 120ms;   /* press-micro (INT-009: zero-latency feel) */
-  --dur-fade: 180ms;    /* fade-soft */
-  --dur-tip-in: 160ms;  /* tooltip fade */
-  --tip-delay: 260ms;   /* tooltip show delay (fast, not instant-flicker) */
-
-  /* ---- z ---- */
-  --z-sidebar: 40; --z-overlay-backdrop: 60; --z-overlay: 70; --z-tip: 90;
+  --font-family-inter: 'Inter', sans-serif;
+  --font-family-lora: 'Lora', sans-serif;
+  --text-rgb-60-60-58: rgba(60, 60, 58, 1);
+  --text-rgb-161-161-156: rgba(161, 161, 156, 1);
+  --text-rgb-238-238-234: rgba(238, 238, 234, 1);
+  --text-rgb-34-34-34: rgba(34, 34, 34, 1);
+  --text-rgb-36-36-36: rgba(36, 36, 36, 1);
+  --text-rgb-242-242-238: rgba(242, 242, 238, 1);
+  --text-rgb-41-41-41: rgba(41, 41, 41, 1);
+  --text-rgb-49-49-49: rgba(49, 49, 49, 1);
+  --text-rgb-114-114-112: rgba(114, 114, 112, 1);
+  --text-rgb-160-160-157: rgba(160, 160, 157, 1);
+  --text-rgb-177-177-172: rgba(177, 177, 172, 1);
+  --text-rgb-240-240-235: rgba(240, 240, 235, 1);
+  --text-rgb-168-168-162: rgba(168, 168, 162, 1);
+  --text-rgb-222-222-216: rgba(222, 222, 216, 1);
+  --text-rgb-37-37-37: rgba(37, 37, 37, 1);
+  --text-rgb-119-119-117: rgba(119, 119, 117, 1);
+  --text-white: rgba(255, 255, 255, 1);
+  --text-rgb-85-85-82: rgba(85, 85, 82, 1);
+  --text-rgb-189-189-185: rgba(189, 189, 185, 1);
+  --text-rgb-83-83-80: rgba(83, 83, 80, 1);
+  --text-rgb-80-80-77: rgba(80, 80, 77, 1);
 }
 
-/* ============ DARK THEME (designed first) ============ */
-:root, [data-theme="dark"] {
-  color-scheme: dark;
-
-  --bg-0: #09090A;
-  --bg-1: #101013;
-  /* the PANEL surface (INT-012 — S1/L1): dark depth = one lightness STEP up
-     before any shadow. The sidebar and elevated sheets live here. */
-  --bg-panel: #131316;
-  --sb-glass: rgba(255, 255, 255, 0.045);   /* the aperture tint OVER the panel */
-
-  --surface-glass: rgba(255, 255, 255, 0.075);
-  --surface-glass-strong: rgba(255, 255, 255, 0.115);
-  --surface-solid: #17171B;
-  --surface-raised: #1F1F24;
-  --surface-backdrop: rgba(5, 5, 6, 0.38);
-
-  --fg-1: #F6F5F3;
-  --fg-2: rgba(240, 240, 245, 0.62);
-  --fg-3: rgba(240, 240, 245, 0.40);
-  --fg-4: rgba(240, 240, 245, 0.26);
-  --fg-on-primary: #0B0B0C;
-
-  --border-hair: rgba(255, 255, 255, 0.105);
-  --border-strong: rgba(255, 255, 255, 0.19);
-  --border-focus: rgba(255, 255, 255, 0.5);
-
-  --highlight-top: rgba(255, 255, 255, 0.09);
-  --track: rgba(255, 255, 255, 0.18);
-
-  /* ---- INT-009 tactile system ----
-     tints: on the DARK canvas the glass whites ARE the tint family; they fix the
-     pass-3 light-theme defect where a white-on-white active pill was invisible. */
-  --tint-hover: rgba(255, 255, 255, 0.075);
-  --tint-selected: rgba(255, 255, 255, 0.13);
-  /* dark tooltip (directive B): dark theme lifts the bubble off the dark canvas */
-  --tip-bg: #26262C;
-  --tip-fg: #F6F5F3;
-  /* dark CTA elevation (directive B: Y 4–8 · blur 12–16 · 15–20%) */
-  --shadow-cta: 0 6px 14px rgba(0, 0, 0, 0.45);
-
-  /* ---- shadow ladder v2 (INT-012 — G1/G2): on a near-black canvas black-on-black
-         shadows are invisible; they read at surface boundaries and over glows, so the
-         ladder runs DEEPER and SOFTER, and depth is carried by --bg-panel steps first.
-         y-only, blur ≈ 2–3× offset (S1 law). ---- */
-  --shadow-panel: 0 10px 28px rgba(0, 0, 0, 0.5);
-  --shadow-1: 0 4px 14px rgba(0, 0, 0, 0.42);
-  --shadow-2: 0 12px 32px rgba(0, 0, 0, 0.5);
-  --shadow-3: 0 24px 64px rgba(0, 0, 0, 0.55);
-
-  /* ---- canvas glows: glass must have luminous structure to refract —
-         if the canvas reads flat black, the glass has failed (REVIEW pass 2) ---- */
-  --glow-a: rgba(255, 255, 255, 0.11);
-  --glow-b: rgba(255, 255, 255, 0.075);
-  --glow-c: rgba(255, 255, 255, 0.05);
-  --noise-opacity: 0.035;
-  --cover-ink: #EDEDF0;
-}
-
-/* ============ LIGHT THEME (derived, same roles) ============ */
-[data-theme="light"] {
-  color-scheme: light;
-
-  --bg-0: #F2F2F4;
-  --bg-1: #FAFAFB;
-  /* panel step (light): the white card over the grey field — R1/R4 */
-  --bg-panel: #FFFFFF;
-  --sb-glass: rgba(255, 255, 255, 0.6);
-
-  --surface-glass: rgba(255, 255, 255, 0.6);
-  --surface-glass-strong: rgba(255, 255, 255, 0.82);
-  --surface-solid: #FFFFFF;
-  --surface-raised: #FFFFFF;
-  --surface-backdrop: rgba(20, 20, 22, 0.18);
-
-  --fg-1: #131315;
-  --fg-2: rgba(24, 24, 28, 0.62);
-  --fg-3: rgba(24, 24, 28, 0.42);
-  --fg-4: rgba(24, 24, 28, 0.26);
-  --fg-on-primary: #FFFFFF;
-
-  --border-hair: rgba(15, 15, 18, 0.12);
-  --border-strong: rgba(15, 15, 18, 0.22);
-  --border-focus: rgba(15, 15, 18, 0.5);
-
-  --highlight-top: rgba(255, 255, 255, 0.7);
-  --track: rgba(15, 15, 18, 0.18);
-
-  /* ---- INT-009 tactile system (light) ----
-     directive B verified against constitution: #FFF surfaces on #F2F2F4–#FAFAFB field;
-     selection tint = ink at 7.5% (the G5Ka soft grey — visible on white, unlike the
-     pass-3 white glass); tooltip #0D0D0E/#FAFAFA exact; CTA shadow in the 4–8/12–16/15–20 band */
-  --tint-hover: rgba(15, 15, 18, 0.045);
-  --tint-selected: rgba(15, 15, 18, 0.075);
-  --tip-bg: #0D0D0E;
-  --tip-fg: #FAFAFA;
-  --shadow-cta: 0 6px 14px rgba(0, 0, 0, 0.18);
-
-  --shadow-panel: 0 10px 28px rgba(20, 20, 24, 0.10);
-  --shadow-1: 0 4px 14px rgba(20, 20, 24, 0.09);
-  --shadow-2: 0 12px 32px rgba(20, 20, 24, 0.13);
-  --shadow-3: 0 24px 64px rgba(20, 20, 24, 0.17);
-
-  --glow-a: rgba(20, 20, 24, 0.08);
-  --glow-b: rgba(20, 20, 24, 0.055);
-  --glow-c: rgba(20, 20, 24, 0.04);
-  --noise-opacity: 0.028;
-  --cover-ink: #FAFAFB;
-}
-
-/* reduced motion: movement collapses to fades (non-negotiable) */
-@media (prefers-reduced-motion: reduce) {
-  :root {
-    --dur-panel: 1ms; --dur-page: 1ms; --dur-drift: 1ms;
-    --dur-micro: 1ms; --dur-fade: 120ms; --blur-motion: 0px;
-    --dur-tip-in: 1ms; --tip-delay: 0ms;
-  }
-}
+/* page canvases behind the study-shell (prototype shows the shell
+   floating on a canvas; values from the prototype's own family) */
+body.theme-dark { background-color: #0B0B0A; }
+body.theme-light { background-color: #EAEAE7; }

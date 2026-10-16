@@ -1,0 +1,214 @@
+/* ============================================================
+   motion.css — INT-013 "with motion effects"
+   (master: scripts/design-glue/) Vocabulary: standing motion laws
+   + the prototype's own shadow pair. Transform/opacity only;
+   prefers-reduced-motion collapses everything.
+   ============================================================ */
+
+/* ---------- entrance ---------- */
+body.js .rise {
+  opacity: 0;
+  transform: translateY(16px);
+}
+body.js.ready .rise {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.5s ease,
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--d, 0ms);
+}
+body.js .rail-panel {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+body.js.ready .rail-panel {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.45s ease 0.05s,
+              transform 0.5s cubic-bezier(0.3, 1, 0.36, 1) 0.05s,
+              width 0.26s cubic-bezier(0.3, 1, 0.36, 1),
+              box-shadow 0.22s ease;
+}
+
+/* ---------- hover: lift + bloom ---------- */
+.continue-reading-38, .continue-reading-870,
+.reading-card-60, .reading-card-892,
+.today-s-journal-135, .today-s-journal-967,
+[class^="work-7"],
+[class^="folder-6"], [class^="folder-7"],
+.reading-list-80, .reading-list-96, .reading-list-912, .reading-list-928,
+[class^="note-4"], [class^="growing-entity-"],
+.highlight-118, .highlight-126, .highlight-950, .highlight-958,
+[class^="work-row-"], [class^="day-3"], [class^="day-4"],
+.selected-result-221, .reference-result-234, .reference-result-240,
+.today-s-entry-410, .evidence-link-465, .evidence-link-471,
+.return-to-a-thought-150, .return-to-a-thought-982 {
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.2s ease,
+              border-color 0.2s ease;
+  will-change: transform;
+}
+.continue-reading-38:hover, .continue-reading-870:hover,
+.reading-card-60:hover, .reading-card-892:hover,
+.today-s-journal-135:hover, .today-s-journal-967:hover,
+[class^="work-7"]:hover, [class^="folder-6"]:hover, [class^="folder-7"]:hover,
+.reading-list-80:hover, .reading-list-96:hover,
+.reading-list-912:hover, .reading-list-928:hover,
+[class^="note-4"]:hover, [class^="growing-entity-"]:hover,
+.highlight-118:hover, .highlight-126:hover,
+.highlight-950:hover, .highlight-958:hover,
+[class^="work-row-"]:hover, .selected-result-221:hover,
+.today-s-entry-410:hover, .evidence-link-465:hover, .evidence-link-471:hover,
+.return-to-a-thought-150:hover, .return-to-a-thought-982:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22), 0 2px 4px rgba(0, 0, 0, 0.16);
+}
+body.theme-dark .continue-reading-38:hover, body.theme-dark .reading-card-60:hover,
+body.theme-dark .today-s-journal-135:hover {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55), 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* book covers: lift higher, shadow blooms */
+[class^="book-cover-"] {
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.2s ease;
+}
+a:hover > [class^="book-cover-"],
+[class^="book-stack-"]:hover [class^="book-cover-"],
+[class^="work-7"]:hover [class^="cover-stage-"] [class^="book-cover-"],
+[class^="continue-reading"]:hover > [class^="book-cover-"] {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* action pills + links */
+[class^="action-"], [class^="note-link-"], [class^="sec-link"] {
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.18s ease,
+              color 0.15s ease,
+              border-color 0.15s ease;
+}
+[class^="action-"]:hover, [class^="note-link-"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+a[class^="sec-link"]:hover span {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* press */
+a:active, [class^="action-"]:active, [class^="navigation-item-"]:active,
+[class^="pin-"]:active {
+  transform: scale(0.98);
+  transition-duration: 0.1s;
+}
+
+/* nav items: tint on hover */
+[class^="navigation-item-"] {
+  transition: background-color 0.16s ease, transform 0.16s ease;
+}
+body.theme-dark  [class^="navigation-item-"]:hover { background-color: rgba(238, 238, 234, 0.07); }
+body.theme-light [class^="navigation-item-"]:hover { background-color: rgba(37, 37, 37, 0.05); }
+
+/* avatar */
+[class^="avatar-"] { transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1); }
+[class^="avatar-"]:hover { transform: scale(1.05); }
+
+/* theme toggle */
+a[class^="moon-"], a[class^="sun-"] {
+  display: inline-flex;
+  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+a[class^="moon-"]:hover, a[class^="sun-"]:hover { transform: rotate(-14deg) scale(1.08); }
+
+/* pin: dimmed at rest, tilted + owned when pinned */
+[class^="pin-"] {
+  display: inline-flex;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+              background-color 0.16s ease;
+  border-radius: 8px;
+  padding: 4px;
+  margin: -4px;
+}
+[class^="pin-"] img { opacity: 0.65; transition: opacity 0.16s ease; }
+[class^="pin-"]:hover img { opacity: 1; }
+body.pinned [class^="pin-"] img { opacity: 1; }
+body.pinned [class^="pin-"] { transform: rotate(45deg); }
+body.pinned.theme-dark  [class^="pin-"] { background: rgba(238, 238, 234, 0.08); }
+body.pinned.theme-light [class^="pin-"] { background: rgba(37, 37, 37, 0.06); }
+
+/* ---------- progress fill-in ---------- */
+.fill-anim {
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+body.js.ready .fill-anim {
+  transform: scaleX(1);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+}
+
+/* ---------- tooltips (ink-inverted chip, fade + rise) ---------- */
+[data-tip] { position: relative; }
+[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(calc(-50% + 4px));
+  background: #252525;
+  color: #F7F7F5;
+  font-family: var(--font-family-inter);
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 1;
+  padding: 7px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.16s ease, transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 90;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+body.theme-dark [data-tip]::after {
+  background: #EEEEEA;
+  color: #252525;
+}
+[data-tip]:hover::after,
+[data-tip]:focus-visible::after {
+  opacity: 1;
+  transform: translateY(-50%);
+}
+/* no tooltips while the rail is open (labels are visible) */
+body.nav-open .rail-panel [data-tip]::after,
+body.pinned  .rail-panel [data-tip]::after {
+  opacity: 0 !important;
+}
+
+/* ---------- journal caret breathes + preview pointer nudges ---------- */
+@keyframes caret-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+.authored-day-page-284 p:last-child span:last-child {
+  animation: caret-pulse 1.6s ease-in-out infinite;
+}
+@keyframes pointer-nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(3px); }
+}
+.preview-pointer-197 { animation: pointer-nudge 2.2s ease-in-out infinite; }
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  body.js .rise { opacity: 1; transform: none; }
+  body.js .rail-panel { opacity: 1; transform: none; }
+  .fill-anim { transform: none; }
+  [data-tip]::after { transition: none; }
+}

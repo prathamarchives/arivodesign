@@ -189,3 +189,22 @@ Interpretations (labeled, not owner words):
 > "yea executed. the pfp should be on top and replicate everything else"
 
 Source: owner turn 12, chat 2026-10-16 (`context/raw/turn-012.txt`). Grounds: (a) the owner approves execution of the pass-5 plan (P1–P5 of `context/references/DECOMPOSITION.md`) and, by "yea executed", ratifies the three constitution amendments it carried (display 300→500; pass-2 "no title inside a cover" law superseded by R7 cover anatomy; dark PANEL surface token); (b) "the pfp should be on top" restates the avatar-top law (INT-007.2) at execution time — the top anchor is not negotiable collateral of the repaint; (c) "replicate everything else" extends the dark-home acceptance image (INT-010) from composition to the whole surface: covers, shadows, motion, vibe.
+
+---
+
+**INT-013 — THE OWNER'S V1 PROTOTYPE REPLACES THE DESIGN: REPLICATE ONE-ON-ONE WITH MOTION; RESTART THE DEV SERVER — active**
+
+> "this is the v1 prototype i made. now just replace it, replicate it one on one with motion effects and everything else and restart in dev server"
+
+Source: owner turn 13, chat 2026-10-16 (`context/raw/turn-013.txt`), attachment `figma-export.zip` archived at `context/references/figma-v1/` (6 pages: home-dark, home, library, archive, journal-day-references, reader-passage-deep-note + styles.css 214KB + SVG set). Grounds:
+
+(a) The owner's OWN Figma prototype is the new acceptance artifact — it supersedes the dark-home reference (INT-010) and every derived law of passes 1–5 for the surfaces it depicts. "Replace it" is a replacement order, not a comparison order.
+(b) "Replicate it one on one" = the 6 exported pages are the spec: structure, values, typography (Inter 400/500 + Lora prose), palette (warm neutral #252525/#777775/#A0A09D light, #EEEEEA/#A1A19C/#727270 dark), shell-as-object (radius 24 card on a page canvas), rail (48 collapsed / 176 expanded / 28 avatar — the export's own percentage math), covers as illustrated objects (author top / door-rule-system graphic center / title bottom / spine strip).
+(c) "With motion effects and everything else" = the static export must come alive per the standing motion vocabulary (S7): entrance rise stagger, hover lift + shadow bloom, press scale, progress fill-in, tooltips, rail expansion with label stagger, content breath — all transform/opacity, reduced-motion gated.
+(d) "Restart in dev server" = the preview daemon must be restarted and cache-busted so the owner SEES this build (the INT-008 landing-failure class stays closed).
+(e) AMENDMENTS carried by the artifact itself (owner's own hand supersedes prior verbal orders): the product now contains the owner's `arivo://` URI scheme (journal page) — the total "arivo" purge (INT-008) is amended to "no arivo EXCEPT the owner's own arivo:// URIs"; display voice is 38px/500 greeting (consistent with INT-012's 500); covers carry title/author INSIDE (confirming INT-012's R7 anatomy in the owner's own illustrated style); pfp sits at TOP natively (identity first — T12 satisfied by the artifact).
+
+Interpretations (labeled, not owner words):
+- The export omits frame-level layout context (Figma HTML exports drop it): the shell grid, rail slot model, cover dimensions and page scaffolding are reconstructed in a separate glue layer (design/styles/shell.css) using the export's own percentage math and values — component CSS (prototype.css) stays a FROZEN verbatim artifact; all literals centralize in tokens.css.
+- Theme: the artifact ships 5 light pages + 1 dark home (the dark-first home remains the landing page per INT-004/INT-010); the sun/moon toggle navigates between them.
+- The rail's two states both exist in the artifact (collapsed rail on 5 pages, expanded navigation on archive) — the build renders collapsed everywhere + hover/pin expansion, with archive shipping pinned = its frame state, one-on-one at rest either way.
