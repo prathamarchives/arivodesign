@@ -181,3 +181,11 @@ Interpretations (labeled, not owner words):
 - The decomposition must be per-reference AND synthesized: each image gets a layer atlas (composition / surface+depth / material / typography / iconography / color / motion / vibe), then a cross-reference synthesis states what is COMMON (the Arivo look) versus what is reference-specific.
 - The gap map must be honest: layer → what the references do → what our build does (with file/preview evidence) → delta → the pass-5 plan. Claims about our build cite the actual CSS/preview files.
 - This document becomes the standing extraction baseline: future correction passes measure against it (it operationalizes INT-007.10 "extract the visuals well, multiple perspectives and times").
+
+---
+
+**INT-012 — GO: EXECUTE PASS 5 "DEPTH"; PFP ON TOP RECONFIRMED; REPLICATE EVERYTHING ELSE — active**
+
+> "yea executed. the pfp should be on top and replicate everything else"
+
+Source: owner turn 12, chat 2026-10-16 (`context/raw/turn-012.txt`). Grounds: (a) the owner approves execution of the pass-5 plan (P1–P5 of `context/references/DECOMPOSITION.md`) and, by "yea executed", ratifies the three constitution amendments it carried (display 300→500; pass-2 "no title inside a cover" law superseded by R7 cover anatomy; dark PANEL surface token); (b) "the pfp should be on top" restates the avatar-top law (INT-007.2) at execution time — the top anchor is not negotiable collateral of the repaint; (c) "replicate everything else" extends the dark-home acceptance image (INT-010) from composition to the whole surface: covers, shadows, motion, vibe.

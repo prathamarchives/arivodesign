@@ -196,3 +196,19 @@ Stage Summary:
 
 Stage Summary:
 - Pass 5 "DEPTH" fully scoped and evidenced; awaiting owner go + amendment rulings; preview still serves pass 4.
+
+---
+
+## Session 9 (cont.) — INT-012: PASS 5 "DEPTH" executed
+
+- Intake: turn-012 verbatim + INT-012 ledgered (go + pfp-top reconfirm + replicate everything).
+- P1 tokens: --bg-panel/--sb-glass (panel step), cover v3 warm-neutral (cool cast dead), shadow ladder v2 (y 4/12/24, 42–55%) + --shadow-panel, fw-display 500, fg-1 #F6F5F3.
+- P2 shell: sidebar = surface (bg-panel + top edge light + rest shadow-panel); aperture glass tint now --sb-glass; 44/176/axis-0.0 re-measured UNCHANGED; hover/pinned shadows keep edge light.
+- P3 home to R7: cover rich anatomy (58px upright letter + c-title/c-author inside; M/D/D/S), b-title 600, progress 4px, weights 600/500 across content, btn 500.
+- P4 motion: rise-section stagger (0/60/120ms), fill-in progress (scaleX, 640ms @220ms), reduced-motion gate; hover bloom verified (shadow-1→2 + −3px lift).
+- P5 ratchet: verify.sh 5g a–f (panel step, R7 anatomy, fw 500, page motion, shadow floor y≥4, v5 cache-bust) — the shadow check itself needed two fixes (x/y extraction) and passed at y=4; 41 checks total.
+- Browser (fresh session): rail 44.0, panel rgb(19,19,22), axis 0.0, cover shadow 0.42/0.5 bloom, entrance+fill computed, 176 pinned, light/dark clean, console clean. Previews p5-*.png.
+- Docs lockstep: REVIEW pass-5 entry, STATE, worklog.
+
+Stage Summary:
+- The owner's three axes (shadows/motion/vibe) now have mechanical evidence; preview serves pass 5 (?v=5). Awaiting owner's live review.

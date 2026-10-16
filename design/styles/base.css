@@ -36,8 +36,8 @@ body {
 
 /* ---- typography presets ---- */
 .display { font-size: var(--fs-display); line-height: var(--lh-display); font-weight: var(--fw-display); letter-spacing: var(--ls-display); }
-.title   { font-size: var(--fs-title); line-height: var(--lh-title); font-weight: 700; letter-spacing: -0.01em; }
-.heading { font-size: var(--fs-heading); line-height: var(--lh-heading); font-weight: 700; }
+.title   { font-size: var(--fs-title); line-height: var(--lh-title); font-weight: 600; letter-spacing: -0.01em; }
+.heading { font-size: var(--fs-heading); line-height: var(--lh-heading); font-weight: 600; }
 .body    { font-size: var(--fs-body); line-height: var(--lh-body); font-weight: 400; }
 .meta    { font-size: var(--fs-meta); line-height: var(--lh-meta); color: var(--fg-2); }
 .micro   { font-size: var(--fs-micro); line-height: var(--lh-micro); font-weight: 500; letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--fg-3); }

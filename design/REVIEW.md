@@ -123,3 +123,24 @@ Reviewed: the sidebar against owner turn-007 + six new references (`context/refe
 **Constitution amendments proposed (owner rules in plan mode):** (1) `--fw-display` 300→500; (2) pass-2 cover law superseded by R7; (3) dark theme gains a registered PANEL surface token + dark-tuned shadow ladder.
 
 **Next:** pass 5 "DEPTH" (P1 tokens → P2 sidebar material → P3 home to R7 → P4 visible motion → P5 ratchet), geometry 44/176 untouched.
+
+---
+
+## PASS 5 — DEPTH: the shadows, motion, vibe land (INT-012, 2026-10-16)
+
+**Intake:** owner GO on the decomposition plan ("yea executed"), pfp-top reconfirmed, "replicate everything else" — the dark-home acceptance image governs the surface. All three proposed amendments ratified by execution order.
+
+**Named defects → fixes (G1–G10 of DECOMPOSITION.md):**
+1. **G1 dark depth invisible** → `--bg-panel` (#131316 dark / #FFFFFF light) + `--sb-glass` whisper tint; the sidebar is now a SURFACE one step above the canvas. Measured: `rgb(19, 19, 22)` panel over #09090A canvas — the R7 step.
+2. **G2 shadows imperceptible** → ladder re-tuned: shadow-1 `0 4px 14px 42%` → shadow-3 `0 24px 64px 55%` (dark), +`--shadow-panel` rest elevation; covers carry `inset 0 1px 0` top light. Verified: cover computed shadow `rgba(0,0,0,0.42) 0 4px 14px` → hover `rgba(0,0,0,0.5) 0 12px 32px` (the bloom).
+3. **G3 sidebar material** → panel bg + edge highlight (`inset 0 1px 0 --highlight-top`) + rest shadow-panel; rail 44 / expanded 176 / axis diff 0.0 UNCHANGED (measured this pass).
+4. **G4 cover anatomy** → R7 face: 58px upright letter LEFT + title/author INSIDE (c-id), `cover rich` on all four reading cards; letters M/D/D/S (G9 two-letter italics dead); title ALSO below (b-title 600).
+5. **G5 type voice** → `--fw-display` 300→500 (greeting measured 500); `.title/.heading` 700→600; `.b-title/.l-name/.li-title/.k-name/f-caption` 700→600; `.btn` 700→500; `.pill.active` 700→600. Chrome stays ≤400 (law untouched).
+6. **G6 composition** → cards keep the row; balance now carried by depth + glow; reading-row untouched pending owner's eye.
+7. **G7 page motion** → entrance `rise-section` (16px rise+fade, stagger 0/60/120ms) + progress `fill-in` (scaleX 640ms @220ms), both `prefers-reduced-motion` gated (animation: none); hover lift+bloom verified (translateY −3px, shadow tier jump); press states already present.
+8. **G8 temperature** → cover family v3: cool cast removed (#5A5A64→#565452 class shifts), fg-1 warmed #F5F5F7→#F6F5F3; canvas unchanged.
+9. **G10 vibe** → the composite: panel step + visible shadows + ink-inverted Read + 500 greeting + neutral-warm covers. Side-by-side with `dark-home-ref.png`: same family.
+
+**The eyes:** `p5-home-dark.png` (panel step, cover shadows, letter anatomy), `p5-expanded-dark.png` (176 float, handle top, tinted selection), `p5-home-light.png` (white card on grey field, black Read pill).
+**Behavior:** hover expands 44→176 (verified 176 pinned); theme swap clean; console clean; entrance/fill computed running.
+**not checked** — real-hardware frame pacing; tooltip visual re-check (mechanical check green).

@@ -12,6 +12,23 @@
 
 .section:last-child { margin-bottom: 0; }
 
+/* ---- INT-012 (S7.6): entrance = rise + fade, staggered per section.
+     The page answers the nav click with life; transform/opacity only. ---- */
+@keyframes rise-section {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+.page.active .section { animation: rise-section var(--dur-page) var(--ease-out) backwards; }
+.page.active .section:nth-of-type(2) { animation-delay: 60ms; }
+.page.active .section:nth-of-type(3) { animation-delay: 120ms; }
+
+/* ---- INT-012 (S7.5): progress fills animate in after the card lands ---- */
+@keyframes fill-in { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.page.active .progress > i { transform-origin: left center; animation: fill-in 640ms var(--ease-out) 220ms backwards; }
+@media (prefers-reduced-motion: reduce) {
+  .page.active .section, .page.active .progress > i { animation: none; }
+}
+
 /* horizontal rows (currently reading, lists, folders, days).
    Continuation cue: the right edge dissolves — a cut card must VISIBLY
    continue, never stop dead (REVIEW pass 2, defect 7). */
@@ -36,7 +53,7 @@
 }
 .lib-item { display: flex; flex-direction: column; gap: var(--s-2); cursor: pointer; }
 .lib-item .cover { width: 100%; height: auto; aspect-ratio: 2 / 3; }
-.lib-item .li-title { font-size: var(--fs-meta); font-weight: 700; line-height: 1.35;
+.lib-item .li-title { font-size: var(--fs-meta); font-weight: 600; line-height: 1.35;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .lib-item .li-sub { font-size: 12px; color: var(--fg-3); display: flex; align-items: center; gap: 6px; }
 .lib-item:hover .cover { border-color: var(--border-strong); box-shadow: var(--shadow-2); }

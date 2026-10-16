@@ -192,6 +192,46 @@ else
   bad "content breath is ${breath:-unset}px — outside the directive's 2–4px band (INT-009 D)"
 fi
 
+# ---------------------------------------------------------------- 5g. pass-5 guards (ratcheted 2026-10-16, INT-012 — the DEPTH pass)
+# (a) the dark PANEL step exists and is wired: dark depth = surface step first (S1/L1),
+#     the sidebar must live on --bg-panel, not on bare canvas glass
+grep -q -- '--bg-panel' design/styles/tokens.css \
+  && bad_missing_panel=0 || bad_missing_panel=1
+if [ "$bad_missing_panel" -eq 0 ] && grep -q 'background: var(--bg-panel)' design/styles/shell.css; then
+  ok "panel surface step present (--bg-panel wired into the sidebar)"
+else
+  bad "panel step missing — the dark sidebar must be a SURFACE, not a void (INT-012, S1/L1)"
+fi
+# (b) the R7 cover anatomy: reading-row covers carry the identity INSIDE (letter + title + author)
+rich=$(grep -c 'cover rich cv-' design/index.html)
+if [ "$rich" -eq 4 ] && grep -q 'c-author' design/index.html && grep -q 'cover.rich' design/styles/components.css; then
+  ok "R7 cover anatomy present (4 rich covers, identity inside)"
+else
+  bad "cover anatomy regressed — rich covers: ${rich:-0}/4 or c-author/c Missing (INT-012)"
+fi
+# (c) the display voice: 300-light is dead; the greeting speaks at 500 (S5/R7)
+grep -q -- '--fw-display: 500' design/styles/tokens.css \
+  && ok "display weight 500 (the confident voice)" \
+  || bad "display weight regressed to thin — must be 500 (INT-012 amendment 1)"
+# (d) the motion vocabulary reached the PAGE: entrance stagger + progress fill-in, gated for reduced motion
+if grep -q 'rise-section' design/styles/pages.css && grep -q 'fill-in' design/styles/pages.css \
+   && grep -q 'prefers-reduced-motion' design/styles/pages.css; then
+  ok "page motion present (entrance stagger + progress fill-in, reduced-motion gated)"
+else
+  bad "page motion missing — hover bloom alone is not the S7 vocabulary (INT-012)"
+fi
+# (e) shadow visibility floor: shadow-1 lifts at least 4px (a 2px black-on-black whisper is the G2 failure class)
+s1=$(grep -- '--shadow-1:' design/styles/tokens.css | head -1 | sed 's/.*--shadow-1: 0 \([0-9]*\)px.*/\1/')
+if [ -n "$s1" ] && [ "$s1" -ge 4 ]; then
+  ok "shadow ladder above the visibility floor (shadow-1 y=${s1}px)"
+else
+  bad "shadow-1 too shallow (${s1:-unset}px) — black-on-black invisibility class (INT-012 G2)"
+fi
+# (f) cache-bust version bumped with the paint (?v=5) — the INT-008 landing-failure class
+grep -q 'styles/tokens.css?v=5' design/index.html \
+  && ok "asset links cache-busted at v5" \
+  || bad "asset links not re-busted — owner may see stale CSS (INT-008 class)"
+
 # ---------------------------------------------------------------- 6. worklog is alive for the latest turn
 latest="$(ls context/raw/turn-*.txt 2>/dev/null | sort | tail -1)"
 if [ -n "$latest" ]; then

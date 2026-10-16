@@ -33,7 +33,7 @@
   display: inline-flex; align-items: center; gap: var(--s-2);
   height: 36px; padding: 0 var(--s-5);
   border-radius: var(--r-pill);
-  font-size: var(--fs-meta); font-weight: 700;
+  font-size: var(--fs-meta); font-weight: 500;
   transition: transform var(--dur-micro) var(--ease-out),
               background var(--dur-micro) var(--ease-out),
               border-color var(--dur-micro) var(--ease-out),
@@ -85,7 +85,7 @@
 .pill:active { transform: scale(0.96); }
 .pill.active {
   background: var(--fg-1); color: var(--fg-on-primary);
-  border-color: transparent; font-weight: 700;
+  border-color: transparent; font-weight: 600;
 }
 
 /* ============ CHIP — free-text classification word (D-030, X-08) ============ */
@@ -118,7 +118,7 @@
 
 /* ============ PROGRESS BAR (v2 — must read at a glance; REVIEW pass 2) ============ */
 .progress {
-  width: 100%; height: 3px; border-radius: var(--r-pill);
+  width: 100%; height: 4px; border-radius: var(--r-pill);
   background: var(--track); overflow: hidden;
 }
 .progress > i {
@@ -156,14 +156,16 @@
 .book-card:hover { transform: translateY(-3px); }
 .book-card:active { transform: translateY(-1px) scale(0.99); }
 
-/* covers are ARTWORK: fill + sheen + spine + big centered monogram.
-   No title inside a cover — the title lives once, below (REVIEW pass 2, defect 4). */
+/* covers are ARTWORK (INT-012 — R7 acceptance anatomy): fill + sheen + spine +
+   the rich face = big upright letter LEFT + title/author INSIDE (supersedes the
+   pass-2 "no title inside a cover" law — owner turn 12 ratifies R7).
+   The title also lives below; inside the cover it is the cover's VOICE. */
 .cover {
   position: relative;
   width: 168px; height: 252px;
   border-radius: var(--r-md);
   border: 1px solid var(--border-hair);
-  box-shadow: var(--shadow-1), inset -6px 0 12px rgba(0,0,0,.18), inset 2px 0 2px rgba(255,255,255,.07);
+  box-shadow: var(--shadow-1), inset -6px 0 12px rgba(0,0,0,.18), inset 2px 0 2px rgba(255,255,255,.07), inset 0 1px 0 rgba(255,255,255,.08);
   overflow: hidden;
   display: flex; align-items: center; justify-content: center;
   color: var(--cover-ink);
@@ -183,15 +185,21 @@
 .cv-d { background: var(--cover-2); }
 .cv-e { background: var(--cover-4); }
 .cv-f { background: var(--cover-6); }
-/* the monogram: 1–2 letters, light, italic — the placeholder's whole voice */
+/* the monogram: one letter, upright, light — the R7 voice (italic serif is dead) */
 .cover .c-mark {
-  font-size: 44px; font-weight: 300; font-style: italic;
-  opacity: .92; letter-spacing: .02em;
+  font-size: 58px; font-weight: 300; font-style: normal;
+  opacity: .95; letter-spacing: 0;
   text-shadow: 0 1px 12px rgba(0,0,0,.35);
+  flex: none;
 }
+/* the rich face (reading row): letter left · identity right — R7 anatomy */
+.cover.rich { justify-content: flex-start; gap: 12px; padding: 0 14px 0 18px; }
+.cover .c-id { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.cover .c-id .c-title { font-size: 13px; font-weight: 500; line-height: 1.25; color: var(--cover-ink); }
+.cover .c-id .c-author { font-size: 12px; line-height: 1.3; color: rgba(255,255,255,.52); }
 
 .book-meta { display: flex; flex-direction: column; gap: 6px; }
-.book-meta .b-title { font-size: var(--fs-heading); font-weight: 700; line-height: 1.3; }
+.book-meta .b-title { font-size: var(--fs-heading); font-weight: 600; line-height: 1.3; }
 .book-meta .b-sub { font-size: 12px; color: var(--fg-3); display: flex; justify-content: space-between; }
 
 /* ============ LIST CARD ============ */
@@ -218,7 +226,7 @@
 .list-card:hover .cover-mini:nth-child(1) { transform: rotate(-5deg) translateY(-2px); }
 .list-card:hover .cover-mini:nth-child(2) { transform: translateY(-5px); }
 .list-card:hover .cover-mini:nth-child(3) { transform: rotate(5deg) translateY(-2px); }
-.list-card .l-name { font-size: var(--fs-meta); font-weight: 700; }
+.list-card .l-name { font-size: var(--fs-meta); font-weight: 600; }
 .list-card .l-count { font-size: 12px; color: var(--fg-3); margin-top: 2px; }
 
 /* ============ FOLDER CARD (mybooks ref: covers peek from glass folder) ============ */
@@ -263,7 +271,7 @@
 .fc.cv-b { background: var(--cover-4); }
 .fc.cv-c { background: var(--cover-6); }
 .folder-card .f-caption { display: flex; justify-content: center; gap: 6px; margin-top: var(--s-3); font-size: var(--fs-meta); }
-.folder-card .f-caption b { font-weight: 700; }
+.folder-card .f-caption b { font-weight: 600; }
 .folder-card .f-caption span { color: var(--fg-3); }
 
 /* ============ QUOTE CARD (are.na feed anatomy) ============ */
@@ -341,7 +349,7 @@
   background: var(--surface-glass-strong) !important; border-color: var(--border-strong) !important;
   transform: translateY(-2px); box-shadow: var(--shadow-2);
 }
-.concept-card .k-name { font-size: var(--fs-heading); font-weight: 700; }
+.concept-card .k-name { font-size: var(--fs-heading); font-weight: 600; }
 .concept-card .k-def { font-size: var(--fs-meta); color: var(--fg-2); margin-top: 6px;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .concept-card .k-foot { display: flex; align-items: flex-end; justify-content: space-between; margin-top: var(--s-4); }
