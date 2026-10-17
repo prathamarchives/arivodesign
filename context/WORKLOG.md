@@ -376,3 +376,16 @@ Stage Summary:
 - Docs lockstep: INTENT-LEDGER INT-022, REVIEW.md pass 13, STATE.md rewrite, this entry.
 
 **Stage summary:** PASS 13 landed — @prathamarchives in Inter fully visible 12px off the locked pfp; Settings on top; identity down; every pass-12 lock held (rAF-proven). PUSH still blocked pending PAT (pass 11+12+13 local). Carried: handle voice, settings wiring, icon weight 0.9, then the content-composition port.
+
+---
+**Session 20 — INT-023 (owner turn 23): replicate the account-block reference; verify multiple times**
+
+Work log:
+- Intake turn-023 verbatim + reference committed (`context/references/turn-023/ref-account-block.jfif`); forensic spec written after 5 PIL/VLM passes (`context/intake/INT-023-ref-spec.md`): two-state sidebar, avatar 44 = 0.40 × rail, text centered on the avatar centerline, FULL-WIDTH divider 41/44 below the account block, 29/44 to the list; palette + rhythm mapped.
+- Audit of pass 13 vs the reference (VLM + DOM): the missing component = the DIVIDER ("the account block and Home bleed into each other"); avatar 24/64 = 0.375 vs the ref's 0.40; everything else (Inter, centering, clearance) measured correct.
+- Surgery: tokens.css (avatar 24 → 26 + the two rhythm tokens 24/17); shell.css (monogram 11px; the `.rail-divider` flow spacer at slot width + its absolute `::after` line — the ZERO-WIDTH-IMPACT law, caught BEFORE shipping: a 64px flow child would widen the shrink-to-fit nav wrapper and break the x44 axis; destinations margin → the post-divider token); motion.css (the line rides the ONE clock: 0.3s settle curve, 64 → 168 with the panel); 6-page HTML surgery (`scripts/int023-html-surgery.py` — divider between identity and destinations, v14 busts, count/balance assertions).
+- SIX verification rounds (the owner's "verify multiple times"): (1) DOM collapsed — wrapper 40 (the divider did NOT widen it), avatar 26 @ cx44, divider y149, line 64 flush; (2) DOM expanded — handle x69→175.2 (4.78px clear, no clip), line 168 flush, gaps 24/17 exact; (3) rAF trajectory — avatar cx 44 at EVERY frame, the line tracks the panel within 0.05px (64→96→149.4→168 lockstep); (4) pixel-truth — handle ink center y112.5 vs avatar center 112 (+0.5px, centered; DISPROVED the VLM's "sits low"); (5) VLM raw compare (theme-biased — centering/size FAILs contradicted by measurement); (6) VLM scale-normalized side-by-side (both at avatar 44): 5/5 SIMILAR, "REPLICATION ACHIEVED". Plus light-theme audit clean + 6/6 pages console-clean with divider/axis/gap identical (journal's 43.88 was mid-entrance; settled = 44).
+- verify.sh re-ratcheted: 5e avatar literal 26px; NEW 5m a-e (divider present+ordered on 6 rails, the zero-width-impact geometry law, the one-clock width pair, the 24/17 rhythm tokens, monogram 11px). Green.
+- Docs lockstep: ledger INT-023, REVIEW pass 14, STATE rewrite, this entry; evidence `design/preview/p14-01..04-*.png`.
+
+**Stage summary:** PASS 14 landed — the account block reads like the reference: avatar at the ref's rail ratio (26), the handle centered 12px off it, the missing full-width divider below (24/17 = the ref's rhythm), the x44 axis lock and the one-clock motion intact (rAF-proven). The fix path was taken — no removal needed. PUSH still blocked pending PAT (pass 11+12+13+14 local). Carried: settings wiring, icon weight 0.9, handle voice, then the content-composition port.

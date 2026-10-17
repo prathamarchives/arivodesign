@@ -97,24 +97,25 @@ else
   bad "core.fileMode is not false — run: git config core.fileMode false (mode-churn guard)"
 fi
 
-# ---------------------------------------------------------------- 5e. prototype rail guards (re-ratcheted 2026-10-17, INT-019)
+# ---------------------------------------------------------------- 5e. prototype rail guards (re-ratcheted 2026-10-17, INT-019 / INT-023)
 # INT-016 rebuilt the sidebar to the owner's reference; INT-017
 # recalibrated it to desktop scale; INT-018 MATERIALIZES it as floating
 # glass with hover expansion + ink selection; INT-019 slims the
 # component set (owner: "much smaller… remove the bold and thickness"):
-# rail 64, items 40x34, icons 18 (thinner strokes), avatar 24, softer
-# shadows, expansion 64 -> 168 with motion-blur treatment.
-# (a) the floating glass rail present in the scaffold, at INT-019 scale
+# rail 64, items 40x34, icons 18 (thinner strokes), softer shadows,
+# expansion 64 -> 168 with motion-blur treatment; INT-023 resizes the
+# avatar to the turn-23 account-block reference ratio (26 = 0.40 x rail).
+# (a) the floating glass rail present in the scaffold, at INT-019/023 scale
 if grep -q 'ref-rail-w: 64px' design/styles/tokens.css && \
-   grep -q 'ref-rail-avatar: 24px' design/styles/tokens.css && \
+   grep -q 'ref-rail-avatar: 26px' design/styles/tokens.css && \
    grep -q 'ref-rail-icon: 18px' design/styles/tokens.css && \
    grep -q 'ref-rail-radius: 16px' design/styles/tokens.css && \
    grep -q 'backdrop-filter: blur(var(--ref-glass-blur))' design/styles/shell.css && \
    grep -q 'border-radius: var(--ref-rail-radius)' design/styles/shell.css && \
    grep -q '\.rail-panel \[class\^="navigation-item-"\]\.selected' design/styles/shell.css; then
-  ok "floating glass rail present (64/24/18 literals, R16, frosted, ink pill)"
+  ok "floating glass rail present (64/26/18 literals, R16, frosted, ink pill)"
 else
-  bad "glass rail missing/mis-built — floating frosted R16 column + ink pill required (INT-016/017/018/019)"
+  bad "glass rail missing/mis-built — floating frosted R16 column + ink pill required (INT-016/017/018/019/023)"
 fi
 if grep -q 'margin-left: calc(var(--sidebar-w' design/styles/shell.css; then
   bad "content margin-slide regression in shell.css — hover expansion must overlay (INT-007/013)"
@@ -231,12 +232,12 @@ if grep -q 'progress-track-' design/styles/shell.css && grep -q 'height: 4px' de
 else
   bad "progress tracks unsized — invisible progress was the G-class failure (INT-013)"
 fi
-# (e) cache-bust version bumped with the paint (?v=13) — the INT-008 landing-failure class
+# (e) cache-bust version bumped with the paint (?v=14) — the INT-008 landing-failure class
 vb=$(grep -o 'tokens.css?v=[0-9]*' design/index.html | grep -o '[0-9]*$')
-if [ "$vb" = "13" ]; then
-  ok "asset links cache-busted at v13"
+if [ "$vb" = "14" ]; then
+  ok "asset links cache-busted at v14"
 else
-  bad "asset links not re-busted at v13 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
+  bad "asset links not re-busted at v14 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
 fi
 # (f) no external resource references — everything local (the export's only CDN was fonts)
 ext="$(grep -hEo 'src="http[^"]*"|href="http[^"]*"' design/*.html 2>/dev/null | grep -v '^$' || true)"
@@ -406,9 +407,9 @@ else
 fi
 # (e) changed ASSETS carry the cache-bust too: the icon srcs are ?v=-busted
 #     (the stale-SVG render class — CSS was v12 while imgs served old strokes)
-bust=$(grep -o 'images/vector-[0-9]*\.svg?v=13' design/index.html | wc -l)
+bust=$(grep -o 'images/vector-[0-9]*\.svg?v=14' design/index.html | wc -l)
 if [ "$bust" -eq 3 ]; then
-  ok "rail icon srcs cache-busted (?v=13 — changed assets re-fetch, INT-008 class)"
+  ok "rail icon srcs cache-busted (?v=14 — changed assets re-fetch, INT-008 class)"
 else
   bad "rail icon srcs not cache-busted on index (found $bust/3) — stale-icon render class (INT-008)"
 fi
@@ -458,6 +459,66 @@ if grep -q '\[class\^="identity-"\] \.nav-label {' design/styles/shell.css; then
   ok "handle anchor rule present (avatar-edge + label-gap, clip-safe)"
 else
   bad "handle anchor rule missing — slot-edge start clips the Inter string (INT-022)"
+fi
+
+# ---------------------------------------------------------------- 5m. INT-023 account-block reference port guards (ratcheted 2026-10-17)
+# Owner turn 23: "replicate the sizing and components and stuff from this
+# reference" (context/references/turn-023/) — the avatar grows to the ref's
+# rail ratio (26 = 0.40 x 64), the monogram scales with it, and the ref's
+# MISSING component ships: the full-width account divider between the
+# identity block and the nav list, with the ref's rhythm (24 above the
+# line, 17 below = the ref's 41/29 x 26/44).
+# (a) the divider exists on every rail, BETWEEN the identity and the destinations
+div_pages=0; div_order=0
+for pg in design/index.html design/home-light.html design/library.html design/archive.html design/journal.html design/reader.html; do
+  if grep -q 'class="rail-divider"' "$pg"; then
+    div_pages=$((div_pages+1))
+    iline=$(grep -n 'class="identity-' "$pg" | head -1 | cut -d: -f1)
+    dline=$(grep -n 'class="rail-divider"' "$pg" | head -1 | cut -d: -f1)
+    nline=$(grep -n 'class="destinations-' "$pg" | head -1 | cut -d: -f1)
+    if [ "$iline" -lt "$dline" ] && [ "$dline" -lt "$nline" ]; then div_order=$((div_order+1)); fi
+  fi
+done
+if [ "$div_pages" -eq 6 ] && [ "$div_order" -eq 6 ]; then
+  ok "account divider present + ordered identity > divider > destinations on all 6 rails (INT-023)"
+else
+  bad "account divider missing/misordered (present $div_pages/6, ordered $div_order/6) — INT-023"
+fi
+# (b) the ZERO-WIDTH-IMPACT law: the flow element is slot-wide, the line is an
+#     absolutely-positioned ::after (a 64px flow child would widen the
+#     shrink-to-fit nav wrapper and drag the avatar off the x44 axis)
+if grep -q '\.rail-panel \.rail-divider {' design/styles/shell.css \
+   && grep -q '\.rail-panel \.rail-divider::after {' design/styles/shell.css \
+   && grep -q 'position: absolute' <(sed -n '/\.rail-panel \.rail-divider::after {/,/^}/p' design/styles/shell.css) \
+   && grep -q 'left: -12px' <(sed -n '/\.rail-panel \.rail-divider::after {/,/^}/p' design/styles/shell.css) \
+   && grep -q 'width: var(--ref-rail-w)' <(sed -n '/\.rail-panel \.rail-divider::after {/,/^}/p' design/styles/shell.css) \
+   && ! sed -n '/^\.rail-panel \.rail-divider {/,/^}/p' design/styles/shell.css | grep -q 'width: var(--ref-rail-w)'; then
+  ok "divider geometry lawful (flow spacer slot-wide, ::after absolute at the panel edge — wrapper cannot widen)"
+else
+  bad "divider geometry unlawful — flow element must stay 40px, the line must be the absolute ::after (INT-023 wrapper-widening class)"
+fi
+# (c) the line rides the one clock: same curve + duration as the rail's width,
+#     expanded width token-driven
+if grep -q 'transition: width 0.3s cubic-bezier(0.32, 0.72, 0, 1)' <(sed -n '/\.rail-panel \.rail-divider::after {/,/^}/p' design/styles/motion.css) \
+   && grep -q 'width: var(--ref-rail-expanded)' <(sed -n '/\.rail-panel\.expanded \.rail-divider::after {/,/^}/p' design/styles/motion.css); then
+  ok "divider line rides the one clock (0.3s settle curve, 64 -> 168 with the panel)"
+else
+  bad "divider line off-clock — must share the rail's width curve and tokens (INT-023 / INT-020 law 4)"
+fi
+# (d) the reference rhythm: 24 above the line, 17 below, token-driven
+if grep -q 'ref-rail-acct-divider-gap: 24px' design/styles/tokens.css \
+   && grep -q 'ref-rail-post-divider-gap: 17px' design/styles/tokens.css \
+   && grep -q 'margin: var(--ref-rail-acct-divider-gap)' design/styles/shell.css \
+   && grep -q 'margin-top: var(--ref-rail-post-divider-gap)' design/styles/shell.css; then
+  ok "account rhythm tokenized (24/17 = the ref's 41/29 x avatar 26/44)"
+else
+  bad "account rhythm broken — divider gaps must ride the 24/17 tokens (INT-023)"
+fi
+# (e) the monogram scales with the 26px avatar
+if grep '\[class\^="avatar-"\] p {' design/styles/shell.css | grep -q 'font-size: 11px'; then
+  ok "avatar monogram 11px (scales with the 26px avatar)"
+else
+  bad "avatar monogram must be 11px for the 26px avatar (INT-023)"
 fi
 
 # ---------------------------------------------------------------- 6. worklog is alive for the latest turn

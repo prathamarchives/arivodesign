@@ -466,3 +466,39 @@ DOM: collapsed — settings 40×34 @ y33, identity y99, avatarCX 44, gaps 32/32;
 3. Icon weight 1.1 stands (carried from pass 12; 0.9 is the next step if thinner still is wanted).
 4. Push still blocked (L-10, PAT wiped): pass 11 + 12 + 13 committed locally; a fresh inline PAT pushes all.
 5. Then the queued content-area composition port (segmented control + card rhythm — measured in the INT-016 spec).
+
+---
+
+## Pass 14 — INT-023: the account block, replicated from the owner's reference (2026-10-17)
+
+**Owner verdict on pass 13:** "can you replicate the sizing and components and stuff from this refrence? … cant you verify multiple times when sizing is correct or not. bring the account/pfp.. either fix it if you can't do it just remove the account/pfp/settings" — with a two-state sidebar reference (`context/references/turn-023/`).
+
+**Forensics (5 passes, spec at `context/intake/INT-023-ref-spec.md`):** the reference runs its avatar at 0.40 × rail width (44/110), name text vertically centered 0.43 × avatar off the avatar's edge, a full-width hairline divider 41/44-avatar below the account block, then 29/44 to the list. Our rail had the avatar at 0.375 and NO divider — the audit's "the account block and Home bleed into each other" was the missing component.
+
+**The catch that saved the axis (found BEFORE shipping):** the nav wrapper is shrink-to-fit — a full-width flow divider (64px, or margin tricks) would widen the wrapper, break the wrapper-left invariant (x24) and drag the avatar off the x44 axis (the INT-021 drift class). The divider therefore ships as a 40px slot-wide ZERO-WIDTH-IMPACT flow spacer whose visible line is an absolutely-positioned `::after` (left −12 → flush with the panel edge; width 64 → 168 riding the one clock).
+
+### What changed
+
+| Surface | Pass 13 | Pass 14 | Ground |
+|---|---|---|---|
+| avatar | 24 (0.375 × rail) | **26 (0.40 × rail — the ref's ratio; slot + anchor ride the token)** | "replicate the sizing… from this reference" |
+| account divider | none | **full-width hairline between identity and nav, 24 above / 17 below = the ref's 41/29 × 26/44** | "replicate the… components" (the ref's missing one) |
+| monogram | 10px | **11px (scales with the 26px avatar)** | same order |
+| handle | Inter 12px/400, x68, centered | **unchanged — measured correct (ink center +0.5px of the avatar center); the sizing complaint was the block, not the type** | verification rounds 1/2/4/6 |
+| settings row | top slot (INT-022 order) | **unchanged — the reference shows no settings; the standing order wins (no unauthorized move)** | INT-021 accountability clause |
+| cache-bust | v13 | **v14** | INT-008 class |
+
+### Evidence (six rounds — "verify multiple times")
+
+DOM collapsed: wrapper 40 (divider did not widen it), avatar 26 @ cx44, divider y149, ::after 64px flush. DOM expanded: handle x69→175.2 (4.78px clear), line 168px flush, gaps 24/17 exact, Home y167. rAF: avatar cx 44 at EVERY frame; the line tracks the panel within 0.05px (64→96→149.4→168 lockstep — same curve, same frame). Pixel-truth: handle ink y107–118 center 112.5 vs avatar center 112. VLM scale-normalized side-by-side (both at avatar 44): 5/5 SIMILAR, "REPLICATION ACHIEVED". Light theme: divider visible, centered, no clip. 6/6 pages: divider + axis 44 + gaps identical, console-clean. Screenshots: `design/preview/p14-01..04-*.png`.
+
+### Not ported from the reference (standing orders supersede)
+
+Bold name weight (turn-019 "bold/thickness removed"), the grey sub-text line (turn-021 "and nothing"), avatar artwork (prototype content), Settings position (INT-022 "on top of it"), nav labels 12px/400 (approved surfaces). The handle font stays 12px — the ref's ink-ratio would read smaller than the nav labels, and 13px clips (the INT-022 class).
+
+### Carried (not ordered, not shipped)
+
+1. Settings remains a dead link (href="#") — wiring is a future order.
+2. Icon weight 1.1 stands; 0.9 is the next step if thinner still is wanted.
+3. Push still blocked (L-10): pass 11–14 local, fresh PAT pushes all.
+4. Then the queued content-area composition port (segmented control + card rhythm — measured in the INT-016 spec).

@@ -140,14 +140,52 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
   flex: none;
   box-shadow: 0 0 0 1px var(--ref-avatar-ring);
 }
-.rail-panel [class^="avatar-"] p { white-space: nowrap; font-size: 10px; }
+.rail-panel [class^="avatar-"] p { white-space: nowrap; font-size: 11px; }  /* INT-023: 10 -> 11 — the monogram scales with the 26px avatar */
+
+/* INT-023: the account divider — the turn-23 reference's missing component.
+   The ref runs a full-width hairline (229,230,232 on 246,247,249 — 7%) 41/44
+   of an avatar below the account block, then 29/44 to the list: the account
+   header is SEPARATED from the nav, not stacked into it (the audit's "no
+   divider, the block and Home bleed into each other").
+   GEOMETRY LAW: the element in flow is a ZERO-WIDTH-IMPACT spacer — 40px wide
+   (the item slot, never wider than the items) holding exactly 1px of flow
+   height for the rhythm. The visible line is its ::after, ABSOLUTELY
+   positioned, because the nav wrapper is shrink-to-fit: a 64px-wide flow child
+   (or -12px margin tricks) would widen the wrapper, break the wrapper-left
+   invariant (page x24) and drag the avatar off the x44 axis — the INT-021
+   drift class. The ::after is ignored by fit-content: left -12 reaches from
+   the wrapper's left edge (x24) back to the panel's left edge (x12) FLUSH,
+   and its width rides the token pair 64/168 on the one clock (motion.css).
+   Vertical: 24 below the avatar (--ref-rail-acct-divider-gap), 17 above the
+   first row (--ref-rail-post-divider-gap) — total 42 = the ref's 70 x 26/44. */
+.rail-panel .rail-divider {
+  position: relative;                  /* the containing block for the line */
+  height: 1px;
+  width: var(--ref-rail-item-w);       /* the item slot — zero wrapper impact */
+  margin: var(--ref-rail-acct-divider-gap) 0 0 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  flex: none;
+  align-self: flex-start;
+  padding: 0;
+}
+.rail-panel .rail-divider::after {
+  content: "";
+  position: absolute;                  /* out of flow — fit-content never sees it */
+  top: 0;
+  left: -12px;                         /* wrapper left (x24) - 12 = the panel's left edge, flush */
+  width: var(--ref-rail-w);            /* 64 collapsed -> 168 expanded (motion.css, the one clock) */
+  height: 1px;
+  background: var(--ref-header-line);
+}
 
 /* destinations: icon rows that gain labels on expansion (icon axis never moves) */
 .rail-panel [class^="navigation-"] { gap: 0; padding: 0; }
 .rail-panel [class^="destinations-"] {
   align-items: center;
   gap: calc(var(--ref-rail-pitch) - var(--ref-rail-item-h));
-  margin-top: var(--ref-rail-first-gap);
+  margin-top: var(--ref-rail-post-divider-gap);  /* INT-023: was 32 — the divider now owns the account->nav rhythm (ref 29/44 x avatar) */
   padding: 0;
 }
 .rail-panel [class^="navigation-item-"] {

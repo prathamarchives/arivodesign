@@ -60,6 +60,19 @@
   width: var(--ref-rail-item-w-open);
 }
 
+/* ---------- the account divider's line: rides the one clock ----------
+   INT-023: the rail's width transition and the divider line's width
+   share the SAME curve and duration (law 4 — one clock), both driven
+   by the single .expanded class flip on the same frame, so the line
+   tracks the panel's growing edge in lockstep and never lags short.
+   One transition stack, width only (law 5). */
+.rail-panel .rail-divider::after {
+  transition: width 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.rail-panel.expanded .rail-divider::after {
+  width: var(--ref-rail-expanded);
+}
+
 /* ---------- the text reveal: fade in WITH MOTION BLUR ----------
    Labels (Home / Library / Archive) and the identity handle
    (@prathamarchives — INT-021, same overlay, anchored to the

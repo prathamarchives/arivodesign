@@ -67,7 +67,9 @@
   /* ---- INT-017: reference rail geometry, desktop-recalibrated ----
      (INT-016 measured it; ratios below = the reference's own) */
   --ref-rail-w: 64px;           /* INT-019: was 72 — the column slims with its contents */
-  --ref-rail-avatar: 24px;      /* INT-019: was 30 — much smaller, lighter identity mark */
+  --ref-rail-avatar: 26px;      /* INT-023: was 24 — the turn-23 account-block reference
+                                   runs its avatar at 0.40 x rail (44/110); 26/64 = 0.406.
+                                   The identity slot + handle anchor ride this token. */
   --ref-rail-avatar-inset: 20px;/* INT-019: was 25 */
   --ref-rail-item-w: 40px;      /* INT-019: was 49 — much smaller component set */
   --ref-rail-item-h: 34px;      /* INT-019: was 41 */
@@ -88,6 +90,8 @@
   --ref-glass-blur: 20px;       /* frosted strength (refs 12-24) */
   --ref-rail-item-w-open: 144px;/* INT-019: the icon+label row when expanded */
   --ref-rail-label-gap: 12px;   /* INT-020: fixed icon -> label offset (the label is a zero-layout overlay) */
+  --ref-rail-acct-divider-gap: 24px;  /* INT-023: avatar bottom -> divider (ref 41/44 x avatar) */
+  --ref-rail-post-divider-gap: 17px; /* INT-023: divider -> first nav row (ref 29/44 x avatar) */
 }
 
 /* page canvas: the artifact framing died (INT-016 "make it full page")
