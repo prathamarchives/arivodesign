@@ -38,7 +38,13 @@
      break token — the Settings row takes the top slot), and a
      SETTINGS section shipped above the identity (owner: "add a
      settings icon and section on top of it") — an ordinary nav
-     row: every generic rule, no new motion.
+     row: every generic rule, no new motion. INT-024 (owner turn 24)
+     SUPersedes the slot order: the Settings row is REMOVED by owner
+     order; the account (pfp + handle) moves to the BOTTOM/end of
+     the rail with the divider line OVER it; the nav components stay
+     fixed at the top. The handle pulls closer to the pfp (gap 12 ->
+     8, dedicated token) and the monogram becomes a real pfp image
+     (round-cropped, riding the same 26px slot + axis lock).
    - REFERENCE RHYTHM in the content column (INT-017 scale): 24px
      margins, 24px header top inset, header underline hairline, 20px
      gap to content.
@@ -92,7 +98,7 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--ref-rail-avatar-inset) 0 0 0;
+  padding: var(--ref-rail-avatar-inset) 0 var(--ref-rail-avatar-inset) 0;  /* INT-024: bottom inset added — the account now lives at the rail's end */
   background-color: var(--ref-rail-bg);
   backdrop-filter: blur(var(--ref-glass-blur));
   -webkit-backdrop-filter: blur(var(--ref-glass-blur));
@@ -115,17 +121,21 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
    avatar slid 44 -> 96 as the rail opened. FIXED WIDTH, not
    margin, is the lock.) The handle label anchors to this row via
    the shared .nav-label overlay.
-   INT-022: the component moves DOWN — margin-top = the existing
-   section-break token (--ref-rail-first-gap), because the owner
-   ordered the Settings row into the top slot above it. VERTICAL
-   margin only: the x44 axis lock and the wrapper-left invariant
-   are untouched, and the identity keeps its ordered position
-   exactly above the nav items (same 32px gap as before). */
+   INT-024 (owner turn 24): the component moves to the BOTTOM/END of
+   the rail — "move the pfp/account at the bottom/end of the sidebar
+   with the line over it that divides it. and the components fix on
+   their place at top". The nav wrapper (navigation-4) now FILLS the
+   panel height (flex: 1 — the one flow child), and the divider's
+   margin-top: auto pushes [divider -> identity] to the bottom. The
+   identity's margin-top = the ref's divider->content rhythm token
+   (17px) because the line now sits OVER the account. VERTICAL moves
+   only: the x44 axis lock and the wrapper-left invariant are
+   untouched, and the Settings row is deleted entirely (owner order). */
 .rail-panel [class^="identity-"] {
   position: relative;              /* the handle overlay anchors here */
-  width: var(--ref-rail-item-w);   /* the icon slot — exactly above the nav items, FIXED width */
+  width: var(--ref-rail-item-w);   /* the icon slot — exactly aligned with the nav items' column, FIXED width */
   height: var(--ref-rail-avatar);
-  margin-top: var(--ref-rail-first-gap);  /* INT-022: pushed below the Settings row (owner order — vertical only, the x-axis lock holds) */
+  margin-top: var(--ref-rail-post-divider-gap);  /* INT-024: 17px below the line over it (the ref's divider->content rhythm) */
   display: flex;
   flex-direction: row;
   justify-content: center;         /* the 24px mark centers on the icon axis */
@@ -140,13 +150,21 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
   flex: none;
   box-shadow: 0 0 0 1px var(--ref-avatar-ring);
 }
-.rail-panel [class^="avatar-"] p { white-space: nowrap; font-size: 11px; }  /* INT-023: 10 -> 11 — the monogram scales with the 26px avatar */
+.rail-panel [class^="avatar-"] img.avatar-img {  /* INT-024: a real pfp image replaces the monogram (owner: "add a random pfp") */
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;                  /* fills the 26px disc, any aspect source */
+  border-radius: 50%;                 /* the circular crop — the ring shadow on the slot reads as its edge */
+}
 
 /* INT-023: the account divider — the turn-23 reference's missing component.
-   The ref runs a full-width hairline (229,230,232 on 246,247,249 — 7%) 41/44
-   of an avatar below the account block, then 29/44 to the list: the account
-   header is SEPARATED from the nav, not stacked into it (the audit's "no
-   divider, the block and Home bleed into each other").
+   The ref runs a full-width hairline (229,230,232 on 246,247,249 — 7%) that
+   SEPARATES the account from the nav: "the block and Home bleed into each
+   other" was the audit's delta. INT-024 (owner: "with the line over it that
+   divides it") moves the divider OVER the account block at the rail's END:
+   the nav list stays fixed at top, the divider + identity sink to the bottom
+   via the divider's margin-top: auto (the wrapper now fills the panel).
    GEOMETRY LAW: the element in flow is a ZERO-WIDTH-IMPACT spacer — 40px wide
    (the item slot, never wider than the items) holding exactly 1px of flow
    height for the rhythm. The visible line is its ::after, ABSOLUTELY
@@ -156,13 +174,14 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
    drift class. The ::after is ignored by fit-content: left -12 reaches from
    the wrapper's left edge (x24) back to the panel's left edge (x12) FLUSH,
    and its width rides the token pair 64/168 on the one clock (motion.css).
-   Vertical: 24 below the avatar (--ref-rail-acct-divider-gap), 17 above the
-   first row (--ref-rail-post-divider-gap) — total 42 = the ref's 70 x 26/44. */
+   Vertical: 17 below the line to the avatar (--ref-rail-post-divider-gap,
+   the ref's divider->content rhythm), the auto margin above owns the free
+   space between the nav list and the account block. */
 .rail-panel .rail-divider {
   position: relative;                  /* the containing block for the line */
   height: 1px;
   width: var(--ref-rail-item-w);       /* the item slot — zero wrapper impact */
-  margin: var(--ref-rail-acct-divider-gap) 0 0 0;
+  margin: auto 0 0 0;                 /* INT-024: the bottom push — line + account sink to the rail's end */
   background: none;
   border: none;
   border-radius: 0;
@@ -181,11 +200,18 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
 }
 
 /* destinations: icon rows that gain labels on expansion (icon axis never moves) */
-.rail-panel [class^="navigation-"] { gap: 0; padding: 0; }
+/* INT-024: the wrapper FILLS the panel (flex: 1, vertical only — its
+   width stays shrink-to-fit from its items, so the wrapper-left
+   invariant x24 and the avatar axis x44 hold) so the divider's auto
+   margin can push the account block to the rail's end.
+   SCOPED to the DIRECT child: [class^="navigation-"] would also match
+   the navigation-item-* rows (grandchildren) — flex:1 on those would
+   stretch the list (the selector-prefix hazard, caught pre-ship). */
+.rail-panel > [class^="navigation-"] { gap: 0; padding: 0; flex: 1 1 auto; min-height: 0; }
 .rail-panel [class^="destinations-"] {
   align-items: center;
   gap: calc(var(--ref-rail-pitch) - var(--ref-rail-item-h));
-  margin-top: var(--ref-rail-post-divider-gap);  /* INT-023: was 32 — the divider now owns the account->nav rhythm (ref 29/44 x avatar) */
+  margin-top: 0;  /* INT-024: the components FIX AT THE TOP — the panel's 20px inset owns the first row's air */
   padding: 0;
 }
 .rail-panel [class^="navigation-item-"] {
@@ -238,13 +264,17 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
 }
 /* INT-022: the HANDLE anchors to the AVATAR's edge, not the slot's.
    Owner: "just in front of it @prathamarchives" — the pfp is a solid
-   24px mark (sparse 18px icons need the slot edge + 12; a filled disc
-   takes the label-gap token off its own edge), and the slot-based
-   start (left 52) pushed Inter's 106px string into the panel's clip
-   (tail cut 2.2px — the "messed up sizing" the owner flagged).
-   left = avatar right edge + the shared label-gap token = 44. */
+   filled disc (takes the label gap off its own edge, unlike the sparse
+   18px icons), and the slot-based start (left 52) pushed Inter's 106px
+   string into the panel's clip (tail cut 2.2px — the "messed up
+   sizing" the owner flagged).
+   INT-024 (owner: "pull @prathamarchives bit closer to the pfp"): the
+   identity's gap tightens 12 -> 8 via its OWN token (the shared 12px
+   label-gap of Home/Library/Archive is untouched — their anchor is a
+   different law). Clip check at 1440: handle x65 + 109px string = 174,
+   panel edge 180 — 6px clear. */
 .rail-panel [class^="identity-"] .nav-label {
-  left: calc((var(--ref-rail-item-w) + var(--ref-rail-avatar)) / 2 + var(--ref-rail-label-gap));
+  left: calc((var(--ref-rail-item-w) + var(--ref-rail-avatar)) / 2 + var(--ref-rail-identity-label-gap));
 }
 
 /* selection: the INK pill (INT-018) — inverted glyph via CSS filter,
@@ -290,9 +320,16 @@ body.theme-dark  [class^="workspace-header-"] [class^="location-"] p { color: in
 
 /* reader: header / reading heading / prose — prose scrolls in place.
    The scroll container spans the content column (scrollbar at the real
-   edge); the measure stays 640 by centering the page's children. */
-.study-shell-499 { grid-template-rows: auto auto minmax(0, 1fr); }
-.study-shell-499 > .workspace-header-622 { grid-column: 2; grid-row: 1; }
+   edge); the measure stays 640 by centering the page's children.
+   INT-024 DEFECT FIX (pre-existing, from the 6-page render sweep): the
+   3-row template was declared at class specificity (0,1,0) and the base
+   shell rule body > div > [class^="study-shell-"] (0,1,1) SILENTLY won —
+   row 3 went implicit, grid-row: 1 / -1 spanned only rows 1-2, and the
+   rail measured 114.78px tall (panel 90.8 — everything past the second
+   row clipped by overflow:hidden since INT-016). The bump to
+   body > div .study-shell-499 (0,1,2) restores the 3 explicit rows. */
+body > div .study-shell-499 { grid-template-rows: auto auto minmax(0, 1fr); }
+body > div .study-shell-499 > .workspace-header-622 { grid-column: 2; grid-row: 1; }
 .study-shell-499 > .reader-heading-610 {
   grid-column: 2; grid-row: 2; min-width: 0;
   width: min(880px, 100%);
@@ -308,8 +345,11 @@ body.theme-dark  [class^="workspace-header-"] [class^="location-"] p { color: in
 }
 .reading-page-594 > * { max-width: 640px; margin-left: auto; margin-right: auto; }
 
-/* journal: header / authored page (scrolls) / day navigation */
-.study-shell-175 { grid-template-rows: auto minmax(0, 1fr) auto; position: relative; }
+/* journal: header / authored page (scrolls) / day navigation.
+   INT-024 DEFECT FIX: same specificity inversion as the reader shell —
+   the 3rd row (day nav) went implicit and the rail stood 882px (18px
+   short) since INT-016. Bumped to (0,1,2) — the rail spans 1 / -1 again. */
+body > div .study-shell-175 { grid-template-rows: auto minmax(0, 1fr) auto; position: relative; }
 .study-shell-175 > .workspace-header-306 { grid-column: 2; grid-row: 1; }
 .study-shell-175 > .authored-day-page-284 {
   grid-column: 2; grid-row: 2;

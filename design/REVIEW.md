@@ -502,3 +502,40 @@ Bold name weight (turn-019 "bold/thickness removed"), the grey sub-text line (tu
 2. Icon weight 1.1 stands; 0.9 is the next step if thinner still is wanted.
 3. Push still blocked (L-10): pass 11–14 local, fresh PAT pushes all.
 4. Then the queued content-area composition port (segmented control + card rhythm — measured in the INT-016 spec).
+
+---
+
+## Pass 15 — INT-024: settings removed; the account at the rail's end, the line over it, the components fixed at top (2026-10-17)
+
+**Owner verdict on pass 14:** "better.. now can you just remove the settings and move the pfp/account at the bottom/end of the sidebar with the like over it that divides it. and the compononets fix on there place at top... and pull @prathamarchives bit closer to pa pfp and just align it with other texts yk home/library and archive. and just add a random pfp of smh idk..."
+
+**Forensics before surgery:** the current rail measured (DOM, both states): handle x69 = 12px off the avatar's right edge, Home labels at x76, panel edge at x180, the Inter string 109px. A literal shared left edge (x76) would end the string at 185 — a 5px CLIP past the panel (the INT-022 cut-tail class). "Align it with other texts" therefore rides the family voice (the shared `.nav-label` rule: Inter 12px/400, vertically centered on the avatar's centerline — the same treatment Home/Library/Archive get) plus the row rhythm, and "pull bit closer" tightens the gap 12 → 8 via a dedicated token. Clip-checked: x65 + 109 = 174 vs 180 — 6px clear.
+
+**The pre-existing defect this pass uncovered (the "verify multiple times" dividend):** the reader page's rail has been CLIPPED since INT-016 — its shell's 3-row template (`.study-shell-499`, class specificity 0,1,0) silently lost to the base shell rule `body > div > [class^="study-shell-"]` (0,1,1) which sets a 2-row template; row 3 went implicit, `grid-row: 1 / -1` spanned only rows 1-2, the rail wrapper stood 114.78px tall and `overflow: hidden` cut the rail after ~2 rows (the account block could never have rendered there). Journal's rail was 18px short (same class). Initial diagnosis blamed reader's export nesting (body > div.node-498 > shell) — EXONERATED by computed-style forensics: node-498 IS a div, the base direct-child rules matched all along; the row-template specificity was the whole disease. Fixed by bumping the two templates to `body > div .study-shell-NNN` (0,1,2 > 0,1,1).
+
+### What changed
+
+| Surface | Pass 14 | Pass 15 | Ground |
+|---|---|---|---|
+| settings row | top slot (INT-022) | **REMOVED — row + both gear SVGs, all 6 pages** | "just remove the settings" |
+| rail order | Settings → identity → divider → nav | **Home/Library/Archive (top) → divider → identity (bottom/end)** | "components fix on there place at top… move the pfp/account at the bottom/end" |
+| divider position | below the account block | **OVER the account block (the line divides it from the nav)** | "with the line over it that divides it" |
+| bottom anchoring | — | **divider `margin: auto 0 0 0` + wrapper `flex: 1 1 auto` + panel bottom inset 20 (symmetric)** | the bottom/end order (vertical-only mechanics) |
+| handle→pfp gap | 12px (shared token) | **8px (dedicated `--ref-rail-identity-label-gap`)** | "pull @prathamarchives bit closer to the pfp" |
+| handle treatment | Inter 12px/400 @ x69 | **unchanged family + anchor law, x65 (6px clear)** | "align it with other texts" (clip-verified reading) |
+| avatar content | "pa" monogram 11px | **real pfp image (`images/pfp.png`, round-cropped, cover-fit)** | "add a random pfp of smh idk" |
+| rhythm tokens | 24/17 (account-adjacent/ref) | **17 below the line (ref's divider→content); 24 retired (auto push owns the free space)** | the re-order |
+| reader/journal rails | clipped (114.78px / 18px short) | **full-height 876/876 — first verified correct** | in-pass defect fix |
+| cache-bust | v14 | **v15** | INT-008 class |
+
+### Evidence (three rounds, six pages each)
+
+Round 1 (DOM, both states, 6 pages): 0 geometry errors, 0 console errors — panel 64/168, destinations y33 at top, identity bottom-flush (panel.bottom − 21), divider 17px above the avatar, the ::after line 64/168 full-width on the clock, avatar 26 @ cx44, handle gap 8 / clip-clearance 6 / Inter 12px/400, pfp loaded + border-radius 50%, settings absent, wrapper x24 invariant held. Round 2 (rAF): avatar cx 44 at EVERY frame of the 64→168 expansion — drift 0.00. Round 3 (VLM, dark + light + reader + journal): order correct on all, no settings anywhere, @prathamarchives fully visible, full-width line over the avatar at the bottom, real circular photo, no spacing defects; reader + journal rails FULL for the first time. Screenshots: `design/preview/p15-01..05-*.png`.
+
+### Judgment calls carried (not ordered, not shipped)
+
+1. The pfp artwork is a generated moody portrait (the owner: "random pfp of smh idk") — swap candidates cost one img src line.
+2. "Align it with other texts" read as the family voice + row rhythm (a literal x76 left edge clips — the INT-022 class); if the owner means the stricter reading, the expanded rail needs a widening order first.
+3. Icon weight 1.1 stands; 0.9 is the next step if thinner still is wanted.
+4. Push still blocked (L-10, PAT wiped): pass 11–15 local; a fresh inline PAT pushes all.
+5. Then the queued content-area composition port (segmented control + card rhythm — measured in the INT-016 spec).

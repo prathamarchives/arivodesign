@@ -90,8 +90,14 @@
   --ref-glass-blur: 20px;       /* frosted strength (refs 12-24) */
   --ref-rail-item-w-open: 144px;/* INT-019: the icon+label row when expanded */
   --ref-rail-label-gap: 12px;   /* INT-020: fixed icon -> label offset (the label is a zero-layout overlay) */
-  --ref-rail-acct-divider-gap: 24px;  /* INT-023: avatar bottom -> divider (ref 41/44 x avatar) */
-  --ref-rail-post-divider-gap: 17px; /* INT-023: divider -> first nav row (ref 29/44 x avatar) */
+  --ref-rail-identity-label-gap: 8px;  /* INT-024: handle -> pfp gap, tightened 12 -> 8 (owner: "pull
+                                         @prathamarchives bit closer to the pfp"; the shared 12px label-gap
+                                         of the nav rows is untouched — different anchor law) */
+  /* --ref-rail-acct-divider-gap: 24px — RETIRED INT-024: the ref's account-
+     adjacent divider rhythm; the divider now sits OVER the account at the
+     rail's end (owner order), its above-gap is the auto push, its below-gap
+     rides --ref-rail-post-divider-gap. Kept here as trail. */
+  --ref-rail-post-divider-gap: 17px; /* INT-023: divider -> next content (ref 29/44 x avatar); INT-024: also the line -> avatar gap at the rail's end */
 }
 
 /* page canvas: the artifact framing died (INT-016 "make it full page")

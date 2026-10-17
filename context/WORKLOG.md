@@ -389,3 +389,24 @@ Work log:
 - Docs lockstep: ledger INT-023, REVIEW pass 14, STATE rewrite, this entry; evidence `design/preview/p14-01..04-*.png`.
 
 **Stage summary:** PASS 14 landed — the account block reads like the reference: avatar at the ref's rail ratio (26), the handle centered 12px off it, the missing full-width divider below (24/17 = the ref's rhythm), the x44 axis lock and the one-clock motion intact (rAF-proven). The fix path was taken — no removal needed. PUSH still blocked pending PAT (pass 11+12+13+14 local). Carried: settings wiring, icon weight 0.9, handle voice, then the content-composition port.
+
+---
+
+## Session 21 — 2026-10-17 — INT-024: settings removed, account to the rail's end, the pre-existing reader/journal rail clip fixed
+
+**Task ID:** 1 · **Agent:** Super Z (main, GLM host)
+
+**Task:** Owner turn 24 (INT-024) — "remove the settings and move the pfp/account at the bottom/end of the sidebar with the line over it that divides it; components fix at top; pull @prathamarchives bit closer to the pfp and align it with other texts (home/library/archive); add a random pfp".
+
+**Work Log:**
+- Intake turn-024 verbatim (raw/turn-024.txt); INT-024 ledgered. Pass 14 read as approved ("better..").
+- Forensics BEFORE surgery: DOM both states — handle x69 (12px off the avatar edge), Home labels x76, panel edge x180, Inter string 109px → a literal x76 alignment would CLIP 5px (the INT-022 cut-tail class) → "align it with other texts" rides the family voice (shared .nav-label: Inter 12px/400, centered on the avatar centerline) + row rhythm; "pull closer" = gap 12 → 8 via dedicated token (--ref-rail-identity-label-gap; the shared 12px nav gap untouched).
+- HTML surgery (scripts/int024-html-surgery.py, count/balance/order assertions): settings row deleted on 6 pages; reorder destinations > divider > identity; monogram "pa" → <img class="avatar-img" src="images/pfp.png?v=15">; v15 busts. Settings gear SVGs git-rm'd.
+- CSS surgery: shell.css — panel bottom inset 20 (symmetric), wrapper `flex: 1 1 auto` (DIRECT-CHILD scoped — the `[class^="navigation-"]` prefix also matches nav-item rows; caught pre-ship), divider `margin: auto 0 0 0` (the bottom push), identity `margin-top: var(--ref-rail-post-divider-gap)` (17 below the line), destinations margin-top 0, avatar-img round crop (50%, cover); tokens.css — the 8px identity gap token, the 24px account-adjacent token retired to comment.
+- pfp.png generated (image-generation; 1024×1024 moody portrait, muted warm greys — the reading-room voice; VLM-validated as a suitable circular avatar).
+- DEFECT FIX (pre-existing, surfaced by the 6-page render sweep): reader's rail stood 114.78px tall since INT-016 (overflow:hidden clipped it after ~2 rows — the account block could never render there); journal's rail 18px short. ROOT CAUSE (after exonerating the export-nesting theory via computed styles — node-498 IS a div, the base direct-child rules matched all along): the page-shell 3-row templates (.study-shell-499 reader / .study-shell-175 journal, class specificity 0,1,0) SILENTLY lost to the base shell rule's 2-row template (0,1,1) — row 3 implicit, grid-row 1/-1 spanned only rows 1-2. FIX: both templates bumped to `body > div .study-shell-NNN` (0,1,2).
+- THREE verification rounds: (1) DOM ×2 states ×6 pages — 0 geometry/console errors (panel 64/168, dest y33 top, identity bottom-flush, divider 17px, line 64/168 on the clock, avatar 26 @ cx44, handle 8/6-clear/Inter-12-400, pfp round+loaded, settings absent, wrapper x24); (2) rAF — avatar cx 44 EVERY frame, drift 0.00; (3) VLM dark+light+reader+journal — all clean; reader/journal rails FULL for the first time.
+- verify.sh re-ratcheted: 5e(d) pfp-image guard (monogram check retired), 5g(e)/5k(e) v15, 5l rewritten (settings-absence + bottom-block identity margin + tightened handle anchor), 5m rewritten (dest>div>identity order, bottom-block rhythm law, pfp round-crop, NEW 5m(f) row-template specificity guard). GREEN.
+- Docs lockstep: ledger, REVIEW pass 15, STATE rewrite, this entry. Committed locally; push blocked (L-10 — PAT wiped, sessions 15/17/18/19/20 class).
+
+**Stage Summary:** PASS 15 live on localhost:3000 (?v=15, no-store): the rail reads Home/Library/Archive at top … divider … pfp + @prathamarchives at the END (the line over it), settings gone, a real round-cropped pfp, the handle 8px off the disc fully visible; the motion system + axis lock untouched (rAF drift 0.00); reader + journal rails render full-height for the first time since INT-016. Carried: pfp artwork keep-or-swap, the x76-alignment reading (needs a rail-widening order if strict), icon weight 0.9 next step, PAT to push pass 11–15, then the content-composition port.

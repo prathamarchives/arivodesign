@@ -146,11 +146,11 @@ if [ "$pages_ok" -eq 6 ]; then
 else
   bad "identity missing on $((6-pages_ok))/6 pages (INT-013)"
 fi
-pa=$(grep -l '>pa</span>' design/*.html | wc -l)
-if [ "$pa" -eq 6 ]; then
-  ok "avatar monogram pa in all 6 rails"
+pa=$(grep -l 'avatar-img" src="images/pfp.png?v=15' design/*.html | wc -l)
+if [ "$pa" -eq 6 ] && [ -s design/images/pfp.png ]; then
+  ok "real pfp image in all 6 rails (INT-024 — the monogram retired by owner order)"
 else
-  bad "avatar monogram missing on $((6-pa))/6 pages"
+  bad "pfp image missing on $((6-pa))/6 pages or asset absent (INT-024)"
 fi
 
 # ---------------------------------------------------------------- 5f. prototype surface guards (re-ratcheted 2026-10-16, INT-013)
@@ -232,12 +232,12 @@ if grep -q 'progress-track-' design/styles/shell.css && grep -q 'height: 4px' de
 else
   bad "progress tracks unsized — invisible progress was the G-class failure (INT-013)"
 fi
-# (e) cache-bust version bumped with the paint (?v=14) — the INT-008 landing-failure class
+# (e) cache-bust version bumped with the paint (?v=15) — the INT-008 landing-failure class
 vb=$(grep -o 'tokens.css?v=[0-9]*' design/index.html | grep -o '[0-9]*$')
-if [ "$vb" = "14" ]; then
-  ok "asset links cache-busted at v14"
+if [ "$vb" = "15" ]; then
+  ok "asset links cache-busted at v15"
 else
-  bad "asset links not re-busted at v14 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
+  bad "asset links not re-busted at v15 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
 fi
 # (f) no external resource references — everything local (the export's only CDN was fonts)
 ext="$(grep -hEo 'src="http[^"]*"|href="http[^"]*"' design/*.html 2>/dev/null | grep -v '^$' || true)"
@@ -407,68 +407,56 @@ else
 fi
 # (e) changed ASSETS carry the cache-bust too: the icon srcs are ?v=-busted
 #     (the stale-SVG render class — CSS was v12 while imgs served old strokes)
-bust=$(grep -o 'images/vector-[0-9]*\.svg?v=14' design/index.html | wc -l)
+bust=$(grep -o 'images/vector-[0-9]*\.svg?v=15' design/index.html | wc -l)
 if [ "$bust" -eq 3 ]; then
-  ok "rail icon srcs cache-busted (?v=14 — changed assets re-fetch, INT-008 class)"
+  ok "rail icon srcs cache-busted (?v=15 — changed assets re-fetch, INT-008 class)"
 else
   bad "rail icon srcs not cache-busted on index (found $bust/3) — stale-icon render class (INT-008)"
 fi
 
-# ---------------------------------------------------------------- 5l. INT-022 settings row + handle-render guards (ratcheted 2026-10-17)
-# Owner turn 22: the handle's font/sizing/spacing repaired (the nav-label
-# family never set a font-family and the handle carries no export text-N
-# class — it rendered in Times); the identity component moved DOWN; a
-# settings icon + section shipped ON TOP of it (an ordinary nav row).
-# (a) the settings row exists on every rail AND sits ABOVE the identity
-setrow=0; setord=0
+# ---------------------------------------------------------------- 5l. INT-024 rail order + settings removal guards (re-ratcheted 2026-10-17)
+# Owner turn 24: "just remove the settings and move the pfp/account at the
+# bottom/end of the sidebar with the line over it that divides it. and the
+# components fix on there place at top" — the INT-022 settings row is
+# RETIRED; the handle keeps its repaired Inter render (turn-22 font law).
+# (a) the settings row is ABSENT on every rail (owner removal order)
+setres=0
 for pg in design/index.html design/home-light.html design/library.html design/archive.html design/journal.html design/reader.html; do
-  if grep -q 'class="navigation-item-settings"' "$pg"; then
-    setrow=$((setrow+1))
-    # settings <a> must appear BEFORE the identity div in the file
-    sline=$(grep -n 'navigation-item-settings' "$pg" | head -1 | cut -d: -f1)
-    iline=$(grep -n 'class="identity-' "$pg" | head -1 | cut -d: -f1)
-    [ -n "$sline" ] && [ -n "$iline" ] && [ "$sline" -lt "$iline" ] && setord=$((setord+1))
-  fi
+  grep -q 'navigation-item-settings\|gear-settings\|vector-settings' "$pg" || setres=$((setres+1))
 done
-if [ "$setrow" -eq 6 ] && [ "$setord" -eq 6 ]; then
-  ok "settings row present + above identity on all 6 rails (INT-022)"
+if [ "$setres" -eq 6 ] && [ ! -e design/images/vector-settings-dark.svg ] && [ ! -e design/images/vector-settings-light.svg ]; then
+  ok "settings row + gear SVGs fully removed on all 6 rails (INT-024)"
 else
-  bad "settings row missing or misordered (present $setrow/6, above-identity $setord/6) — INT-022"
+  bad "settings residue on $((6-setres))/6 pages or SVGs not deleted — INT-024 removal order"
 fi
-# (b) both settings gear glyphs exist and stroke thin (1.1, the family weight)
-if grep -q 'stroke-width="1\.1"' design/images/vector-settings-dark.svg \
-   && grep -q 'stroke-width="1\.1"' design/images/vector-settings-light.svg; then
-  ok "settings gear SVGs present + stroke 1.1 (both themes)"
-else
-  bad "settings gear SVG missing or not thin (stroke 1.1 required) — INT-022"
-fi
-# (c) the label family pins the rail's own font (the Times fall-through class)
+# (b) the label family pins the rail's own font (the Times fall-through class)
 if sed -n '/^\.rail-panel \.nav-label {/,/^}/p' design/styles/shell.css | grep -q 'font-family: var(--font-family-inter)'; then
   ok "nav-label family pins Inter (no browser-default serif fall-through)"
 else
   bad "nav-label rule lost its font-family — labels render in Times (INT-022 defect class)"
 fi
-# (d) the identity sits BELOW the settings row (margin-top on the locked slot)
-if sed -n '/^\.rail-panel \[class\^="identity-"\] {/,/^}/p' design/styles/shell.css | grep -q 'margin-top: var(--ref-rail-first-gap)'; then
-  ok "identity pushed below the settings row (vertical-only move, x-lock intact)"
+# (c) the identity sits BELOW the line over it (the ref's divider->content rhythm)
+if sed -n '/^\.rail-panel \[class\^="identity-"\] {/,/^}/p' design/styles/shell.css | grep -q 'margin-top: var(--ref-rail-post-divider-gap)'; then
+  ok "identity 17px below the divider (bottom account block, INT-024)"
 else
-  bad "identity margin-top missing — the component did not move down (INT-022)"
+  bad "identity margin-top must ride --ref-rail-post-divider-gap below the line (INT-024)"
 fi
-# (e) the handle anchor clears the clip: avatar-edge based, not slot-edge
-if grep -q '\[class\^="identity-"\] \.nav-label {' design/styles/shell.css; then
-  ok "handle anchor rule present (avatar-edge + label-gap, clip-safe)"
+# (d) the handle anchor clears the clip: avatar-edge based with the tightened gap
+if grep -q '\[class\^="identity-"\] \.nav-label {' design/styles/shell.css \
+   && grep -q 'ref-rail-identity-label-gap: 8px' design/styles/tokens.css \
+   && sed -n '/\[class\^="identity-"\] \.nav-label {/,/^}/p' design/styles/shell.css | grep -q 'var(--ref-rail-identity-label-gap)'; then
+  ok "handle anchor: avatar-edge + the tightened 8px identity gap (INT-024)"
 else
-  bad "handle anchor rule missing — slot-edge start clips the Inter string (INT-022)"
+  bad "handle anchor rule missing or gap not tightened to 8px (INT-024 — slot-edge start clips the string)"
 fi
 
-# ---------------------------------------------------------------- 5m. INT-023 account-block reference port guards (ratcheted 2026-10-17)
-# Owner turn 23: "replicate the sizing and components and stuff from this
-# reference" (context/references/turn-023/) — the avatar grows to the ref's
-# rail ratio (26 = 0.40 x 64), the monogram scales with it, and the ref's
-# MISSING component ships: the full-width account divider between the
-# identity block and the nav list, with the ref's rhythm (24 above the
-# line, 17 below = the ref's 41/29 x 26/44).
-# (a) the divider exists on every rail, BETWEEN the identity and the destinations
+# ---------------------------------------------------------------- 5m. INT-024 bottom account block + rail-order guards (re-ratcheted 2026-10-17)
+# Owner turn 24: nav components FIX AT TOP; the account (pfp + handle)
+# lives at the BOTTOM/END with the divider line OVER it. The INT-023
+# divider is retained (owner: "with the line over it that divides it")
+# and rides the same one clock; the 24px account-adjacent token retired
+# with the re-order (the auto push owns the free space above the line).
+# (a) order on every rail: destinations -> divider -> identity (identity LAST)
 div_pages=0; div_order=0
 for pg in design/index.html design/home-light.html design/library.html design/archive.html design/journal.html design/reader.html; do
   if grep -q 'class="rail-divider"' "$pg"; then
@@ -476,13 +464,13 @@ for pg in design/index.html design/home-light.html design/library.html design/ar
     iline=$(grep -n 'class="identity-' "$pg" | head -1 | cut -d: -f1)
     dline=$(grep -n 'class="rail-divider"' "$pg" | head -1 | cut -d: -f1)
     nline=$(grep -n 'class="destinations-' "$pg" | head -1 | cut -d: -f1)
-    if [ "$iline" -lt "$dline" ] && [ "$dline" -lt "$nline" ]; then div_order=$((div_order+1)); fi
+    if [ "$nline" -lt "$dline" ] && [ "$dline" -lt "$iline" ]; then div_order=$((div_order+1)); fi
   fi
 done
 if [ "$div_pages" -eq 6 ] && [ "$div_order" -eq 6 ]; then
-  ok "account divider present + ordered identity > divider > destinations on all 6 rails (INT-023)"
+  ok "rail order destinations > divider > identity on all 6 rails (INT-024)"
 else
-  bad "account divider missing/misordered (present $div_pages/6, ordered $div_order/6) — INT-023"
+  bad "account divider missing/misordered (present $div_pages/6, ordered $div_order/6) — INT-024"
 fi
 # (b) the ZERO-WIDTH-IMPACT law: the flow element is slot-wide, the line is an
 #     absolutely-positioned ::after (a 64px flow child would widen the
@@ -505,20 +493,34 @@ if grep -q 'transition: width 0.3s cubic-bezier(0.32, 0.72, 0, 1)' <(sed -n '/\.
 else
   bad "divider line off-clock — must share the rail's width curve and tokens (INT-023 / INT-020 law 4)"
 fi
-# (d) the reference rhythm: 24 above the line, 17 below, token-driven
-if grep -q 'ref-rail-acct-divider-gap: 24px' design/styles/tokens.css \
+# (d) the bottom-block rhythm: the divider's auto margin pushes the account to
+#     the rail's end; the wrapper FILLS the panel; the panel carries a bottom
+#     inset; the identity rides the 17px token below the line
+if grep -q 'margin: auto 0 0 0' design/styles/shell.css \
+   && grep -q 'flex: 1 1 auto' design/styles/shell.css \
+   && grep -q 'margin-top: 0' design/styles/shell.css \
    && grep -q 'ref-rail-post-divider-gap: 17px' design/styles/tokens.css \
-   && grep -q 'margin: var(--ref-rail-acct-divider-gap)' design/styles/shell.css \
-   && grep -q 'margin-top: var(--ref-rail-post-divider-gap)' design/styles/shell.css; then
-  ok "account rhythm tokenized (24/17 = the ref's 41/29 x avatar 26/44)"
+   && grep -q 'padding: var(--ref-rail-avatar-inset) 0 var(--ref-rail-avatar-inset) 0' design/styles/shell.css; then
+  ok "bottom account block lawful (auto push + wrapper fill + panel bottom inset + 17px line->avatar rhythm)"
 else
-  bad "account rhythm broken — divider gaps must ride the 24/17 tokens (INT-023)"
+  bad "bottom account rhythm broken — divider auto-push / wrapper flex-fill / panel padding / 17px token (INT-024)"
 fi
-# (e) the monogram scales with the 26px avatar
-if grep '\[class\^="avatar-"\] p {' design/styles/shell.css | grep -q 'font-size: 11px'; then
-  ok "avatar monogram 11px (scales with the 26px avatar)"
+# (e) the pfp image: round-cropped, cover-fit, riding the 26px slot
+if grep -q '\[class\^="avatar-"\] img.avatar-img {' design/styles/shell.css \
+   && sed -n '/\[class\^="avatar-"\] img.avatar-img {/,/^}/p' design/styles/shell.css | grep -q 'object-fit: cover' \
+   && sed -n '/\[class\^="avatar-"\] img.avatar-img {/,/^}/p' design/styles/shell.css | grep -q 'border-radius: 50%'; then
+  ok "pfp image round-cropped + cover-fit on the 26px slot (INT-024)"
 else
-  bad "avatar monogram must be 11px for the 26px avatar (INT-023)"
+  bad "pfp image styling missing — circular cover crop required (INT-024)"
+fi
+# (f) page-shell row templates MUST outrank the base 2-row rule (the reader/
+#     journal specificity inversion — rail clipped to 114.78px on reader, 18px
+#     short on journal since INT-016; surfaced by the INT-024 render sweep)
+if grep -q 'body > div .study-shell-499 { grid-template-rows: auto auto minmax(0, 1fr); }' design/styles/shell.css \
+   && grep -q 'body > div .study-shell-175 { grid-template-rows: auto minmax(0, 1fr) auto; position: relative; }' design/styles/shell.css; then
+  ok "page-shell row templates at (0,1,2) specificity — 3-row shells beat the base rule (INT-024 defect fix)"
+else
+  bad "row-template specificity regression — reader/journal rails would clip (INT-024 defect class)"
 fi
 
 # ---------------------------------------------------------------- 6. worklog is alive for the latest turn
