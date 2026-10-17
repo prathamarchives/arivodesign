@@ -246,3 +246,17 @@ Stage Summary:
 Stage Summary:
 - The repo is fully operational in a fresh sandbox: gh authenticated, both repos cloned, preview live on 3000 (?v=6), verify green with the new 5h infra guards. Pass 6 (INT-013) stands unchanged, awaiting the owner's live review.
 - Open: owner review of pass 6; correction turns next; PAT rotation advised after session close.
+
+---
+
+## Session 12 — 2026-10-17 — INT-015: the model switch (flash → capable); reconcile history; design read of pass 6; preview confirmed live
+
+- Intake first (L-06): turn-015 verbatim (context/raw/turn-015.txt); INT-015 ledgered. The paste (87.9KB, full flash-chat history, turns 1–13, uploaded twice — identical) carries two historical PATs: both redacted at ingestion (same tokens already redacted at turn-001/turn-006).
+- Reconciliation: paste ↔ repo cross-checked — every event in the chat history exists in the ledger/session records (INT-001..INT-013); zero drift. The repo-as-memory system held across a model switch: nothing needed re-explaining.
+- Preview verified live (same sandbox as session 11 — daemon survived the session boundary): port 3000 no-store, all pages 200.
+- THE DESIGN READ (the owner's model-switch expectation — a design eye, not just governance): VLM critiques of p6-home-dark, p6-reader, p6-library+journal, then constitution-filtered (X-12 grayscale etc. — hue suggestions dropped) and deduped → context/intake/INT-015-design-read.md: 21 named defects in 6 groups (typography, rhythm, alignment, contrast/affordance, depth, reader-specific) + the strong things to protect (IA, macro whitespace, editorial voice, journal source-preview card, journal measure).
+- Honest tension named in the read: the prototype is the owner's own frozen export — defects split into judgment-layer (reconstruction choices: reader measure 640, toolbar occlusion/weight, deep-note 35% footprint, search surface, list-card alignment, right-rail plane) vs artifact-native (the owner's own Figma values). Judgment-layer fixes don't touch prototype.css; artifact-native changes need the owner's ruling.
+- Docs lockstep: STATE (session-12 work line, next action now carries the design-read menu), this WORKLOG entry.
+
+Stage Summary:
+- The iteration phase opens with a real menu: 21 named candidates, split by who owns the value. Preview live (?v=6). Awaiting the owner's live reactions + rulings — each becomes Loop 1/2 intake, then the next paint pass executes.

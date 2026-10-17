@@ -1,0 +1,22 @@
+# TURN 15 — verbatim intake (L-06)
+
+Date: 2026-10-17 (session 12, same sandbox as session 11 — preview daemon survived)
+Source: owner chat message (IM gateway, zai-web) + one pasted attachment (the full previous-chat history, 87.9KB, uploaded twice — identical content)
+
+## Verbatim message
+
+> now reason throughe verything ive done rightnow glm 5.3 flash was shit at design and frontend glm 5.3 is more capable so came here the last one sucked heres what has been happened in chat... and go through repo you would know yourself. and were at rightnow prototyping stage html/css so run up the design in dev so i can preview and then we make changes, iterate, fix it, the repo grows as the system says...
+
+## Attachment
+
+- `Pasted Content_1792215667988.txt` (87,876 bytes; a second identical copy also uploaded) — the FULL chat history of the previous model's sessions (turns 1–13: bootstrap → kernel/harness build → INT-004 vision → paint passes 1–6 → the Figma v1 prototype replacement, ending at "kick up the dev restart it and let me preview").
+- The paste contains TWO historical PATs (the session-1 and session-6 tokens, same ones already redacted in `turn-001.txt` and `turn-006.txt` per L-15). Redacted here at ingestion — not written to any tracked file. Both are old session tokens; rotation hygiene unchanged.
+
+## Reading (governance, not authority — the verbatim text above is the authority)
+
+- THE MODEL SWITCH: the previous agent (GLM 5.3 flash) is judged "shit at design and frontend"; the owner came to the more capable model. The design work continues HERE. The bar: actual design judgment — seeing, naming, fixing — not just governance compliance.
+- "reason through everything ive done rightnow... go through repo you would know yourself" — the repo IS the memory (P-02/L-02); the paste is cross-check, the repo is authority. Everything in the paste is already ledgered (turn-001..turn-013, INT-001..INT-013) — history and repo reconcile with zero drift.
+- "were at rightnow prototyping stage html/css" — confirms the current stage: STAGE 3 PAINT, pass 6 (the owner's own Figma v1 prototype replicated one-on-one, INT-013) is the standing design.
+- "run up the design in dev so i can preview" — the preview daemon is live on 3000 (no-store, ?v=6); verified this turn.
+- "and then we make changes, iterate, fix it, the repo grows as the system says" — the paint cycle (P-12: replicate → refine → iterate → change → test) + Loop 1/2 intake continues with this model. Corrections arrive as owner turns; each becomes ledger + law/rule/check + repair, same session.
+- No new design directive in this turn — the iteration opens with the owner's reactions to pass 6 live. The agent's added duty this turn: LOOK at the current design (VLM on the p6 screenshots) and bring its own named observations, so the owner's model switch pays for itself.
