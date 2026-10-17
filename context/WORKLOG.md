@@ -316,3 +316,7 @@ Stage Summary:
 - Docs lockstep: INTENT-LEDGER (INT-018), DESIGN-SYSTEM (glass law added), REVIEW.md pass 9, STATE.md rewrite, this entry.
 
 **Stage summary:** PASS 9 landed — the sidebar is a living floating glass column with hover expansion and ink selection, replicated from the seven references at desktop scale. Committed as session 15. Carried: radius pair, ink-vs-tint, glass strength, expand width/speed, tooltip retirement; then the content composition port.
+
+### Session 15 addendum — push blocked (L-10 class, recurrence)
+- The container reset mid-session (34-min uptime at push time): the gh CLI + turn-14 PAT credential store (outside /home/z/my-project) are GONE. Repo/daemon/preview survived (tracked location).
+- PASS 9 is committed locally (see git log) but NOT pushed. The raw-corpus PATs are redacted stubs (L-15) — no recoverable credential. Awaiting a fresh PAT from the owner: re-bootstrap gh, push, then this addendum resolves.
