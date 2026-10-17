@@ -97,18 +97,21 @@ else
   bad "core.fileMode is not false — run: git config core.fileMode false (mode-churn guard)"
 fi
 
-# ---------------------------------------------------------------- 5e. prototype rail guards (re-ratcheted 2026-10-17, INT-016)
-# INT-016 (owner turn 16) SUPERSEDES the pass-6 rail truth: the sidebar is
-# rebuilt to the owner's attached reference — a STATIC 172px full-height icon
-# rail (avatar 72, pitch 132, 117x98 R12 selection pill, 1px hairline), full-
-# page app (no artifact framing). The 48-slot/176-overlay model is retired.
-# (a) static reference rail present in the scaffold
-if grep -q 'ref-rail-w: 172px' design/styles/tokens.css && \
+# ---------------------------------------------------------------- 5e. prototype rail guards (re-ratcheted 2026-10-17, INT-017)
+# INT-016 rebuilt the sidebar to the owner's reference; INT-017 (owner:
+# "why so big?") RECALIBRATED the port from the reference's tablet-
+# scale to desktop-scale: static 72px full-height icon rail (avatar 30,
+# icons 22, 49x41 R8 pill, 55 pitch, 1px hairline), full-page app (no
+# artifact framing). The 48-slot/176-overlay model stays retired.
+# (a) static reference rail present in the scaffold, at DESKTOP scale
+if grep -q 'ref-rail-w: 72px' design/styles/tokens.css && \
+   grep -q 'ref-rail-avatar: 30px' design/styles/tokens.css && \
+   grep -q 'ref-rail-icon: 22px' design/styles/tokens.css && \
    grep -q 'border-right: 1px solid var(--ref-rail-line)' design/styles/shell.css && \
    grep -q '\.rail-panel \[class\^="navigation-item-"\]\.selected' design/styles/shell.css; then
-  ok "reference rail present (static 172, hairline, selection pill)"
+  ok "reference rail present, desktop-recalibrated (static 72, avatar 30, icons 22, hairline, pill)"
 else
-  bad "reference rail missing — static 172px rail + hairline + pill required (INT-016)"
+  bad "reference rail missing/mis-scaled — static 72px rail + hairline + pill required (INT-016/017)"
 fi
 if grep -q 'margin-left: calc(var(--sidebar-w' design/styles/shell.css; then
   bad "content margin-slide regression in shell.css — hover expansion must overlay (INT-007/013)"
@@ -221,12 +224,12 @@ if grep -q 'progress-track-' design/styles/shell.css && grep -q 'height: 4px' de
 else
   bad "progress tracks unsized — invisible progress was the G-class failure (INT-013)"
 fi
-# (e) cache-bust version bumped with the paint (?v=7) — the INT-008 landing-failure class
+# (e) cache-bust version bumped with the paint (?v=8) — the INT-008 landing-failure class
 vb=$(grep -o 'tokens.css?v=[0-9]*' design/index.html | grep -o '[0-9]*$')
-if [ "$vb" = "7" ]; then
-  ok "asset links cache-busted at v7"
+if [ "$vb" = "8" ]; then
+  ok "asset links cache-busted at v8"
 else
-  bad "asset links not re-busted at v7 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
+  bad "asset links not re-busted at v8 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
 fi
 # (f) no external resource references — everything local (the export's only CDN was fonts)
 ext="$(grep -hEo 'src="http[^"]*"|href="http[^"]*"' design/*.html 2>/dev/null | grep -v '^$' || true)"

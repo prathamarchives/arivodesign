@@ -219,3 +219,47 @@ The attached reference (`context/references/INT-016-ref-sidebar.jpg`) was read w
 3. **Rail bottom is empty** — the reference's bottom is cut off; Arivo's tools ("All changes saved" + pin) are hidden, not deleted. The natural bottom candidates: settings, theme toggle, or the save state — owner's call.
 4. **Theme mapping** — reference is light; the dark rail mirrors the reference's deltas (pill = surface +8, hairline #2A2A28). The dark home keeps its landing voice.
 5. **The rail is icon-only** — no labels even on hover (tooltip carries the name). If you want a hover-reveal label behavior instead, that's a correction turn.
+
+---
+
+## PASS 8 — THE SCALE RECALIBRATION (INT-017, session 14)
+
+Owner order (turn 17, verbatim in `context/raw/turn-017.txt`): "can you fix this, like does it make any sense. why so big? or is it a bug in preview?"
+
+### The diagnosis (evidence before repair — the owner asked "is it a bug in preview?")
+
+Not a preview bug. Proven: DOM geometry measured (no drift between CSS and render), fresh screenshots at 1440×900 AND 900×620 (preview-pane-class), VLM audits of both (`diag-1440-current.png`, `diag-900-current.png`), console clean, no-store + v7 confirmed served. The channel renders faithfully. Two artifact-side causes, compounding:
+
+1. **Tablet-scale literal port.** INT-016's calibration read the reference as a ~2.49× capture of a ~1024-CSS window — a tablet-class, touch-first concept. Porting its values as literal CSS (172 rail / 72 avatar / 52 icons / 55px header inset / 20px breadcrumb / 119px-class rhythm) is touch-scale, and it CLASHED with the Figma export's own desktop-scale components (13–16px text, icons drawn for ~16px) living in the same frame — two incompatible scales, which is exactly the "does it make any sense" incoherence.
+2. **Preview-pane amplification.** The owner's pane is narrower than the 1440 verification viewport, so the fixed 172px rail took ~19% of visible width (vs 12% at 1440) — the bigness the DOM verified as "correct" read even bigger in the pane.
+
+### What changed (one layer: tokens + glue; prototype.css untouched)
+
+| Value | INT-016 (tablet-literal) | INT-017 (desktop, ÷2.39) | ratio held |
+|---|---|---|---|
+| rail width | 172 | **72** | — |
+| avatar | 72 @ 60 inset | **30 @ 25** | 42% of rail ✓ |
+| item box (pill) | 117×98 R12 | **49×41 R8** | 68%×57% ✓ (R: ratio-true 5, optical bump to 8) |
+| pitch | 132 | **55** | 0.77× rail ✓ |
+| avatar→first center | 179 | **75.5 (measured)** | ✓ |
+| icons | 52 | **22** | near the export icons' design scale — the pass-7 "icon weight" carried call dies too |
+| content margins | 32 | **24** | desktop-class air |
+| header inset / gap | 55 / 53 | **24 / 22** | — |
+| breadcrumb | 20px | **15px** | reference-weight at desktop scale |
+| content gap | 33 | **20** | — |
+
+Also: avatar monogram 24→12px; reader deep-note top 120→88, journal node-249 top 168→120, day-context top 96→72 (top-anchored overlays re-anchored to the now-66px header); v7→v8 cache-bust.
+
+### Verification (this pass)
+
+- verify.sh re-ratcheted: 5e = desktop-recalibrated rail (72/30/22 literals + hairline + pill), 5g(e) = v8. Green (docs-lockstep checks green after this entry + STATE).
+- Browser-measured (1440×900): rail 72×900 + 1px #2A2A28 hairline; avatar 30×30 @(20.5, 25) center-x 35.5 ≈ rail center; items 49×41 @ x11, y 95/150/205 (pitch 55 exact); icons 22×22; avatar-center→first-center 75.5 (reference ratio); header 66px, crumb 15px; selected pill #1F1F1D dark / #EFEFEB light; tooltip opacity 1 on rail hover.
+- VLM audit of the fix (1440 + 900): rail reads desktop-scale ("comparable to Notion or Linear"), scale now harmonious with content typography and cards, verdict — an owner "would not look at this and say the rail is 'too big'". Named observation carried: the export's own hero headline/cover cards now dominate (by the owner's frozen design, not the rail).
+- 6 pages console-clean at v8. Evidence: `design/preview/p8-01..07-*.png`.
+
+### Carried to the owner
+
+1. **Rail width 72** — desktop-class with the reference's proportions; if the owner wants it slimmer (64) or roomier (80), it is one token.
+2. **Pill R8** — ratio-true would be R5; the optical bump is judgment, owner-callable.
+3. The remaining scale questions live in the CONTENT area (the export's own hero type + card sizes) — frozen artifact territory, needs the owner's ruling, not glue edits.
+4. Rail bottom, hover-label behavior, dark deltas — still the open carried calls from pass 7.

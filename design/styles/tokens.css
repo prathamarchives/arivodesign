@@ -8,6 +8,13 @@
    INT-016 block: reference-sidebar literals (context/intake/
    INT-016-ref-spec.md — the attached screenshot, measured at a
    2.49x capture of a 1024-CSS window; all values = image px / 2.49).
+
+   INT-017 RECALIBRATION (owner: "why so big?"): the reference is
+   tablet-class touch UI; its values ported literally read enormous
+   on a desktop window and clash with the export's own desktop-scale
+   components. The port is divided by 2.39 (rail 172 -> 72) — every
+   reference RATIO is preserved (composition stays the law; only the
+   unit scale moves). Old INT-016 values kept in comments for trail.
    ============================================================ */
 
 @font-face {
@@ -51,20 +58,21 @@
   --text-rgb-83-83-80: rgba(83, 83, 80, 1);
   --text-rgb-80-80-77: rgba(80, 80, 77, 1);
 
-  /* ---- INT-016: reference rail geometry (measured, see ref-spec) ---- */
-  --ref-rail-w: 172px;          /* 428 image px / 2.49 — the sidebar width */
-  --ref-rail-avatar: 72px;      /* 180 / 2.49 — avatar circle */
-  --ref-rail-avatar-inset: 60px;/* 150 / 2.49 — avatar top inset */
-  --ref-rail-item-w: 117px;     /* 292 / 2.49 — selection pill width */
-  --ref-rail-item-h: 98px;      /* 245 / 2.49 — selection pill height (the item box) */
-  --ref-rail-item-r: 12px;      /* corner radius (measured 8-13, VLM 'generous') */
-  --ref-rail-pitch: 132px;      /* 328 / 2.49 — center-to-center item rhythm */
-  --ref-rail-first-gap: 94px;   /* identity bottom -> first item top (avatar center -> first center = 179) */
-  --ref-rail-icon: 52px;        /* ~130 / 2.49 — nav icon glyph size */
-  --ref-content-margin: 32px;   /* 80 / 2.49 — content side margins */
-  --ref-header-inset: 55px;     /* 137 / 2.49 — header top inset */
-  --ref-header-gap: 53px;       /* 131 / 2.49 — header content -> hairline */
-  --ref-content-gap: 33px;      /* 82 / 2.49 — hairline -> content */
+  /* ---- INT-017: reference rail geometry, desktop-recalibrated ----
+     (INT-016 measured it; ratios below = the reference's own) */
+  --ref-rail-w: 72px;           /* was 172 — avatar 42% of rail, as the reference */
+  --ref-rail-avatar: 30px;      /* was 72 — same 42% ratio */
+  --ref-rail-avatar-inset: 25px;/* was 60 */
+  --ref-rail-item-w: 49px;      /* was 117 — 68% of rail, as the reference */
+  --ref-rail-item-h: 41px;      /* was 98 — 57% of rail, as the reference */
+  --ref-rail-item-r: 8px;       /* was 12 — ratio-true 5, optical bump (soft reads soft small) */
+  --ref-rail-pitch: 55px;       /* was 132 — 0.77x rail, as the reference */
+  --ref-rail-first-gap: 40px;   /* was 94 — avatar-center -> first-center 179 -> 75 */
+  --ref-rail-icon: 22px;        /* was 52 — near the export icons' design scale */
+  --ref-content-margin: 24px;   /* was 32 — desktop-class air */
+  --ref-header-inset: 24px;     /* was 55 */
+  --ref-header-gap: 22px;       /* was 53 */
+  --ref-content-gap: 20px;      /* was 33 */
 }
 
 /* page canvas: the artifact framing died (INT-016 "make it full page")

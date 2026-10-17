@@ -279,3 +279,19 @@ Stage Summary:
 - Browser verification (1440×900): all 6 pages console-clean; geometry DOM-measured exact (172×900 rail, 72×72 avatar @(50,60), items 117×98 @ x27, y 226/358/490, icons 52, pill colors both themes); tooltip fires (opacity 1); deep-note inside viewport; VLM breakage audit of 6 renders clean (journal/reader overlaps are the owner's designed painted-overlay states). Evidence: `design/preview/p7-01..07-*.png`.
 
 **Stage summary:** PASS 7 landed — full-page app + the reference sidebar replicated at measured values. The iteration loop is armed: five carried judgment calls (fixed-172 vs ratio, icon weight, rail bottom, icon-only behavior, dark deltas) await the owner's live review; content-area composition (segmented control, card rhythm) is measured and queued next. Committed as session 13.
+
+---
+
+## Session 14 — 2026-10-17 (INT-017: the scale recalibration — "why so big?")
+
+**Task:** owner turn 17 — "can you fix this, like does it make any sense. why so big? or is it a bug in preview?"
+
+**Work log:**
+- Intake first (L-06): `context/raw/turn-017.txt` verbatim (message arrived twice via gateway — one intent); INT-017 ledgered with the diagnosis-before-repair protocol the question demanded.
+- Diagnosis (evidence first): DOM geometry measurement + fresh screenshots at 1440×900 AND 900×620 (preview-pane class) + VLM audits of both. Verdict: NOT a preview bug — the channel renders faithfully; the artifact carried a tablet-scale literal port (INT-016's reference = ~2.49× capture of a ~1024-CSS touch-first window: 172 rail / 72 avatar / 52 icons / 55px header inset) that clashed with the Figma export's own desktop-scale components, amplified by the pane being narrower than the 1440 verification viewport (rail = ~19% of visible width).
+- Repair (one layer, prototype.css untouched): tokens.css INT-017 block — the port divided by 2.39 (rail 172→72) with EVERY reference ratio preserved (avatar 42% of rail, item 68%×57%, pitch 0.77× rail, avatar→first-center 179→75, gaps rescaled); shell.css glue — avatar monogram 12px, header bottom padding via the gap token, breadcrumb 20→15px, top-anchored overlays re-anchored to the now-66px header (deep-note 88, journal node-249 120, day-context 72); v7→v8 cache-bust on all 6 pages.
+- verify.sh re-ratcheted: 5e = desktop-recalibrated rail literals (72/30/22 + hairline + pill), 5g(e) = v8. Green after docs lockstep.
+- Browser verification (1440×900): rail 72×900, hairline 1px #2A2A28, avatar 30×30 @(20.5,25) centered, items 49×41 @ x11 y 95/150/205 (pitch 55 exact), icons 22×22, avatar-center→first-center 75.5, header 66px, crumb 15px, selected pill #1F1F1D/#EFEFEB, tooltip opacity 1 on hover; 6 pages console-clean. VLM fix-audit at both widths: rail reads desktop-class, harmonious with content, no "too big" verdict; named carry: the export's own hero type/covers now dominate (frozen-artifact territory, owner's call). Evidence: `design/preview/p8-01..07-*.png`.
+- Docs lockstep: INTENT-LEDGER (INT-017), REVIEW.md (pass 8: diagnosis table + value table + verification + carried calls), STATE.md (position/evidence/next-action rewrite), this entry.
+
+**Stage summary:** PASS 8 landed — the reference sidebar at desktop scale, ratios intact, preview channel exonerated and documented. Committed as session 14. Carried: rail width/pill-radius fine-tuning, rail bottom, hover labels, dark deltas, content-area scale ruling, then the queued content composition port.

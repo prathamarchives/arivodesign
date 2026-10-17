@@ -10,15 +10,17 @@
      floating on a canvas — it fills the viewport edge-to-edge
      ("actual ui"). Scroll moves inside the content column.
    - REFERENCE SIDEBAR: rebuilt to the owner's attached reference
-     (context/intake/INT-016-ref-spec.md — measured): static 172px
-     full-height icon rail, 72px avatar centered at 60px inset,
-     icon-only nav at 132px pitch, ~52px icons, selection = soft
-     117x98 R12 pill (no icon color change), 1px hairline divider.
+     (context/intake/INT-016-ref-spec.md — measured), then
+     desktop-RECALIBRATED by INT-017 (owner: "why so big?" — the
+     reference is tablet-class touch UI): static 72px full-height icon
+     rail, 30px avatar centered at 25px inset, icon-only nav at 55px
+     pitch, 22px icons, selection = soft 49x41 R8 pill (no icon color
+     change), 1px hairline divider. Every ratio = the reference's own.
      The 48px-slot + 176px hover/overlay model of INT-009/013 is
      retired for this scope; tooltips carry the labels.
-   - REFERENCE RHYTHM in the content column: 32px margins, 55px
-     header top inset, header underline hairline, 33px gap to
-     content.
+   - REFERENCE RHYTHM in the content column (INT-017 scale): 24px
+     margins, 24px header top inset, header underline hairline, 20px
+     gap to content.
    ============================================================ */
 
 /* ---------- page canvas + root wrapper: the app frame ---------- */
@@ -75,7 +77,7 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
   z-index: 41;
 }
 
-/* identity: avatar 72px, centered — the rail's only identity mark */
+/* identity: avatar 30px, centered — the rail's only identity mark */
 .rail-panel [class^="identity-"] {
   justify-content: center;
   align-items: center;
@@ -88,7 +90,7 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
   height: var(--ref-rail-avatar);
   flex: none;
 }
-.rail-panel [class^="avatar-"] p { white-space: nowrap; font-size: 24px; }
+.rail-panel [class^="avatar-"] p { white-space: nowrap; font-size: 12px; }
 .rail-panel [class^="account-details-"] { display: none; }   /* icon-only rail */
 
 /* destinations: the icon column at the reference pitch */
@@ -135,13 +137,14 @@ body > div > [class^="study-shell-"] > [class^="workspace-header-"] {
   grid-column: 2;
   grid-row: 1;
   min-width: 0;
-  padding: var(--ref-header-inset) var(--ref-content-margin) 24px var(--ref-content-margin);
+  padding: var(--ref-header-inset) var(--ref-content-margin) var(--ref-header-gap) var(--ref-content-margin);
   border-bottom: 1px solid var(--ref-rail-line);
 }
 body.theme-dark  [class^="workspace-header-"] [class^="location-"] p { color: inherit; }
-/* the reference reads its breadcrumb at ~22px display weight; the export's
-   13px was tuned for the old 48px rail's header. Port the reference scale. */
-[class^="workspace-header-"] [class^="location-"] p { font-size: 20px; }
+/* the reference's breadcrumb reads ~2x its body voice at INT-016's
+   tablet scale; at INT-017 desktop scale that lands at 15px — a
+   compact app bar title, 500 on the first segment. */
+[class^="workspace-header-"] [class^="location-"] p { font-size: 15px; }
 [class^="workspace-header-"] [class^="location-"] p:first-child { font-weight: 500; }
 
 /* ---------- content cells: scroll inside the column, reference margins ---------- */
@@ -219,7 +222,7 @@ a:focus-visible, [data-tip]:focus-visible {
 .study-shell-499 > .floating-deep-note-532 {
   position: absolute;
   right: var(--ref-content-margin);
-  top: 120px;
+  top: 88px;
   z-index: 30;
   max-width: 420px;
 }
@@ -241,7 +244,7 @@ a:focus-visible, [data-tip]:focus-visible {
 
 .study-shell-175 > .node-249 {
   position: absolute;
-  top: 168px;
+  top: 120px;
   left: calc(var(--ref-rail-w) + (100% - var(--ref-rail-w)) / 2 + 64px);
   transform: translateX(-50%);
   z-index: 31;
@@ -273,7 +276,7 @@ a:focus-visible, [data-tip]:focus-visible {
 }
 .study-shell-175 > .day-context-272 {
   position: absolute;
-  top: 96px;
+  top: 72px;
   right: var(--ref-content-margin);
   width: 300px;
   z-index: 20;

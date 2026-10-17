@@ -249,3 +249,18 @@ Interpretations (labeled, not owner words):
 - Frozen-layer respect: prototype.css stays verbatim (the owner's export); ALL changes land in shell.css (the scaffold layer — rail is its lawful domain per INT-013), tokens.css (new reference literals, labeled INT-016), motion.js (rail hover/expand logic dies with the static rail; tooltips/entrance/press live), and HTML only where the rail/header markup must change shape (archive's shipped `pinned` class is now meaningless — stripped).
 - Theme mapping: the reference is light; index stays dark (Arivo's landing voice) — the rail gets a dark-theme equivalent of the reference's light values (same geometry, Arivo dark palette), light pages get the reference's literal values.
 - Dark/light rail values, motion gating, and everything not measured in the reference are interpretation, labeled here and in the spec; the owner's next turns correct them (ruthless iteration = fast Loop 1/2 cycles).
+
+---
+
+**INT-017 — OWNER VERDICT ON PASS 7'S SCALE: "WHY SO BIG" — RECALIBRATE THE REFERENCE PORT FROM TABLET-SCALE TO DESKTOP-SCALE; THE PREVIEW CHANNEL IS CLEARED — active**
+
+> "can you fix this, like does it make any sense. why so big? or is it a bug in preview?"
+
+Source: owner turn 17, chat 2026-10-17 (`context/raw/turn-017.txt`; arrived twice via the chat gateway — one message, verbatim above). Grounds: (a) "can you fix this" — a correction order on the live PASS 7 build; (b) "why so big? does it make any sense" — the rendered scale is REJECTED; pass-7's carried judgment call #1 (fixed-172 literal port vs rescale) is resolved against the literal port; (c) "or is it a bug in preview?" — a diagnosis demand: artifact or channel? Answered with evidence before repair: DOM geometry measurement + fresh screenshots at 1440×900 AND 900×620 (preview-pane-class) + VLM audits of both — the channel renders the CSS faithfully (no-store, v7, console clean); the artifact is at fault. Two compounding causes, both artifact-side: (1) the reference is a ~2.49× capture of a ~1024-CSS tablet-class, touch-first window — its values ported literally (172 rail / 72 avatar / 52 icons / 55 header inset / 20px breadcrumb) are touch-scale, and they CLASH with the Figma export's own desktop-scale components (13-16px text, 16px-design icons) sitting in the same frame — the "does it make any sense" is exactly this two-scales-in-one-frame incoherence; (2) the owner's preview pane is narrower than the 1440 verification viewport, so the fixed 172px rail takes ~19% of visible width instead of 12%, amplifying the bigness.
+
+Interpretations (labeled, not owner words):
+- The rescale keeps the reference's COMPOSITION as law (INT-016's order — "sizing, compositioning, spacing and everything" — survives as RATIOS) and divides the port by 2.39 (172 → 72): rail 72, avatar 30 (42% of rail), item 49×41 (68%×57% of rail), pitch 55 (0.77× rail), first-gap 40 (avatar-center→first-center 75), icons 22, margins 24, header inset 24 / gap 22 / breadcrumb 15px / content gap 20. Every ratio matches the reference exactly; only the unit scale changes.
+- Radius 8 = ratio-true 5 with an optical bump (small tiles need proportionally more radius to read equally soft) — labeled, owner-callable.
+- The rescale also retires carried call #2 (icon weight): at 22px the export icons sit near their design scale (~16px), so strokes read native instead of chunky.
+- Carried calls still open: rail-bottom content, hover-label behavior vs tooltips, dark-theme deltas, fixed-width vs viewport-ratio (a FUTURE rescale axis, now separable from the tablet-literal error).
+- The preview channel is exonerated and stays as-is (no-store daemon, ?v= cache-busts); the repair is a one-layer paint change (tokens + glue), prototype.css untouched.
