@@ -230,3 +230,19 @@ Stage Summary:
 Stage Summary:
 - The owner's prototype IS the product now, one-on-one, alive. Preview: port 81 → 3000, ?v=6.
 - Open: owner review of pass 6; remaining pages get correction turns; PAT rotation still advised.
+
+---
+
+## Session 11 — 2026-10-17 — INT-014: fresh-sandbox bootstrap (gh + Arivoo absorb + re-entry; infra reset-proofed)
+
+- Intake first (L-06): turn-014 verbatim (context/raw/turn-014.txt; trailing PAT redacted per L-15, used for gh auth + git push this session); INT-014 ledgered — bootstrap order (gh CLI → Arivoo read → arivodesign work), fresh PAT, no new design direction.
+- Bootstrap: gh CLI v2.102.0 installed to ~/.local/bin (no sudo — user-local install), authenticated as prathamarchives (repo/full scopes); git push credential wiring via `gh auth setup-git`.
+- Arivoo absorbed per the owner's order: NORTH-STAR (the mission, claims C1–C5, seven layers, first usable workflow, non-goals — "No UI/UX design (owner's separate work; the backend serves it)"), STATE (session 18 closed, Phase 2 harness LANDED, Phase 3 owner-gated, open register Q6–Q10), PLAN (phases 1–5), AGENTS (read order + binding rules). Arivo = the owner's reading/study/reflection environment; Arivoo = its backend contracts; arivodesign (this repo) = the UI/UX/experience that consumes them.
+- arivodesign re-entered with the full read order (AGENTS → LAWS/RULES/CONTRACT/PRINCIPLES/DECISIONS → INTENT-LEDGER → STATE → WORKLOG → REVIEW → turn-013); verify.sh run FIRST — red on the known core.fileMode class (sandbox chmod) → fixed per the check's own instruction → green.
+- Failure class found and closed (Loop 2, self-triggered): session-10's preview infra (scripts/serve_nocache.py, daemon_nocache.py, design-glue) was UNTRACKED and died with the sandbox reset — L-10 "unpushed work never happened" recurred on infrastructure. Repair: scripts recreated (serve_nocache.py with Cache-Control: no-store — the INT-008 stale-CSS class stays dead; daemon_nocache.py true double-fork) AND committed; ratcheted as verify.sh 5h (both scripts tracked in git + no-store header present in server code).
+- Dev server restarted per the standing capability: `python3 scripts/daemon_nocache.py 3000` — live, no-store headers confirmed on / and /styles/*.css?v=6; all 6 pages + 4 stylesheets + motion.js + 3 fonts serve 200; fresh agent-browser session renders every page (titles correct, console clean, zero errors).
+- Docs lockstep: STATE.md (position + session-11 work line, evidence, preview section, next action, coordination → Arivoo @ e96ee99), this WORKLOG entry.
+
+Stage Summary:
+- The repo is fully operational in a fresh sandbox: gh authenticated, both repos cloned, preview live on 3000 (?v=6), verify green with the new 5h infra guards. Pass 6 (INT-013) stands unchanged, awaiting the owner's live review.
+- Open: owner review of pass 6; correction turns next; PAT rotation advised after session close.

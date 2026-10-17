@@ -208,3 +208,16 @@ Interpretations (labeled, not owner words):
 - The export omits frame-level layout context (Figma HTML exports drop it): the shell grid, rail slot model, cover dimensions and page scaffolding are reconstructed in a separate glue layer (design/styles/shell.css) using the export's own percentage math and values — component CSS (prototype.css) stays a FROZEN verbatim artifact; all literals centralize in tokens.css.
 - Theme: the artifact ships 5 light pages + 1 dark home (the dark-first home remains the landing page per INT-004/INT-010); the sun/moon toggle navigates between them.
 - The rail's two states both exist in the artifact (collapsed rail on 5 pages, expanded navigation on archive) — the build renders collapsed everywhere + hover/pin expansion, with archive shipping pinned = its frame state, one-on-one at rest either way.
+
+---
+
+**INT-014 — SESSION 11 BOOTSTRAP: SETUP GH CLI, ABSORB ARIVOO (THE PRODUCT + GOAL), RE-ENTER ARIVODESIGN — THE UI/UX/EXPERIENCE WORKSTREAM — AND WORK; FRESH PAT SUPPLIED — active**
+
+> "setup gh and github cli first go through the arivoo repo to understand arivo and what it is and whats our goal and then go through arivodesign and we'll be working with UI/UX/experince and whole thing."
+
+Source: owner turn 14, chat 2026-10-17 (`context/raw/turn-014.txt`; trailing PAT redacted per L-15, used for gh auth + push this session). Grounds: (a) the session opens in a FRESH sandbox — tooling bootstrap is ordered FIRST ("setup gh and github cli"), a fresh PAT supplied (same class as INT-006); (b) the read order is explicit — Arivoo FIRST ("understand arivo and what it is and whats our goal"), THEN arivodesign — the design work stays anchored to the backend's product contracts and the owner's north star; (c) "we'll be working with UI/UX/experince and whole thing" — the standing mandate: this repo is where the experience gets designed and built.
+
+Interpretations (labeled, not owner words):
+- The Arivoo read (performed this session) confirms: Arivo = the owner's reading/study/reflection environment (import everything readable; read like a book; highlight; raw-thinking notes; journal; compounding; agents with the owner's context). Arivoo = backend contracts only (Phase 2 harness LANDED, Phase 3 owner-gated). Its NORTH-STAR non-goal — "No UI/UX design (owner's separate work; the backend serves it)" — is precisely this repo's mandate: the UI/UX/experience IS the owner's separate work, and this is where it lives.
+- The sandbox reset exposed a failure class: the preview infrastructure (serve_nocache.py, daemon) was untracked and evaporated (L-10: unpushed work never happened). The repair: scripts recreated AND COMMITTED — the preview capability becomes a tracked repo asset that survives environment resets. Ratcheted: verify gains a check that the scripts exist and the no-store header is served.
+- No new design direction in this turn — the standing next action holds: the owner reviews PASS 6 live (the v1 prototype replicated one-on-one, ?v=6), corrections arrive as turns, then the next layer (reading surface + capture, or whatever the owner picks) is reasoned per D-007.

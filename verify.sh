@@ -237,6 +237,26 @@ else
   ok "zero external resources (fully local prototype)"
 fi
 
+# ---------------------------------------------------------------- 5h. preview infrastructure is TRACKED (ratcheted 2026-10-17, INT-014)
+# (session-10's untracked scripts/ died with the sandbox reset — L-10: unpushed work
+# never happened. The preview server + daemon are repo capabilities now: on disk,
+# in git, and the no-store header actually in the code.)
+if git ls-files --error-unmatch scripts/serve_nocache.py >/dev/null 2>&1; then
+  ok "no-store server tracked in git (survives sandbox resets)"
+else
+  bad "scripts/serve_nocache.py is not TRACKED — the INT-008 class regressed (L-10)"
+fi
+if git ls-files --error-unmatch scripts/daemon_nocache.py >/dev/null 2>&1; then
+  ok "preview daemon tracked in git"
+else
+  bad "scripts/daemon_nocache.py is not TRACKED — plain nohup daemons die at tool-call boundaries"
+fi
+if grep -q 'no-store, must-revalidate' scripts/serve_nocache.py 2>/dev/null; then
+  ok "no-store header present in server code (INT-008 class: closed)"
+else
+  bad "serve_nocache.py lost the Cache-Control no-store header"
+fi
+
 # ---------------------------------------------------------------- 6. worklog is alive for the latest turn
 latest="$(ls context/raw/turn-*.txt 2>/dev/null | sort | tail -1)"
 if [ -n "$latest" ]; then

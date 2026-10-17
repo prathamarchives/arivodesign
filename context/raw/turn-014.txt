@@ -1,0 +1,20 @@
+# TURN 14 — verbatim intake (L-06)
+
+Date: 2026-10-17 (session 11 opens; fresh sandbox — session 10's environment was reset)
+Source: owner chat message (IM gateway, zai-web)
+
+## Verbatim message
+
+> setup gh and github cli first go through the arivoo repo to understand arivo and what it is and whats our goal and then go through arivodesign and we'll be working with UI/UX/experince and whole thing. ghp_[REDACTED]
+
+## Redaction note
+
+- The message ended with a GitHub PAT (fresh token, supplied for CLI auth + push). Redacted here per L-15 / D-025 / INT-092 precedent — credentials never live in tracked files. Used to authenticate `gh` CLI and `git push` this session (stored in gh's hosts.yml, never in repo files). Rotation still advised after session close.
+
+## Context (governance, not authority — the verbatim text above is the authority)
+
+- Arrives in a FRESH sandbox (session 10's filesystem wiped): gh CLI absent, preview daemon dead, untracked `scripts/` lost. All committed work survives — pass 6 (INT-013, the owner's v1 prototype replicated one-on-one) is HEAD.
+- The order has three steps: (1) tooling bootstrap — install GitHub CLI, authenticate; (2) absorb Arivoo (the backend repo) — understand Arivo the product and the goal; (3) re-enter arivodesign — the UI/UX/experience workstream — and work.
+- Step 2 confirmed from the Arivoo read: Arivo is the owner's reading/study/reflection environment (NORTH-STAR verbatim: import everything readable, read like a book, highlight with raw-thinking notes, journal daily, compounding learning, agents with the owner's context). Arivoo = backend contracts only, Phase 2 LANDED (harness), Phase 3 (durable capture) next, owner-gated. The UI/UX is THIS repo's charge (Arivoo non-goal: "No UI/UX design (owner's separate work; the backend serves it)").
+- "we'll be working with UI/UX/experience and whole thing" — the standing work mandate: continue the design work in this repo. The exact next action at HEAD: owner reviews PASS 6 live; corrections arrive as turns (Loop 1/2).
+- Session-11 duties inferred from the reset: recreate the lost preview infrastructure (no-store server + daemon), make it TRACKED this time (unpushed work never happened — the scripts' loss is the failure class, the fix is committing them), restart the dev server, verify green, push.
