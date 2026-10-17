@@ -360,3 +360,19 @@ Stage Summary:
 - Docs lockstep: INTENT-LEDGER INT-021, REVIEW.md pass 12, STATE.md rewrite, this entry. verify.sh re-ratcheted: 5g(e) v12 + NEW 5k (a-e: no account slot/Personal space, handle overlay ×6, identity lock, 18× stroke 1.1, icon src busts).
 
 **Stage summary:** PASS 12 landed — icons thin, pfp locked like a component with @prathamarchives in front of it, "Personal space" and the bottom slot dead, nothing else moved (all pass-11 geometry below the identity held: first item y89, pitch 48, icon axis 44). PUSH still blocked pending PAT. Carried: icon weight 1.1 (one literal), handle voice (12px/400 label treatment), then the content-composition port.
+
+---
+
+## Session 19 — INT-022 / PASS 13: the handle's font repaired; identity moves down; Settings takes the top slot
+
+**Owner verdict on pass 12:** "see how messed up the sizing, spacing and everything is with that @prathamarchives text… you changed the font? fix that too. after that bring that whole component down ward. and also add a settings icon and section on top of it. and dont mess it up…"
+
+- Intake turn-022 verbatim + the owner's screenshot committed (context/references/turn-022/); INT-022 ledgered with the forensic grounds.
+- Forensics BEFORE repair: DOM-measured the handle at `font-family: "Times New Roman"` — the only rail label with no export text-N class, and the shared `.nav-label` rule never set a family (prototype's body sets none) → browser-default serif. Times' metrics at 12px/lh-1 next to the 24px avatar = the "messed up sizing, spacing and everything". Geometry measured CORRECT (cy aligned, gaps 20/23, axis 44) — the family was the defect.
+- The font fix (`font-family: var(--font-family-inter)` on `.rail-panel .nav-label`) EXPOSED a second defect: with Inter, "@prathamarchives" = 106.2px and the slot-edge anchor (x76) ran the tail 2.2px past the panel's clip — VLM confirmed the cut "s". Handle re-anchored to the AVATAR's edge + the shared label-gap token (x68): "just in front of it", 12px off the pfp, 5.8px clear. Ratcheted 5l(e).
+- The downward move: identity `margin-top: var(--ref-rail-first-gap)` (existing token, vertical-only — the x44 lock provably untouched). Settings takes the top slot: an ordinary nav row (gear SVG generated per theme, stroke 1.1, 16-grid = the house's rendered weight; bare nav-label safe because the family rule now pins Inter; href="#" never matches data-page so the ink pill never selects it). Gaps 32/32 symmetric around the identity — zero new values.
+- Surgery: `scripts/int022-settings-icon.py` (both gear SVGs) + `scripts/int022-html-surgery.py` (6 pages, settings-above-identity, v13 busts, count/balance/idempotence assertions). shell.css: 3 property lines + comments. No motion.css/motion.js/prototype.css/tokens.css changes — the new row rides every generic rule.
+- Verified: DOM collapsed (settings 40×34 y33, identity y99, avatarCX 44, gaps 32/32) + expanded (settings 144, identity 40 @ x24, handle x68→174.2, clear 5.8px); rAF avatarX = 44 at ALL 36 frames of the expansion; `fonts.check('12px Inter')` true; 6/6 pages settings-above-identity + console-clean; VLM audits dark + light clean ("no obvious defects"); verify.sh green after re-ratchet (5g(e)/5k(e) v13, NEW 5l a-e). Evidence: design/preview/p13-01..05-*.png.
+- Docs lockstep: INTENT-LEDGER INT-022, REVIEW.md pass 13, STATE.md rewrite, this entry.
+
+**Stage summary:** PASS 13 landed — @prathamarchives in Inter fully visible 12px off the locked pfp; Settings on top; identity down; every pass-12 lock held (rAF-proven). PUSH still blocked pending PAT (pass 11+12+13 local). Carried: handle voice, settings wiring, icon weight 0.9, then the content-composition port.

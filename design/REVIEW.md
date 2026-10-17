@@ -433,3 +433,36 @@ The rail's real layout container is `navigation-4` (flex column, align-start, sh
 2. Handle voice: @prathamarchives ships as a standard label (12px/400, same color) — one literal if it should read muted or smaller.
 3. Push still blocked (L-10, PAT wiped again): pass 11 + 12 committed locally; a fresh inline PAT pushes both.
 4. Then the queued content-area composition port (segmented control + card rhythm — measured in the INT-016 spec).
+
+---
+
+## PASS 13 — INT-022: THE HANDLE'S FONT REPAIRED (TIMES → INTER); THE IDENTITY MOVES DOWN; A SETTINGS SECTION TAKES THE TOP SLOT
+
+**Owner verdict on pass 12:** "see how messed up the sizing, spacing and everything is with that @prathamarchives text dont repeat that please do your work with responsiblity. and all of that you changed the font? fix that too. after that bring that whole component down ward. and also add a settings icon and section on top of it . and dont mess it up and hope so every iteration is not gonna be reapeated"
+
+**Forensics (before repair, DOM-measured):** the handle rendered in `"Times New Roman"` — the one label in the rail without an export `text-N` class (the INT-021 handle and every future bare `.nav-label` carried no `font-family`, and prototype.css's body sets none — the export relies on per-text classes). Times' taller metrics at 12px/line-height 1 next to the 24px avatar = the "messed up sizing, spacing and everything". The geometry itself was measured CORRECT (handle cy = avatar cy = 45; pfp→handle 20px; axis 44) — the family was the whole defect.
+
+**Second defect found while fixing the first (the font fix EXPOSED it):** with Inter loaded, "@prathamarchives" measures 106.2px; the slot-edge label start (left 52 → x76) ran the tail 2.2px past the panel's clip edge — the final "s" was cut (VLM-confirmed). The handle now anchors to the AVATAR's edge + the shared label-gap token (left 44 → x68): "just in front of it", 5.8px clear of the clip.
+
+### What changed
+
+| Surface | Pass 12 | Pass 13 | Ground |
+|---|---|---|---|
+| handle font | Times New Roman (no family on `.nav-label`, no text-N on the handle) | **Inter 12px/400 — the rail's own voice; the family rule pins it for every label** | "you changed the font? fix that too" |
+| handle anchor | slot edge + 12 (x76) — clipped the Inter string 2.2px | **avatar edge + 12 (x68) — 12px off the pfp, fully visible, 5.8px clip clearance** | "just in front of it" (INT-021) + "messed up sizing/spacing" |
+| identity position | top of the rail (y33) | **y99 — pushed below the new Settings row; x-lock untouched (rAF: 44 at every frame)** | "bring that whole component down ward" |
+| top of the rail | pfp first | **Settings row: gear glyph (stroke 1.1, 16-grid = the house's rendered weight), nav-label overlay, ordinary item rules, href="#"** | "add a settings icon and section on top of it" |
+| gaps | 32 (identity→items) | **32 / 32 symmetric around the identity (Settings→identity→items) — the existing section-break token, zero new values** | minimal-invention rule |
+| cache-bust | v12 | **v13 on all asset links (CSS/JS/icons; the two new gear SVGs ship fresh)** | INT-008 class |
+
+### Evidence
+
+DOM: collapsed — settings 40×34 @ y33, identity y99, avatarCX 44, gaps 32/32; expanded — settings 144 wide, identity still 40 @ x24, avatar 44, handle x68→174.2 (clip 180), Settings/Home labels x76; rAF trajectory: avatarX = 44 at ALL 36 frames of the 64→168 expansion (lock held); `document.fonts.check('12px Inter')` true, computed handle font Inter; 6/6 pages carry the settings row above identity, console-clean. VLM (dark + light, 4× crops): handle complete with breathing room, gaps balanced, vertically centered, "no obvious defects". Screenshots: `design/preview/p13-01..05-*.png`.
+
+### Carried (not ordered, not shipped)
+
+1. Handle voice stays the standard label treatment (12px/400 Inter, label color) — one literal if muted/smaller is wanted.
+2. Settings is a dead link (href="#") — no settings page exists; wiring it is a future owner order.
+3. Icon weight 1.1 stands (carried from pass 12; 0.9 is the next step if thinner still is wanted).
+4. Push still blocked (L-10, PAT wiped): pass 11 + 12 + 13 committed locally; a fresh inline PAT pushes all.
+5. Then the queued content-area composition port (segmented control + card rhythm — measured in the INT-016 spec).

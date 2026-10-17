@@ -29,7 +29,16 @@
      on the icon axis (NEVER drifts when the rail opens), the
      handle @prathamarchives as its label overlay; the bottom
      account slot ("prathamarchives / Personal space") is deleted
-     by owner order — it was an unauthorized move.
+     by owner order — it was an unauthorized move. INT-022 (owner
+     turn 22): the handle's render REPAIRED (the shared label rule
+     never set a font-family and the handle carries no export
+     text-N class — it fell through to Times, the "you changed
+     the font" defect; the rule now pins the rail's own Inter),
+     the identity component moved DOWN (margin-top = the section-
+     break token — the Settings row takes the top slot), and a
+     SETTINGS section shipped above the identity (owner: "add a
+     settings icon and section on top of it") — an ordinary nav
+     row: every generic rule, no new motion.
    - REFERENCE RHYTHM in the content column (INT-017 scale): 24px
      margins, 24px header top inset, header underline hairline, 20px
      gap to content.
@@ -105,11 +114,18 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
    prototype's identity width:100% rode the growing wrapper — the
    avatar slid 44 -> 96 as the rail opened. FIXED WIDTH, not
    margin, is the lock.) The handle label anchors to this row via
-   the shared .nav-label overlay. */
+   the shared .nav-label overlay.
+   INT-022: the component moves DOWN — margin-top = the existing
+   section-break token (--ref-rail-first-gap), because the owner
+   ordered the Settings row into the top slot above it. VERTICAL
+   margin only: the x44 axis lock and the wrapper-left invariant
+   are untouched, and the identity keeps its ordered position
+   exactly above the nav items (same 32px gap as before). */
 .rail-panel [class^="identity-"] {
   position: relative;              /* the handle overlay anchors here */
   width: var(--ref-rail-item-w);   /* the icon slot — exactly above the nav items, FIXED width */
   height: var(--ref-rail-avatar);
+  margin-top: var(--ref-rail-first-gap);  /* INT-022: pushed below the Settings row (owner order — vertical only, the x-axis lock holds) */
   display: flex;
   flex-direction: row;
   justify-content: center;         /* the 24px mark centers on the icon axis */
@@ -177,9 +193,20 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
   align-items: center;
   white-space: nowrap;
   color: var(--ref-rail-label);
+  font-family: var(--font-family-inter);  /* INT-022: the handle + Settings labels carry no export text-N class — without this they fell to Times (the "changed the font" defect) */
   font-size: 12px;             /* INT-019: 13 -> 12 — lighter, no bold anywhere in the rail */
   font-weight: 400;
   line-height: 1;
+}
+/* INT-022: the HANDLE anchors to the AVATAR's edge, not the slot's.
+   Owner: "just in front of it @prathamarchives" — the pfp is a solid
+   24px mark (sparse 18px icons need the slot edge + 12; a filled disc
+   takes the label-gap token off its own edge), and the slot-based
+   start (left 52) pushed Inter's 106px string into the panel's clip
+   (tail cut 2.2px — the "messed up sizing" the owner flagged).
+   left = avatar right edge + the shared label-gap token = 44. */
+.rail-panel [class^="identity-"] .nav-label {
+  left: calc((var(--ref-rail-item-w) + var(--ref-rail-avatar)) / 2 + var(--ref-rail-label-gap));
 }
 
 /* selection: the INK pill (INT-018) — inverted glyph via CSS filter,

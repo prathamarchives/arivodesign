@@ -231,12 +231,12 @@ if grep -q 'progress-track-' design/styles/shell.css && grep -q 'height: 4px' de
 else
   bad "progress tracks unsized — invisible progress was the G-class failure (INT-013)"
 fi
-# (e) cache-bust version bumped with the paint (?v=12) — the INT-008 landing-failure class
+# (e) cache-bust version bumped with the paint (?v=13) — the INT-008 landing-failure class
 vb=$(grep -o 'tokens.css?v=[0-9]*' design/index.html | grep -o '[0-9]*$')
-if [ "$vb" = "12" ]; then
-  ok "asset links cache-busted at v12"
+if [ "$vb" = "13" ]; then
+  ok "asset links cache-busted at v13"
 else
-  bad "asset links not re-busted at v12 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
+  bad "asset links not re-busted at v13 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
 fi
 # (f) no external resource references — everything local (the export's only CDN was fonts)
 ext="$(grep -hEo 'src="http[^"]*"|href="http[^"]*"' design/*.html 2>/dev/null | grep -v '^$' || true)"
@@ -406,11 +406,58 @@ else
 fi
 # (e) changed ASSETS carry the cache-bust too: the icon srcs are ?v=-busted
 #     (the stale-SVG render class — CSS was v12 while imgs served old strokes)
-bust=$(grep -o 'images/vector-[0-9]*\.svg?v=12' design/index.html | wc -l)
+bust=$(grep -o 'images/vector-[0-9]*\.svg?v=13' design/index.html | wc -l)
 if [ "$bust" -eq 3 ]; then
-  ok "rail icon srcs cache-busted (?v=12 — changed assets re-fetch, INT-008 class)"
+  ok "rail icon srcs cache-busted (?v=13 — changed assets re-fetch, INT-008 class)"
 else
   bad "rail icon srcs not cache-busted on index (found $bust/3) — stale-icon render class (INT-008)"
+fi
+
+# ---------------------------------------------------------------- 5l. INT-022 settings row + handle-render guards (ratcheted 2026-10-17)
+# Owner turn 22: the handle's font/sizing/spacing repaired (the nav-label
+# family never set a font-family and the handle carries no export text-N
+# class — it rendered in Times); the identity component moved DOWN; a
+# settings icon + section shipped ON TOP of it (an ordinary nav row).
+# (a) the settings row exists on every rail AND sits ABOVE the identity
+setrow=0; setord=0
+for pg in design/index.html design/home-light.html design/library.html design/archive.html design/journal.html design/reader.html; do
+  if grep -q 'class="navigation-item-settings"' "$pg"; then
+    setrow=$((setrow+1))
+    # settings <a> must appear BEFORE the identity div in the file
+    sline=$(grep -n 'navigation-item-settings' "$pg" | head -1 | cut -d: -f1)
+    iline=$(grep -n 'class="identity-' "$pg" | head -1 | cut -d: -f1)
+    [ -n "$sline" ] && [ -n "$iline" ] && [ "$sline" -lt "$iline" ] && setord=$((setord+1))
+  fi
+done
+if [ "$setrow" -eq 6 ] && [ "$setord" -eq 6 ]; then
+  ok "settings row present + above identity on all 6 rails (INT-022)"
+else
+  bad "settings row missing or misordered (present $setrow/6, above-identity $setord/6) — INT-022"
+fi
+# (b) both settings gear glyphs exist and stroke thin (1.1, the family weight)
+if grep -q 'stroke-width="1\.1"' design/images/vector-settings-dark.svg \
+   && grep -q 'stroke-width="1\.1"' design/images/vector-settings-light.svg; then
+  ok "settings gear SVGs present + stroke 1.1 (both themes)"
+else
+  bad "settings gear SVG missing or not thin (stroke 1.1 required) — INT-022"
+fi
+# (c) the label family pins the rail's own font (the Times fall-through class)
+if sed -n '/^\.rail-panel \.nav-label {/,/^}/p' design/styles/shell.css | grep -q 'font-family: var(--font-family-inter)'; then
+  ok "nav-label family pins Inter (no browser-default serif fall-through)"
+else
+  bad "nav-label rule lost its font-family — labels render in Times (INT-022 defect class)"
+fi
+# (d) the identity sits BELOW the settings row (margin-top on the locked slot)
+if sed -n '/^\.rail-panel \[class\^="identity-"\] {/,/^}/p' design/styles/shell.css | grep -q 'margin-top: var(--ref-rail-first-gap)'; then
+  ok "identity pushed below the settings row (vertical-only move, x-lock intact)"
+else
+  bad "identity margin-top missing — the component did not move down (INT-022)"
+fi
+# (e) the handle anchor clears the clip: avatar-edge based, not slot-edge
+if grep -q '\[class\^="identity-"\] \.nav-label {' design/styles/shell.css; then
+  ok "handle anchor rule present (avatar-edge + label-gap, clip-safe)"
+else
+  bad "handle anchor rule missing — slot-edge start clips the Inter string (INT-022)"
 fi
 
 # ---------------------------------------------------------------- 6. worklog is alive for the latest turn
