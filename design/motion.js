@@ -1,7 +1,9 @@
-/* motion.js — INT-016: entrance stagger, rail selection, nothing else.
+/* motion.js — INT-018: entrance stagger, rail selection, rail EXPANSION.
    (master: scripts/design-glue/) The prototype's statics stay verbatim.
-   The rail is now the STATIC reference rail (INT-016): no hover/expand,
-   no pin — the paint layer marks the current page's item selected. */
+   The rail is a floating glass column that opens on hover/focus
+   (72 -> 184) revealing labels, account, and save-state; it closes
+   140ms after the pointer leaves (grace against flicker). The
+   expansion overlays content — nothing reflows. */
 (function () {
   var body = document.body;
   body.classList.add('js');
@@ -31,7 +33,7 @@
     }
   }
 
-  // ---- rail: mark the current page's item selected (reference pill) ----
+  // ---- rail: mark the current page's item selected (ink pill) ----
   var page = body.getAttribute('data-page');
   if (page) {
     var items = document.querySelectorAll('.rail-panel [class^="navigation-item-"]');
@@ -41,6 +43,28 @@
         items[k].setAttribute('aria-current', 'page');
       }
     }
+  }
+
+  // ---- INT-018: rail expansion (hover + keyboard focus) ----
+  var rail = document.querySelector('.rail-panel');
+  if (rail) {
+    var closeTimer = null;
+    var open = function () {
+      if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+      rail.classList.add('expanded');
+    };
+    var close = function () {
+      closeTimer = setTimeout(function () {
+        rail.classList.remove('expanded');
+        closeTimer = null;
+      }, 140);
+    };
+    rail.addEventListener('mouseenter', open);
+    rail.addEventListener('mouseleave', close);
+    rail.addEventListener('focusin', open);
+    rail.addEventListener('focusout', function (e) {
+      if (!rail.contains(e.relatedTarget)) close();
+    });
   }
 
   // ---- go ----

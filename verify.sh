@@ -97,21 +97,24 @@ else
   bad "core.fileMode is not false — run: git config core.fileMode false (mode-churn guard)"
 fi
 
-# ---------------------------------------------------------------- 5e. prototype rail guards (re-ratcheted 2026-10-17, INT-017)
-# INT-016 rebuilt the sidebar to the owner's reference; INT-017 (owner:
-# "why so big?") RECALIBRATED the port from the reference's tablet-
-# scale to desktop-scale: static 72px full-height icon rail (avatar 30,
-# icons 22, 49x41 R8 pill, 55 pitch, 1px hairline), full-page app (no
-# artifact framing). The 48-slot/176-overlay model stays retired.
-# (a) static reference rail present in the scaffold, at DESKTOP scale
+# ---------------------------------------------------------------- 5e. prototype rail guards (re-ratcheted 2026-10-17, INT-018)
+# INT-016 rebuilt the sidebar to the owner's reference; INT-017
+# recalibrated it to desktop scale; INT-018 MATERIALIZES it: a
+# FLOATING GLASS column (inset 12, R16, frosted blur 20, 1px light
+# edge, soft shadow) that expands on hover 72 -> 184 (icon+label
+# rows, ink selection pill R6, inverted glyph). The 48-slot model
+# stays retired; expansion OVERLAYS (no reflow).
+# (a) the floating glass rail present in the scaffold, at desktop scale
 if grep -q 'ref-rail-w: 72px' design/styles/tokens.css && \
    grep -q 'ref-rail-avatar: 30px' design/styles/tokens.css && \
    grep -q 'ref-rail-icon: 22px' design/styles/tokens.css && \
-   grep -q 'border-right: 1px solid var(--ref-rail-line)' design/styles/shell.css && \
+   grep -q 'ref-rail-radius: 16px' design/styles/tokens.css && \
+   grep -q 'backdrop-filter: blur(var(--ref-glass-blur))' design/styles/shell.css && \
+   grep -q 'border-radius: var(--ref-rail-radius)' design/styles/shell.css && \
    grep -q '\.rail-panel \[class\^="navigation-item-"\]\.selected' design/styles/shell.css; then
-  ok "reference rail present, desktop-recalibrated (static 72, avatar 30, icons 22, hairline, pill)"
+  ok "floating glass rail present (72/30/22 literals, R16, frosted, ink pill)"
 else
-  bad "reference rail missing/mis-scaled — static 72px rail + hairline + pill required (INT-016/017)"
+  bad "glass rail missing/mis-built — floating frosted R16 column + ink pill required (INT-016/017/018)"
 fi
 if grep -q 'margin-left: calc(var(--sidebar-w' design/styles/shell.css; then
   bad "content margin-slide regression in shell.css — hover expansion must overlay (INT-007/013)"
@@ -160,13 +163,13 @@ if [ -n "$arivo_bad" ] || [ -n "$arivo_journal_bad" ]; then
 else
   ok "arivo absent except the owner's arivo:// URIs (journal)"
 fi
-# (b) latency law: the rail is STATIC (INT-016) — no width transition exists
-#     at all; render latency is zero by construction. A width transition
-#     reappearing is the regression to catch.
-if grep -q 'width 0\.[0-9]\+s' design/styles/shell.css; then
-  bad "rail width transition found — the reference rail is static; latency must be 0ms (INT-016)"
+# (b) latency law, INT-018 form: the rail EXPANDS on hover by owner
+#     order — a width transition exists again, and it must stay fast
+#     (<= 260ms; the INT-009 near-critical/no-bounce law stands).
+if grep -q 'width 0\.2[0-6]s' design/styles/motion.css; then
+  ok "rail expansion present and fast (width 0.2xs, <=260ms)"
 else
-  ok "rail static — no width transition, latency 0ms (INT-009 law satisfied by construction)"
+  bad "rail width transition missing or slow — expansion needs width 0.2[0-6]s (INT-009/018)"
 fi
 # (c) tooltip system: data-tip hooks + ink-inverted chip in the motion layer
 if grep -q 'data-tip=' design/index.html && grep -q 'data-tip\]::after' design/styles/motion.css; then
@@ -224,12 +227,12 @@ if grep -q 'progress-track-' design/styles/shell.css && grep -q 'height: 4px' de
 else
   bad "progress tracks unsized — invisible progress was the G-class failure (INT-013)"
 fi
-# (e) cache-bust version bumped with the paint (?v=8) — the INT-008 landing-failure class
+# (e) cache-bust version bumped with the paint (?v=9) — the INT-008 landing-failure class
 vb=$(grep -o 'tokens.css?v=[0-9]*' design/index.html | grep -o '[0-9]*$')
-if [ "$vb" = "8" ]; then
-  ok "asset links cache-busted at v8"
+if [ "$vb" = "9" ]; then
+  ok "asset links cache-busted at v9"
 else
-  bad "asset links not re-busted at v8 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
+  bad "asset links not re-busted at v9 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
 fi
 # (f) no external resource references — everything local (the export's only CDN was fonts)
 ext="$(grep -hEo 'src="http[^"]*"|href="http[^"]*"' design/*.html 2>/dev/null | grep -v '^$' || true)"
@@ -257,6 +260,34 @@ if grep -q 'no-store, must-revalidate' scripts/serve_nocache.py 2>/dev/null; the
   ok "no-store header present in server code (INT-008 class: closed)"
 else
   bad "serve_nocache.py lost the Cache-Control no-store header"
+fi
+
+# ---------------------------------------------------------------- 5i. INT-018 glass + ink guards (ratcheted 2026-10-17)
+# The owner's standing glass ask (INT-004) lands on the rail by INT-018:
+# frosted translucency + luminous canvas (pass-2 law: glass on a dead
+# canvas is a defect) + ink-inverted selection with glyph flip.
+if grep -q 'rgba(23, 23, 23, 0.72)' design/styles/tokens.css && \
+   grep -q 'rgba(255, 255, 255, 0.72)' design/styles/tokens.css; then
+  ok "translucent rail surfaces in both themes (glass law)"
+else
+  bad "rail surface is opaque — frosted translucency required (INT-004/018)"
+fi
+if grep -q 'radial-gradient' design/styles/tokens.css; then
+  ok "canvas glow washes present (glass needs luminosity)"
+else
+  bad "canvas glow missing — frosted glass on a flat canvas reads dead (pass-2 law)"
+fi
+if grep -q 'filter: brightness(0)' design/styles/shell.css && \
+   grep -q 'filter: brightness(0) invert(1)' design/styles/shell.css; then
+  ok "ink pill glyph inversion present (both themes)"
+else
+  bad "selected glyph inversion missing — the ink pill needs its inverted icon (INT-018)"
+fi
+if grep -q "rail.classList.add('expanded')" design/motion.js && \
+   grep -q 'ref-rail-expanded' design/styles/motion.css; then
+  ok "expansion interaction wired (motion.js + motion.css)"
+else
+  bad "rail expansion not wired — hover expand is the owner's INT-018 order"
 fi
 
 # ---------------------------------------------------------------- 6. worklog is alive for the latest turn

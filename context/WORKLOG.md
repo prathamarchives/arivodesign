@@ -295,3 +295,24 @@ Stage Summary:
 - Docs lockstep: INTENT-LEDGER (INT-017), REVIEW.md (pass 8: diagnosis table + value table + verification + carried calls), STATE.md (position/evidence/next-action rewrite), this entry.
 
 **Stage summary:** PASS 8 landed — the reference sidebar at desktop scale, ratios intact, preview channel exonerated and documented. Committed as session 14. Carried: rail width/pill-radius fine-tuning, rail bottom, hover labels, dark deltas, content-area scale ruling, then the queued content composition port.
+
+---
+
+## Session 15 — 2026-10-17 (INT-018: the glass sidebar — motion, glass, expansion, rounded)
+
+**Task:** owner turn 18 — pass 8 accepted; the sidebar gains glass + motion + expand + rounded/reduced radii; seven references to replicate precisely ("adopt taste, extract component and effects and detailing and everything"); restart dev.
+
+**Work log:**
+- Intake first (L-06): `context/raw/turn-018.txt` verbatim; INT-018 ledgered. Seven attachments converted to PNG and committed at `context/references/turn-018/ref-1..7-*.png`.
+- Forensic extraction: per-reference VLM reads (placement/shape/glass/items/motion/detailing/palette/taste-element) + PIL bright-run and color scans + grid-annotated VLM crops (20px gridlines, coordinate labels) for rail geometry. Synthesis table + port decisions: `context/intake/INT-018-refs-spec.md`. Set converges on: floating rounded glass columns, frosted translucency + 1px light edge + soft diffuse shadow, INK-inverted active pills, rail+expanded-panel patterns, ~200ms micro-motion, no reflow.
+- tokens.css INT-018 block: inset 12 / col 96 / radius 16 / expanded 184 / blur 20 / item R 6; per-theme glass surfaces (dark rgba(23,23,23,.72), light rgba(255,255,255,.72)), ink pills with glyph colors, label voices, avatar ring, header hairline; canvas GLOW washes (fixed radial gradients) behind the rail — the pass-2 "glass needs luminosity" law.
+- shell.css rail rewrite: floating glass column (absolute inset 12, R16, backdrop-filter, edge, shadow, overflow hidden); hairline divider dies; items become rows (icon box 49×41 owns the left edge); ink selection with glyph INVERSION via CSS filter (brightness(0) dark / brightness(0) invert(1) light — stroke-based SVGs recolor deterministically); account-details + rail-tools surface (pass-6 markup preservation pays off); overlay anchors re-based to --ref-rail-col.
+- motion.css: expansion choreography — width 72→184 @220ms near-critical (INT-009 latency + no-bounce laws stand), shadow deepens, items widen 49→160 with gap 0→10 animated, labels/account/save-state fade-rise reveal with 30ms stagger, 140ms collapse grace; rail tooltips retired (expansion = the label channel; header search tooltip unaffected); reduced-motion intact.
+- motion.js: hover expand + 140ms grace + focusin/focusout (keyboard).
+- Mid-pass defect (Loop 5, named): hidden labels at opacity 0 still occupied layout width → max-content sizing dragged the icon column off-center (icon center 29.1 vs rail 48). Fix: reveal elements collapse to max-width/height 0 (zero layout); label gap animates in with the expansion. Re-measured: icon axis 48 collapsed → 48.5 expanded (stable).
+- Dev daemon RESTARTED (owner order): killed + relaunched `scripts/daemon_nocache.py 3000`, no-store confirmed, v9 cache-bust on all 6 pages (zero markup changes).
+- verify.sh re-ratcheted: 5e floating-glass-rail guards (literals + R16 + backdrop-filter + radius + pill), 5f(b) INVERTED (width transition now REQUIRED, ≤260ms), 5g(e) v9, NEW 5i (translucent surfaces, canvas glow, glyph inversion, expansion wiring). Green.
+- Browser-DOM verification at 1440×900, collapsed + expanded (hover): all geometry exact; labels "Home/Library/Archive" + account + "All changes saved" render; no reflow (expanded rail overlays header x96); 6 pages console-clean. VLM audit of 4 states: floating glass reads in all, ink pill high contrast, zero clipping, verdict "A-Tier… channels Arc and Linear/Layers". Evidence: `design/preview/p9-01..04-*.png`.
+- Docs lockstep: INTENT-LEDGER (INT-018), DESIGN-SYSTEM (glass law added), REVIEW.md pass 9, STATE.md rewrite, this entry.
+
+**Stage summary:** PASS 9 landed — the sidebar is a living floating glass column with hover expansion and ink selection, replicated from the seven references at desktop scale. Committed as session 15. Carried: radius pair, ink-vs-tint, glass strength, expand width/speed, tooltip retirement; then the content composition port.

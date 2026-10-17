@@ -15,6 +15,12 @@
    components. The port is divided by 2.39 (rail 172 -> 72) — every
    reference RATIO is preserved (composition stays the law; only the
    unit scale moves). Old INT-016 values kept in comments for trail.
+
+   INT-018 block (owner: "add motion that glassy effect and expande
+   motion... make its corners rounded and reduce the radius"): the
+   rail becomes a FLOATING GLASS column — inset, rounded, frosted,
+   with hover expansion and ink selection. Values synthesized from
+   the seven turn-18 references (context/intake/INT-018-refs-spec.md).
    ============================================================ */
 
 @font-face {
@@ -65,7 +71,6 @@
   --ref-rail-avatar-inset: 25px;/* was 60 */
   --ref-rail-item-w: 49px;      /* was 117 — 68% of rail, as the reference */
   --ref-rail-item-h: 41px;      /* was 98 — 57% of rail, as the reference */
-  --ref-rail-item-r: 8px;       /* was 12 — ratio-true 5, optical bump (soft reads soft small) */
   --ref-rail-pitch: 55px;       /* was 132 — 0.77x rail, as the reference */
   --ref-rail-first-gap: 40px;   /* was 94 — avatar-center -> first-center 179 -> 75 */
   --ref-rail-icon: 22px;        /* was 52 — near the export icons' design scale */
@@ -73,6 +78,15 @@
   --ref-header-inset: 24px;     /* was 55 */
   --ref-header-gap: 22px;       /* was 53 */
   --ref-content-gap: 20px;      /* was 33 */
+
+  /* ---- INT-018: the floating glass rail (references synthesized) ---- */
+  --ref-rail-inset: 12px;       /* full float: gap on all four sides */
+  --ref-rail-col: 96px;         /* grid column = inset + rail + inset (72 + 24) */
+  --ref-rail-radius: 16px;      /* rounded corners, restrained (refs run 24-60) */
+  --ref-rail-expanded: 184px;   /* hover expansion — icon+label rows */
+  --ref-rail-item-r: 6px;       /* INT-018: reduced from 8 per owner order */
+  --ref-glass-blur: 20px;       /* frosted strength (refs 12-24) */
+  --ref-rail-item-w-open: 160px;/* the icon+label row when expanded */
 }
 
 /* page canvas: the artifact framing died (INT-016 "make it full page")
@@ -81,10 +95,43 @@
 body.theme-dark  { background-color: #171717; }
 body.theme-light { background-color: #F7F7F5; }
 
-/* ---- INT-016: rail surfaces per theme ----
-   reference (light): rail bg = content bg (#FFFFFF), 1px #EAEAEA hairline,
-   selection pill #F7F7F9 (bg -8). Arivo ports the DELTAS onto its own
-   surfaces: light #F7F7F5 -> pill #EFEFEB, hairline #E3E3DF;
-   dark #171717 -> pill #1F1F1D (bg +8), hairline #2A2A28. */
-body.theme-dark  { --ref-rail-bg: #171717; --ref-rail-line: #2A2A28; --ref-rail-pill: #1F1F1D; }
-body.theme-light { --ref-rail-bg: #F7F7F5; --ref-rail-line: #E3E3DF; --ref-rail-pill: #EFEFEB; }
+/* ---- INT-016/017 rail surfaces -> INT-018 GLASS surfaces ----
+   The seven turn-18 references: frosted translucency + 1px light
+   edge + one soft diffuse shadow; active = INK pill with inverted
+   glyph (refs 2/3/6 carry it uniformly). Glass needs luminosity
+   (pass-2 law): the canvas carries fixed glow washes behind the
+   rail so the frost has something to refract. */
+body.theme-dark {
+  --ref-rail-bg: rgba(23, 23, 23, 0.72);
+  --ref-rail-edge: rgba(238, 238, 234, 0.10);
+  --ref-rail-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  --ref-rail-shadow-open: 0 16px 44px rgba(0, 0, 0, 0.52);
+  --ref-rail-pill: #E4E4E0;             /* light ink (dark home) */
+  --ref-rail-pill-glyph: #0A0A0A;
+  --ref-rail-pill-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  --ref-rail-label: #EEEEEA;
+  --ref-rail-label-muted: #A1A19C;
+  --ref-avatar-ring: rgba(238, 238, 234, 0.20);
+  --ref-header-line: rgba(238, 238, 234, 0.08);
+  background-image:
+    radial-gradient(640px 780px at 96px 320px, rgba(238, 238, 234, 0.06), transparent 62%),
+    radial-gradient(1100px 840px at 88% 108%, rgba(238, 238, 234, 0.045), transparent 58%);
+  background-attachment: fixed;
+}
+body.theme-light {
+  --ref-rail-bg: rgba(255, 255, 255, 0.72);
+  --ref-rail-edge: rgba(255, 255, 255, 0.65);
+  --ref-rail-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --ref-rail-shadow-open: 0 12px 40px rgba(0, 0, 0, 0.12);
+  --ref-rail-pill: #1E1E1E;             /* ink (light pages) */
+  --ref-rail-pill-glyph: #FFFFFF;
+  --ref-rail-pill-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  --ref-rail-label: #252525;
+  --ref-rail-label-muted: #777775;
+  --ref-avatar-ring: rgba(37, 37, 37, 0.14);
+  --ref-header-line: #E3E3DF;
+  background-image:
+    radial-gradient(640px 780px at 96px 320px, rgba(214, 214, 208, 0.45), transparent 62%),
+    radial-gradient(1100px 840px at 88% 108%, rgba(255, 255, 255, 0.85), transparent 58%);
+  background-attachment: fixed;
+}

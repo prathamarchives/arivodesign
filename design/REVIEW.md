@@ -263,3 +263,42 @@ Also: avatar monogram 24→12px; reader deep-note top 120→88, journal node-249
 2. **Pill R8** — ratio-true would be R5; the optical bump is judgment, owner-callable.
 3. The remaining scale questions live in the CONTENT area (the export's own hero type + card sizes) — frozen artifact territory, needs the owner's ruling, not glue edits.
 4. Rail bottom, hover-label behavior, dark deltas — still the open carried calls from pass 7.
+
+---
+
+## PASS 9 — THE GLASS SIDEBAR (INT-018, session 15)
+
+Owner order (turn 18, verbatim in `context/raw/turn-018.txt`): "okay fair looks clean now add motion that glassy effect and expande motion and everything in this sidebar. make its corcers rounded and reduce the radius  restart dev attached more refrences to replicte precisly go for it adopt taste, extract component and effects and deatialjnga and everythign" — seven references attached.
+
+### What was extracted (the forensic read)
+
+All seven references preserved at `context/references/turn-018/` (converted from .jfif), read with one focused VLM pass each + PIL bright-run/color scans + grid-annotated VLM crops for rail geometry; the synthesis table lives in `context/intake/INT-018-refs-spec.md`. The set converges: floating rounded glass columns inset from edges; frosted white 0.55-0.9 + blur 12-24 + 1px light edge + one soft diffuse shadow; INK-inverted active pills (refs 3/6/2 carry it uniformly — black pill, white glyph, own shadow); icon-rail-plus-expanded-panel patterns; ~150-220ms micro-motion; no layout reflow.
+
+### What changed (frozen layers untouched: prototype.css stays byte-verbatim)
+
+| Layer | Change |
+|---|---|
+| `tokens.css` | INT-018 block: `--ref-rail-inset` 12 / `--ref-rail-col` 96 / `--ref-rail-radius` 16 / `--ref-rail-expanded` 184 / `--ref-glass-blur` 20 / item R 6 (reduced from 8); per-theme GLASS surfaces (dark rgba(23,23,23,.72) + edge + shadow + LIGHT-INK pill #E4E4E0/#0A0A0A; light rgba(255,255,255,.72) + INK pill #1E1E1E/#FFF), label voices, avatar ring, header hairline; canvas GLOW washes (radial gradients, fixed) behind the rail — glass needs luminosity (pass-2 law). |
+| `shell.css` | The rail becomes a FLOATING GLASS column: absolute inset 12 (top/left/bottom), R16, `backdrop-filter: blur(20)`, 1px edge, soft shadow, overflow hidden; grid column = 96 (inset+rail+inset); the 1px hairline divider DIES (the glass edge separates); items = rows (icon box 49×41 owns the left edge, labels extend right); ink selection (bg + pill shadow + glyph INVERSION via CSS filter: dark `brightness(0)`, light `brightness(0) invert(1)` — the SVGs are stroke-based, filter recolors deterministically); account-details + rail-tools surface (markup was preserved since pass 6 — pin stays retired); avatar ring; overlay anchors re-based to `--ref-rail-col`. |
+| `motion.css` | Expansion choreography: rail width 72→184 in 220ms near-critical damping (INT-009 law: ≤280ms, no bounce — the references' spring taste lands as timing, not overshoot); shadow deepens on open; items widen 49→160 with gap 0→10 animated; labels/account/save-state reveal with fade-rise, 30ms stagger (60/90/120ms); collapse at 140ms grace; rail TOOLTIPS RETIRED (the expansion is the label channel — header search tooltip unaffected); reduced-motion gate intact (expansion still works, instantly). |
+| `motion.js` | Hover expand/collapse with 140ms grace timer + focusin/focusout (keyboard expands the rail); selection marking unchanged. |
+| HTML | v8→v9 cache-bust only — ZERO markup changes (the pass-6 markup preservation paid off: labels/account/tools were already in place). |
+
+### The mid-pass defect (named, with evidence — Loop 5 material)
+
+Hidden labels with `opacity: 0` still occupied LAYOUT width → max-content sizing dragged the icon column off-center (icon center 29.1 vs rail center 48, DOM-measured) and would have clipped the left edge. Fix: the reveal elements collapse to `max-width: 0 / max-height: 0` (zero layout) and the item's label gap animates 0→10px with the expansion. Re-measured: collapsed icon center = 48 = avatar center = rail center; expanded 48.5 (0.5px border drift). Ratchet: none mechanical (DOM-measured, not greppable) — recorded here as the layout-zero law for hidden rail content.
+
+### Verification (this pass)
+
+- verify.sh re-ratcheted: 5e = floating glass rail (72/30/22 + R16 + backdrop-filter + radius + ink pill), 5f(b) INVERTED — width transition REQUIRED and ≤260ms (hover-expand is the new law), 5g(e) v9, NEW 5i = glass + ink guards (translucent surfaces both themes, canvas glow present, glyph inversion filters, expansion wired in JS+CSS). Green after docs lockstep.
+- Browser-measured (1440×900, DOM): collapsed — rail 72×876 @(12,12) R16, blur(20px), bg rgba(23,23,23,.72), border 1px rgba(238,238,234,.1), shadow 0 12px 32px .45, overflow hidden; avatar 30×30 center 48; items 49×41 @ x23.5 y108/163/218 (pitch 55); icons 22, center 48; pill #E4E4E0 + shadow, glyph filter brightness(0); label/account/tools max-w/h 0. EXPANDED (hover) — rail 184 wide overlaying content (header x96 covered, NO reflow), shadow 0 16px 44px .52; item 160 @ x24; icon center 48.5 (axis stable); label "Home" opacity 1 color rgb(10,10,10) @ x83; account 86.75×28 visible; "All changes saved" at y861; collapse fires on mouseleave (grace 140ms).
+- 6 pages console-clean at v9 (daemon restarted, no-store confirmed).
+- VLM audit (4 states: dark/light × collapsed/expanded): reads as floating glass in all; ink pill high contrast both themes; labels/account/save-state clean; zero clipping/collision defects; verdict "A-Tier execution… channels Arc and Linear/Layers… hits the mark." Evidence: `design/preview/p9-01..04-*.png`.
+
+### Carried to the owner
+
+1. **Radius pair** — rail R16 / pill R6 ("reduce the radius" honored at the restrained end); both one-token.
+2. **Ink pill vs tint pill** — the references forced the inversion (supersedes INT-016's no-icon-change for the rail); if you prefer the soft tint, it's a 3-line revert.
+3. **Glass strength** — 0.72 alpha + blur 20; stronger frost (0.55/blur 30) or lighter (0.85/blur 12) is one token pair.
+4. **Expand width 184 / speed 220ms** — the timing family holds the INT-009 latency law; a bouncier spring would need an explicit law amendment.
+5. Rail tooltips retired (labels + account now carry it on hover/focus) — say the word if you want them back.

@@ -11,13 +11,14 @@
      ("actual ui"). Scroll moves inside the content column.
    - REFERENCE SIDEBAR: rebuilt to the owner's attached reference
      (context/intake/INT-016-ref-spec.md — measured), then
-     desktop-RECALIBRATED by INT-017 (owner: "why so big?" — the
-     reference is tablet-class touch UI): static 72px full-height icon
-     rail, 30px avatar centered at 25px inset, icon-only nav at 55px
-     pitch, 22px icons, selection = soft 49x41 R8 pill (no icon color
-     change), 1px hairline divider. Every ratio = the reference's own.
-     The 48px-slot + 176px hover/overlay model of INT-009/013 is
-     retired for this scope; tooltips carry the labels.
+     desktop-RECALIBRATED by INT-017 (owner: "why so big?"), then
+     MATERIALIZED by INT-018 (owner: glass + motion + expand +
+     rounded): a FLOATING GLASS column — inset 12px on all sides,
+     R16 corners, frosted (blur 20), 1px light edge, soft shadow,
+     static 72px collapsed / 184px on hover with icon+label rows,
+     30px avatar, 22px icons, selection = INK pill (inverted glyph,
+     R6). Every ratio = the references' own. The 48px-slot model of
+     INT-009 stays retired; the rail tools carry the labels.
    - REFERENCE RHYTHM in the content column (INT-017 scale): 24px
      margins, 24px header top inset, header underline hairline, 20px
      gap to content.
@@ -35,7 +36,7 @@ body > div {
 /* ---------- study shell: one full-page grid ---------- */
 body > div > [class^="study-shell-"] {
   display: grid;
-  grid-template-columns: var(--ref-rail-w) minmax(0, 1fr);
+  grid-template-columns: var(--ref-rail-col) minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr);
   flex: 1;
   min-height: 0;
@@ -46,7 +47,7 @@ body > div > [class^="study-shell-"] {
   padding: 0;
 }
 
-/* ---------- rail: the static reference column ---------- */
+/* ---------- rail: the floating glass column (INT-018) ---------- */
 body > div > [class^="study-shell-"] > [class^="navigation-rail-"],
 body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
   grid-column: 1;
@@ -64,40 +65,56 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
 
 .rail-panel {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: var(--ref-rail-inset);
+  left: var(--ref-rail-inset);
+  bottom: var(--ref-rail-inset);
+  width: var(--ref-rail-w);     /* expands to --ref-rail-expanded on hover (motion.css) */
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: var(--ref-rail-avatar-inset) 0 0 0;
   background-color: var(--ref-rail-bg);
-  border: none;
-  border-right: 1px solid var(--ref-rail-line);
-  border-radius: 0;
-  overflow: visible;           /* tooltips may escape the column */
+  backdrop-filter: blur(var(--ref-glass-blur));
+  -webkit-backdrop-filter: blur(var(--ref-glass-blur));
+  border: 1px solid var(--ref-rail-edge);
+  border-radius: var(--ref-rail-radius);
+  box-shadow: var(--ref-rail-shadow);
+  overflow: hidden;             /* the glass clips its labels when collapsed; the expansion overflows the column as an overlay (no reflow — INT-007/009 law) */
   z-index: 41;
 }
 
-/* identity: avatar 30px, centered — the rail's only identity mark */
+/* identity: avatar 30px, centered — the rail's only identity mark;
+   account details reveal with the expansion (motion.css owns the timing) */
 .rail-panel [class^="identity-"] {
   justify-content: center;
   align-items: center;
   padding: 0;
   gap: 0;
   flex-direction: column;
+  flex: none;
 }
 .rail-panel [class^="avatar-"] {
   width: var(--ref-rail-avatar);
   height: var(--ref-rail-avatar);
   flex: none;
+  box-shadow: 0 0 0 1px var(--ref-avatar-ring);
 }
 .rail-panel [class^="avatar-"] p { white-space: nowrap; font-size: 12px; }
-.rail-panel [class^="account-details-"] { display: none; }   /* icon-only rail */
+.rail-panel [class^="account-details-"] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+.rail-panel .nav-meta { color: var(--ref-rail-label-muted); }
+.rail-panel [class^="account-details-"] p:first-child { color: var(--ref-rail-label); }
 
-/* destinations: the icon column at the reference pitch */
-.rail-panel [class^="navigation-"] { gap: 0; padding: 0; }  /* the export's 26px wrapper gap dies — the reference owns the rhythm */
+/* destinations: icon rows that gain labels on expansion (icon axis never moves) */
+.rail-panel [class^="navigation-"] { gap: 0; padding: 0; }
 .rail-panel [class^="destinations-"] {
   align-items: center;
-  gap: calc(var(--ref-rail-pitch) - var(--ref-rail-item-h));  /* 34px — pitch minus item box */
+  gap: calc(var(--ref-rail-pitch) - var(--ref-rail-item-h));
   margin-top: var(--ref-rail-first-gap);
   padding: 0;
 }
@@ -105,32 +122,59 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
   width: var(--ref-rail-item-w);
   height: var(--ref-rail-item-h);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: flex-start;   /* the icon box owns the left edge — labels extend right */
   align-items: center;
-  justify-content: center;
-  gap: 0;
+  gap: 0;                        /* the gap itself animates in with the expansion (motion.css) */
   padding: 0;
   margin: 0;
   border-radius: var(--ref-rail-item-r);
-  background-color: transparent;   /* the export's dark card + shadow die here */
+  background-color: transparent;
   box-shadow: none;
 }
-.rail-panel [class^="navigation-item-"] > div { display: flex; }  /* kill the inline-img line box — glyph centers true */
+.rail-panel [class^="navigation-item-"] > div {
+  display: flex;               /* kill the inline-img line box — glyph centers true */
+  align-items: center;
+  justify-content: center;
+  width: var(--ref-rail-item-w);
+  height: var(--ref-rail-item-h);
+  flex: none;
+}
 .rail-panel [class^="navigation-item-"] svg,
 .rail-panel [class^="navigation-item-"] img {
   width: var(--ref-rail-icon);
   height: var(--ref-rail-icon);
+  transition: filter 0.18s ease;
+}
+.rail-panel .nav-label {
+  color: var(--ref-rail-label);
+  white-space: nowrap;
+  flex: none;
 }
 
-/* selection: the reference pill — surface tint only, icon unchanged */
+/* selection: the INK pill (INT-018) — inverted glyph via CSS filter,
+   the references' floating-ink component. Icon color law of INT-016
+   is superseded for the rail by the turn-18 reference set. */
 .rail-panel [class^="navigation-item-"].selected {
   background-color: var(--ref-rail-pill);
+  box-shadow: var(--ref-rail-pill-shadow);
 }
+body.theme-dark  .rail-panel [class^="navigation-item-"].selected svg,
+body.theme-dark  .rail-panel [class^="navigation-item-"].selected img { filter: brightness(0); }
+body.theme-light .rail-panel [class^="navigation-item-"].selected svg,
+body.theme-light .rail-panel [class^="navigation-item-"].selected img { filter: brightness(0) invert(1); }
+.rail-panel [class^="navigation-item-"].selected .nav-label { color: var(--ref-rail-pill-glyph); }
 
-/* labels/meta: the reference rail is icon-only (tooltips carry names) */
-.rail-panel .nav-label,
-.rail-panel .nav-meta { display: none; }
-.rail-panel [class^="rail-tools-"] { display: none; }  /* reference bottom not visible; restorable by iteration */
+/* rail bottom: the save-state surfaces with the expansion; the pin stays retired */
+.rail-panel [class^="rail-tools-"] {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 14px;
+}
+.rail-panel [class^="pin-"] { display: none; }  /* retired with the static rail (INT-016) */
 
 /* ---------- workspace header: the reference's content-column bar ---------- */
 body > div > [class^="study-shell-"] > [class^="workspace-header-"] {
@@ -138,7 +182,7 @@ body > div > [class^="study-shell-"] > [class^="workspace-header-"] {
   grid-row: 1;
   min-width: 0;
   padding: var(--ref-header-inset) var(--ref-content-margin) var(--ref-header-gap) var(--ref-content-margin);
-  border-bottom: 1px solid var(--ref-rail-line);
+  border-bottom: 1px solid var(--ref-header-line);
 }
 body.theme-dark  [class^="workspace-header-"] [class^="location-"] p { color: inherit; }
 /* the reference's breadcrumb reads ~2x its body voice at INT-016's
@@ -229,7 +273,7 @@ a:focus-visible, [data-tip]:focus-visible {
 .study-shell-499 > .node-518 {
   position: absolute;
   bottom: 22px;
-  left: calc(var(--ref-rail-w) + (100% - var(--ref-rail-w)) / 2);
+  left: calc(var(--ref-rail-col) + (100% - var(--ref-rail-col)) / 2);
   transform: translateX(-50%);
   z-index: 30;
 }
@@ -237,7 +281,7 @@ a:focus-visible, [data-tip]:focus-visible {
   position: absolute;
   top: auto;
   bottom: 268px;
-  left: calc(var(--ref-rail-w) + (100% - var(--ref-rail-w)) / 2 - 30px);
+  left: calc(var(--ref-rail-col) + (100% - var(--ref-rail-col)) / 2 - 30px);
   transform: translateX(-50%);
   z-index: 31;
 }
@@ -245,14 +289,14 @@ a:focus-visible, [data-tip]:focus-visible {
 .study-shell-175 > .node-249 {
   position: absolute;
   top: 120px;
-  left: calc(var(--ref-rail-w) + (100% - var(--ref-rail-w)) / 2 + 64px);
+  left: calc(var(--ref-rail-col) + (100% - var(--ref-rail-col)) / 2 + 64px);
   transform: translateX(-50%);
   z-index: 31;
 }
 .study-shell-175 > .node-196 {
   position: absolute;
   bottom: 190px;
-  left: calc(var(--ref-rail-w) + (100% - var(--ref-rail-w)) / 2 - 512px);
+  left: calc(var(--ref-rail-col) + (100% - var(--ref-rail-col)) / 2 - 512px);
   z-index: 30;
   width: 340px;
 }
@@ -270,7 +314,7 @@ a:focus-visible, [data-tip]:focus-visible {
 .study-shell-175 > .reference-picker-213 {
   position: absolute;
   bottom: 56px;
-  left: calc(var(--ref-rail-w) + (100% - var(--ref-rail-w)) / 2 - 148px);
+  left: calc(var(--ref-rail-col) + (100% - var(--ref-rail-col)) / 2 - 148px);
   z-index: 30;
   width: 360px;
 }
@@ -283,7 +327,7 @@ a:focus-visible, [data-tip]:focus-visible {
 }
 .study-shell-175 > .day-page-footer-194 {
   position: absolute;
-  left: calc(var(--ref-rail-w) + var(--ref-content-margin));
+  left: calc(var(--ref-rail-col) + var(--ref-content-margin));
   bottom: 22px;
   width: auto;
   z-index: 20;

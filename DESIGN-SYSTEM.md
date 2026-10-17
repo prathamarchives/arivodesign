@@ -146,6 +146,7 @@ Every component: Default / Hover / Pressed / Disabled / Focus (ring always visib
 - **Don't:** let a positioned decorative pseudo paint over content (::before with z auto covers non-positioned children — the rail swallowed its own avatar, pass 3). · **Do:** decorative layers behind content get `z-index: -1` inside a stacking-context parent, verified by screenshot.
 - **Don't:** reflow the page to make room for a panel (margin/width shifts drag every card per frame). · **Do:** panels float OVER the page; the page reacts in `transform` only.
 - **Don't:** ship dark glass on a dead-black canvas. · **Do:** keep the canvas glow stations alive (see Canvas law).
+- **Don't:** ship an opaque rail or let the frosted panel sit on a flat canvas (INT-018: the rail is GLASS — translucent bg + backdrop blur + 1px light edge + one soft shadow; the canvas carries glow washes behind it). · **Do:** blur(20) + rgba 0.72 surface + ink-inverted selection; expansion overlays content (never reflows) in <=260ms near-critical damping.
 - **Don't:** invent content surfaces the owner didn't name. · **Do:** extend the named ones (Home/Library/Archive/Account) and ledger new intent first (L-06).
 - **Don't:** let a component drift from this file. · **Do:** treat a mismatch as a defect — fix code or spec through Loop 2, never silently.
 

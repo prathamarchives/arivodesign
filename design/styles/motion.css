@@ -5,6 +5,62 @@
    prefers-reduced-motion collapses everything.
    ============================================================ */
 
+/* ---------- INT-018: rail expansion choreography ----------
+   Hover/focus expands the glass column 72 -> 184; the icons never move
+   (item left inset + box hold the axis); labels/account/save-state
+   reveal with a 30ms stagger. Timing: 220ms width, near-critical
+   damping (the INT-009 law stands: <=280ms, no bounce — the turn-18
+   references' spring taste lands as timing family, not overshoot).
+   The expansion OVERLAYS content (no reflow — INT-007/009 law). */
+.rail-panel {
+  transition:
+    width 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.24s ease;
+}
+.rail-panel.expanded {
+  width: var(--ref-rail-expanded);
+  box-shadow: var(--ref-rail-shadow-open);
+}
+.rail-panel [class^="navigation-item-"] {
+  transition:
+    width 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    gap 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.16s ease,
+    box-shadow 0.16s ease;
+}
+.rail-panel.expanded [class^="navigation-item-"] {
+  width: var(--ref-rail-item-w-open);
+  gap: 10px;
+}
+
+/* the reveal: labels + account + save-state rise in as the glass opens.
+   Collapsed they must occupy ZERO layout (max-width/height 0) — hidden
+   width would drag the icon column off-center via max-content sizing. */
+.rail-panel .nav-label,
+.rail-panel [class^="account-details-"],
+.rail-panel [class^="rail-tools-"] {
+  opacity: 0;
+  transform: translateX(-8px);
+  max-height: 0;
+  max-width: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity 0.14s ease, transform 0.16s cubic-bezier(0.22, 1, 0.36, 1), max-height 0.2s ease, max-width 0.2s ease;
+}
+.rail-panel.expanded .nav-label,
+.rail-panel.expanded [class^="account-details-"],
+.rail-panel.expanded [class^="rail-tools-"] {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+.rail-panel.expanded .nav-label { max-width: 140px; }
+.rail-panel.expanded [class^="account-details-"] { max-height: 64px; max-width: 200px; transition-delay: 40ms; }
+.rail-panel.expanded [class^="rail-tools-"] { max-height: 44px; max-width: 160px; transition-delay: 30ms; }
+.rail-panel [class^="destinations-"] > :nth-child(1) .nav-label { transition-delay: 60ms; }
+.rail-panel [class^="destinations-"] > :nth-child(2) .nav-label { transition-delay: 90ms; }
+.rail-panel [class^="destinations-"] > :nth-child(3) .nav-label { transition-delay: 120ms; }
+
 /* ---------- entrance ---------- */
 body.js .rise {
   opacity: 0;
@@ -103,10 +159,8 @@ a:active, [class^="action-"]:active, [class^="navigation-item-"]:active,
   transition-duration: 0.1s;
 }
 
-/* nav items: tint on hover */
-[class^="navigation-item-"] {
-  transition: background-color 0.16s ease, transform 0.16s ease;
-}
+/* nav items: tint on hover (the transition family lives in the INT-018
+   expansion block above — width + background-color + box-shadow) */
 body.theme-dark  [class^="navigation-item-"]:hover { background-color: rgba(238, 238, 234, 0.07); }
 body.theme-light [class^="navigation-item-"]:hover { background-color: rgba(37, 37, 37, 0.05); }
 
@@ -134,7 +188,11 @@ body.js.ready .fill-anim {
   transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
 }
 
-/* ---------- tooltips (ink-inverted chip, fade + rise) ---------- */
+/* ---------- tooltips (ink-inverted chip, fade + rise) ----------
+   INT-018: the RAIL's tooltips are retired — the expansion itself is
+   the label channel (labels + account reveal on hover/focus). Header
+   and content tooltips (e.g. search) keep the hover chip. */
+.rail-panel [data-tip]::after { display: none; }
 [data-tip] { position: relative; }
 [data-tip]::after {
   content: attr(data-tip);
@@ -166,8 +224,8 @@ body.theme-dark [data-tip]::after {
   opacity: 1;
   transform: translateY(-50%);
 }
-/* the rail is icon-only (INT-016 reference) — tooltips are the label
-   channel and always fire on hover; no open-state suppression exists. */
+/* the expansion carries the rail's labels now — no rail hover tooltips
+   to double-label the same hover (see the retirement note above). */
 
 /* ---------- journal caret breathes + preview pointer nudges ---------- */
 @keyframes caret-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
@@ -192,4 +250,5 @@ body.theme-dark [data-tip]::after {
   body.js .rail-panel { opacity: 1; transform: none; }
   .fill-anim { transform: none; }
   [data-tip]::after { transition: none; }
+  /* expansion still WORKS under reduced motion — states arrive instantly */
 }
