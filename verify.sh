@@ -231,12 +231,12 @@ if grep -q 'progress-track-' design/styles/shell.css && grep -q 'height: 4px' de
 else
   bad "progress tracks unsized — invisible progress was the G-class failure (INT-013)"
 fi
-# (e) cache-bust version bumped with the paint (?v=11) — the INT-008 landing-failure class
+# (e) cache-bust version bumped with the paint (?v=12) — the INT-008 landing-failure class
 vb=$(grep -o 'tokens.css?v=[0-9]*' design/index.html | grep -o '[0-9]*$')
-if [ "$vb" = "11" ]; then
-  ok "asset links cache-busted at v11"
+if [ "$vb" = "12" ]; then
+  ok "asset links cache-busted at v12"
 else
-  bad "asset links not re-busted at v11 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
+  bad "asset links not re-busted at v12 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
 fi
 # (f) no external resource references — everything local (the export's only CDN was fonts)
 ext="$(grep -hEo 'src="http[^"]*"|href="http[^"]*"' design/*.html 2>/dev/null | grep -v '^$' || true)"
@@ -361,6 +361,56 @@ if [ -n "$bal_bad" ]; then
   bad "div-unbalanced page(s) — orphan close cascades the tree apart:$bal_bad"
 else
   ok "all 6 pages div-balanced (no orphan-close cascade class)"
+fi
+
+# ---------------------------------------------------------------- 5k. INT-021 identity-lock + thin-icon guards (ratcheted 2026-10-17)
+# Owner turn 21: the pfp locks as a component exactly above the nav
+# items (never centered, never drifting on expansion) with the handle
+# @prathamarchives in front of it; "Personal space" + the bottom
+# account slot die (unauthorized-move class); icons go thin (1.1).
+# (a) the account slot + "Personal space" are dead on every page
+acct_bad="$(grep -l 'Personal space\|account-details-\|rail-tools-' design/*.html 2>/dev/null || true)"
+if [ -n "$acct_bad" ]; then
+  bad "bottom account slot / 'Personal space' present in: $acct_bad (INT-021 — unauthorized text killed by owner order)"
+else
+  ok "no account slot / 'Personal space' on any page (INT-021)"
+fi
+# (b) the handle label rides the shared nav-label overlay in every rail
+hdl=0
+for pg in design/index.html design/home-light.html design/library.html design/archive.html design/journal.html design/reader.html; do
+  grep -q 'nav-label">@prathamarchives</p>' "$pg" && hdl=$((hdl+1))
+done
+if [ "$hdl" -eq 6 ]; then
+  ok "handle @prathamarchives as nav-label overlay on all 6 rails (INT-021)"
+else
+  bad "handle label missing on $((6-hdl))/6 rails (INT-021)"
+fi
+# (c) the identity lock: position:relative (handle anchors) + FIXED item-slot
+#     width — prototype's width:100% rides the growing wrapper = the drift bug
+if sed -n '/^\.rail-panel \[class\^="identity-"\] {/,/^}/p' design/styles/shell.css | grep -q 'position: relative' \
+   && sed -n '/^\.rail-panel \[class\^="identity-"\] {/,/^}/p' design/styles/shell.css | grep -q 'width: var(--ref-rail-item-w)' \
+   && ! grep -q '\[class\^="identity-"\] {[^}]*width: 100%' design/styles/shell.css; then
+  ok "identity locked: fixed 40px slot + relative anchor (pfp cannot drift on expansion)"
+else
+  bad "identity lock missing — fixed slot width + position:relative required, width:100% forbidden (INT-021 drift class)"
+fi
+# (d) thin icons: every rail glyph strokes at 1.1 (owner: "make the icons thinner")
+thin_ok=0; thin_bad=""
+for v in 11 14 17 843 846 849 646 649 652 333 337 341 184 187 190 508 511 514; do
+  if grep -q 'stroke-width="1\.1"' "design/images/vector-$v.svg"; then thin_ok=$((thin_ok+1)); else thin_bad="$thin_bad vector-$v"; fi
+done
+if [ "$thin_ok" -eq 18 ]; then
+  ok "all 18 rail icons stroke 1.1 (thin, INT-021)"
+else
+  bad "rail icons not thin:$thin_bad — stroke-width 1.1 required on all 18 (INT-021)"
+fi
+# (e) changed ASSETS carry the cache-bust too: the icon srcs are ?v=-busted
+#     (the stale-SVG render class — CSS was v12 while imgs served old strokes)
+bust=$(grep -o 'images/vector-[0-9]*\.svg?v=12' design/index.html | wc -l)
+if [ "$bust" -eq 3 ]; then
+  ok "rail icon srcs cache-busted (?v=12 — changed assets re-fetch, INT-008 class)"
+else
+  bad "rail icon srcs not cache-busted on index (found $bust/3) — stale-icon render class (INT-008)"
 fi
 
 # ---------------------------------------------------------------- 6. worklog is alive for the latest turn

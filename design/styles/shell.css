@@ -20,9 +20,16 @@
      R6). INT-020 REBUILDS THE MOTION SYSTEM (owner: "design this
      system of motion from scratch… expands not bounce… text fades
      in with motion blur… never put the unnecessary texts"): labels
-     become ZERO-LAYOUT absolute overlays, the account block owns
-     the rail's bottom slot (save-state text deleted everywhere),
-     and ALL movement is owned by motion.css's five laws.
+     become ZERO-LAYOUT absolute overlays, and ALL movement is
+     owned by motion.css's five laws. INT-021 LOCKS THE PFP (owner:
+     "lock pfp like a component and not in center but exactly
+     upwards of where these componentes are and just in front of it
+     @prathamarchives and nothing"): the identity row joins the
+     component grid — fixed to the item column's left edge, avatar
+     on the icon axis (NEVER drifts when the rail opens), the
+     handle @prathamarchives as its label overlay; the bottom
+     account slot ("prathamarchives / Personal space") is deleted
+     by owner order — it was an unauthorized move.
    - REFERENCE RHYTHM in the content column (INT-017 scale): 24px
      margins, 24px header top inset, header underline hairline, 20px
      gap to content.
@@ -87,15 +94,28 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
   z-index: 41;
 }
 
-/* identity: avatar 24px, centered — the rail's only identity mark
-   (INT-020: the account text moved to the bottom slot — the top
-   identity never grows, so nothing above the items ever moves) */
+/* identity: the LOCKED COMPONENT SLOT (INT-021) — the pfp sits in
+   the item column's 40px slot at the nav wrapper's left edge (the
+   exact edge the items occupy), avatar centered on the icon axis
+   (page x 44), 24px row: NOTHING below it moves. The wrapper
+   (navigation-4, shrink-to-fit from its items) is what the panel
+   centers — its width tracks the ITEM widths (40 -> 144 on the
+   one clock), so the wrapper's left edge holds x 24 through the
+   whole expansion and the avatar NEVER moves. (The pass-11 defect:
+   prototype's identity width:100% rode the growing wrapper — the
+   avatar slid 44 -> 96 as the rail opened. FIXED WIDTH, not
+   margin, is the lock.) The handle label anchors to this row via
+   the shared .nav-label overlay. */
 .rail-panel [class^="identity-"] {
-  justify-content: center;
+  position: relative;              /* the handle overlay anchors here */
+  width: var(--ref-rail-item-w);   /* the icon slot — exactly above the nav items, FIXED width */
+  height: var(--ref-rail-avatar);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;         /* the 24px mark centers on the icon axis */
   align-items: center;
   padding: 0;
   gap: 0;
-  flex-direction: column;
   flex: none;
 }
 .rail-panel [class^="avatar-"] {
@@ -174,37 +194,6 @@ body.theme-dark  .rail-panel [class^="navigation-item-"].selected img { filter: 
 body.theme-light .rail-panel [class^="navigation-item-"].selected svg,
 body.theme-light .rail-panel [class^="navigation-item-"].selected img { filter: brightness(0) invert(1); }
 .rail-panel [class^="navigation-item-"].selected .nav-label { color: var(--ref-rail-pill-glyph); }
-
-/* rail bottom: the ACCOUNT slot (INT-020 — the save-state text
-   "All changes saved" is deleted everywhere by owner order: it
-   never changed a decision; the pin markup is gone with it).
-   The slot's height is reserved in the flow, so the reveal is
-   opacity/blur ONLY (motion.css) — the nav items NEVER move. */
-.rail-panel [class^="rail-tools-"] {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  padding: 0 0 16px 0;
-  flex: none;
-}
-.rail-panel [class^="rail-tools-"] [class^="account-details-"] {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  text-align: center;
-  white-space: nowrap;
-}
-.rail-panel [class^="rail-tools-"] [class^="account-details-"] p:first-child {
-  color: var(--ref-rail-label);
-  font-size: 12px;
-}
-.rail-panel [class^="rail-tools-"] [class^="account-details-"] p:last-child {
-  color: var(--ref-rail-label-muted);
-  font-size: 11px;
-}
 
 /* ---------- workspace header: the reference's content-column bar ---------- */
 body > div > [class^="study-shell-"] > [class^="workspace-header-"] {

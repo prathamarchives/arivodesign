@@ -61,23 +61,22 @@
 }
 
 /* ---------- the text reveal: fade in WITH MOTION BLUR ----------
-   Labels (Home / Library / Archive) and the account block
-   (bottom slot) fade in as the rail opens: opacity 0 -> 1,
+   Labels (Home / Library / Archive) and the identity handle
+   (@prathamarchives — INT-021, same overlay, anchored to the
+   locked identity row) fade in as the rail opens: opacity 0 -> 1,
    blur 5px -> 0, slide 12px -> 0 — the text smears in and
    settles sharp (law 2). All on ONE clock, 90ms behind the
    width (law 4). Exit is fast and undelayed so the text is
    gone before the closing rail could ever clip it. The
    overlays hold ZERO layout (law 3 — geometry in shell.css). */
-.rail-panel .nav-label,
-.rail-panel [class^="account-details-"] {
+.rail-panel .nav-label {
   opacity: 0;
   filter: blur(5px);
   transform: translateX(12px);
   pointer-events: none;
   transition: opacity 0.14s ease, transform 0.14s ease, filter 0.14s ease;
 }
-.rail-panel.expanded .nav-label,
-.rail-panel.expanded [class^="account-details-"] {
+.rail-panel.expanded .nav-label {
   opacity: 1;
   filter: blur(0);
   transform: none;

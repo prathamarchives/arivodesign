@@ -396,3 +396,40 @@ The HTML surgery script's tools-block regex anchored on the FIRST `</div>` — t
 3. The account block ("prathamarchives / Personal space") stays as the rail's bottom identity — if that reads as unnecessary text too, it is one deletion.
 4. Push blocked again (container reset wiped gh + PAT — L-10 class): pass 11 committed locally; a fresh inline PAT pushes it.
 5. Then the queued content-area composition port (segmented control + card rhythm — measured in the INT-016 spec).
+
+---
+
+## PASS 12 — INT-021: THE PFP LOCKS; THE UNAUTHORIZED SLOT DIES; THE ICONS GO THIN
+
+**Owner verdict on pass 11:** "betterrr… would improve it on detialing… make the icons thinner… why does the pfp moved and text got shifted down. did i asked for it?… did i asked you to move prathamarchives down and add @personal space?… remove personal space. lock pfp like a comoponent and not in center but exactly upwards of where these componentes are and just in front of it @prathamarchives and nothing"
+
+The motion system from pass 11 is accepted. What was NOT accepted: two unauthorized composition moves — the account block's trip to the bottom slot (an INT-020 judgment call, not an order) and the avatar's drift on expansion (a latent export defect: prototype's `.identity-5 { width: 100% }` rides the nav wrapper, whose shrink-to-fit width grows with the items 40→144, so the panel's centering re-centers the avatar 44→96 mid-flight). Both die here; the owner's ruling becomes standing law: no composition move without an order.
+
+### What changed
+
+| Surface | Pass 11 | Pass 12 | Ground |
+|---|---|---|---|
+| rail icons | stroke 1.5 (renders ~1.8px) | **stroke 1.1 (renders ~1.3px, ink −26% PIL-measured)** | "make the icons thinner" |
+| pfp position | drifts 44→96 on expansion (width:100% rides the wrapper) | **FIXED 40px slot at the wrapper's left edge — avatar on the icon axis 44 at EVERY frame (rAF-proven)** | "lock pfp like a component… not in center but exactly upwards of where these componentes are" |
+| identity text | "prathamarchives / Personal space" at the rail's bottom | **@prathamarchives as the pfp's label — the shared nav-label overlay at 76, on the pfp line, motion-blur reveal** | "just in front of it @prathamarchives and nothing" |
+| bottom account slot | reserved-height block, fade reveal | **deleted from all 6 pages + CSS** | "did i asked you to move prathamarchives down and add @personal space?… remove personal space" |
+| icon srcs | plain `vector-N.svg` | **`?v=12` cache-busted** (stale-SVG render class: browser held old strokes while CSS re-fetched) | INT-008 class extended to changed assets |
+| archive rail labels | in-flow spans, no overlay, no reveal (missed in INT-020) | **converted to nav-label overlays** (scoped to destinations; breadcrumb stays in-flow) | defect repair |
+
+### The lock, mechanically
+
+The rail's real layout container is `navigation-4` (flex column, align-start, shrink-to-fit): the PANEL centers the wrapper; the wrapper's width is the widest child — the items (40 collapsed, 144 expanded, one clock). A margin- or center-based identity lock breaks the axis (first attempt: margin-left 12 inflated the wrapper to 52, icon axis 38 — caught by DOM measurement, fixed within the pass). The working lock is a FIXED-WIDTH 40px identity slot at the wrapper's left edge: the wrapper grows with the items, the left edge holds x 24 through the whole expansion, the avatar centers at 44, and the handle label anchors at 76 — exactly the nav labels' column. Geometry below the identity is untouched from pass 11 (first item y 89, pitch 48, axis 44).
+
+### Verification (this pass)
+
+- verify.sh re-ratcheted: 5g(e) v12; NEW 5k (a) no account slot / "Personal space" on any page, (b) handle as nav-label overlay on all 6 rails, (c) identity lock — fixed slot width + relative anchor, width:100% forbidden, (d) 18× rail icon stroke 1.1, (e) rail icon srcs ?v=12-busted. Green after docs.
+- Browser DOM (1440×900): 6/6 pages avatarX = iconX = 44 collapsed; index expanded — rail 168, nav wrapper 144 @ x24, icon img center 44, avatar center 44, handle + all labels at x 76, handle vertically on the pfp line (cy 45); rAF trajectory through the expansion: avX 44 at every sampled frame while railW 64→168 and the handle smears in (opacity 0→1, blur 5→0, +12px slide settling).
+- Icon ink measured (PIL, Library glyph region): 84px → 62px = −26%, exactly the 1.5→1.1 stroke ratio.
+- 6 pages console-clean at v12; div balance held; VLM audits (dark expanded, light expanded ×2): avatar aligned in the icon column, handle beside it, labels sharp, NO bottom text, zero defects. Evidence: `design/preview/p12-01..04-*.png`.
+
+### Carried to the owner
+
+1. Icon weight: 1.1 strokes — one literal if thinner still is wanted (0.9 is the next meaningful step; legibility floor ~0.8 at 18px).
+2. Handle voice: @prathamarchives ships as a standard label (12px/400, same color) — one literal if it should read muted or smaller.
+3. Push still blocked (L-10, PAT wiped again): pass 11 + 12 committed locally; a fresh inline PAT pushes both.
+4. Then the queued content-area composition port (segmented control + card rhythm — measured in the INT-016 spec).
