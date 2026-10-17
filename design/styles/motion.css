@@ -1,104 +1,119 @@
 /* ============================================================
-   motion.css — INT-013 "with motion effects"
-   (master: scripts/design-glue/) Vocabulary: standing motion laws
-   + the prototype's own shadow pair. Transform/opacity only;
-   prefers-reduced-motion collapses everything.
+   motion.css — INT-020: the motion system, REBUILT FROM ZERO
+   (master: scripts/design-glue/)
+   ------------------------------------------------------------
+   THE LAWS (owner turn 20: "design this system of motion from
+   scratch that it expands when cursor hovers over it not bounce
+   and fades in with motion blur the text"):
+
+   1. EXPAND, NEVER BOUNCE. No overshoot curves, no translateY
+      hops, no :active press-scale, no stagger cascades. Hover
+      reads as GROWTH (width / scale) on one shared S-curve.
+   2. MOTION BLUR BELONGS TO TEXT ONLY. The labels smear in
+      (blur 5px -> 0 as they slide 12px and fade) and settle
+      sharp; panels, icons, and chrome NEVER blur (the pass-10
+      panel-wide blur keyframe = "hurts my eyes" — dead).
+   3. ZERO-LAYOUT TEXT. Reveal text sits in absolutely-positioned
+      overlays (see shell.css); nothing animates max-width /
+      max-height / gap — those layout animations wrapped and
+      clipped the labels mid-flight (the "messed up texts" bug).
+   4. ONE CLOCK. Rail width + item width + every text reveal
+      share the same curve and duration; text rides a single
+      90ms offset. No per-item stagger — stagger IS bounce.
+   5. ONE TRANSITION STACK PER ELEMENT. An entrance state rule
+      may set opacity/transform but NEVER its own `transition`
+      (pass-10's ready-rule shadowed the width transition — the
+      rail SNAPPED open: "no expand animation"). Ratcheted.
+
+   Timing block (one-token literals): expand 0.3s · text-in
+   0.2s @ 90ms · text-out 0.14s · hover-grow 0.26s · entrance
+   0.46s · tooltip fade 0.15s · grace 140ms (motion.js).
    ============================================================ */
 
-/* ---------- INT-018/019: rail expansion choreography ----------
-   Hover/focus expands the glass column 64 -> 168; the icons never move
-   (item left inset + box hold the axis); labels/account/save-state
-   reveal with an early 30ms stagger, each with a focus-in blur.
-   INT-019 (owner: "smooth it out… a bit motion blurr of expanding"):
-   260ms on a long-tail decel curve (smoother; still <=280ms latency
-   law, no bounce), and the rail itself smears MID-FLIGHT — the
-   motion-blur keyframe peaks (1.4px) exactly while the width is
-   changing and settles to 0. The expansion OVERLAYS content (no
-   reflow — INT-007/009 law). */
-@keyframes rail-open-blur {
-  0%   { filter: blur(0); }
-  40%  { filter: blur(1.4px); }
-  100% { filter: blur(0); }
-}
+/* ---------- the rail expansion: one shared stack ----------
+   Hover/focus grows the glass column 64 -> 168 and each item
+   40 -> 144 on the settle curve (soft S, lands without
+   overshoot). The icons never move (the axis law); labels ride
+   absolute overlays. The expansion OVERLAYS content — no
+   reflow (INT-007/009 law). This ONE rule owns width, shadow,
+   AND the entrance fade/slide (law 5 — nothing may re-declare
+   `transition` on .rail-panel after this). */
 .rail-panel {
   transition:
-    width 0.26s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.28s ease;
+    width 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+    box-shadow 0.3s ease,
+    opacity 0.38s ease,
+    transform 0.42s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .rail-panel.expanded {
   width: var(--ref-rail-expanded);
   box-shadow: var(--ref-rail-shadow-open);
-  animation: rail-open-blur 0.3s ease-out;
 }
 .rail-panel [class^="navigation-item-"] {
+  position: relative;              /* the label overlay anchors here (shell.css geometry) */
   transition:
-    width 0.26s cubic-bezier(0.16, 1, 0.3, 1),
-    gap 0.26s cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 0.16s ease,
-    box-shadow 0.16s ease;
+    width 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+    background-color 0.18s ease,
+    box-shadow 0.18s ease;
 }
 .rail-panel.expanded [class^="navigation-item-"] {
   width: var(--ref-rail-item-w-open);
-  gap: 10px;
 }
 
-/* the reveal: labels + account + save-state rise in as the glass opens.
-   Collapsed they must occupy ZERO layout (max-width/height 0) — hidden
-   width would drag the icon column off-center via max-content sizing.
-   INT-019: each reveal focus-ins through a 2px blur (motion-blur
-   family — the text settles into sharpness as it lands). */
+/* ---------- the text reveal: fade in WITH MOTION BLUR ----------
+   Labels (Home / Library / Archive) and the account block
+   (bottom slot) fade in as the rail opens: opacity 0 -> 1,
+   blur 5px -> 0, slide 12px -> 0 — the text smears in and
+   settles sharp (law 2). All on ONE clock, 90ms behind the
+   width (law 4). Exit is fast and undelayed so the text is
+   gone before the closing rail could ever clip it. The
+   overlays hold ZERO layout (law 3 — geometry in shell.css). */
 .rail-panel .nav-label,
-.rail-panel [class^="account-details-"],
-.rail-panel [class^="rail-tools-"] {
+.rail-panel [class^="account-details-"] {
   opacity: 0;
-  transform: translateX(-8px);
-  filter: blur(2px);
-  max-height: 0;
-  max-width: 0;
-  overflow: hidden;
+  filter: blur(5px);
+  transform: translateX(12px);
   pointer-events: none;
-  transition: opacity 0.16s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease, max-height 0.24s ease, max-width 0.24s ease;
+  transition: opacity 0.14s ease, transform 0.14s ease, filter 0.14s ease;
 }
 .rail-panel.expanded .nav-label,
-.rail-panel.expanded [class^="account-details-"],
-.rail-panel.expanded [class^="rail-tools-"] {
+.rail-panel.expanded [class^="account-details-"] {
   opacity: 1;
-  transform: none;
   filter: blur(0);
+  transform: none;
   pointer-events: auto;
+  transition: opacity 0.2s ease 90ms,
+              transform 0.3s cubic-bezier(0.32, 0.72, 0, 1) 90ms,
+              filter 0.2s ease 90ms;
 }
-.rail-panel.expanded .nav-label { max-width: 110px; }
-.rail-panel.expanded [class^="account-details-"] { max-height: 56px; max-width: 160px; transition-delay: 30ms; }
-.rail-panel.expanded [class^="rail-tools-"] { max-height: 40px; max-width: 130px; transition-delay: 20ms; }
-.rail-panel [class^="destinations-"] > :nth-child(1) .nav-label { transition-delay: 40ms; }
-.rail-panel [class^="destinations-"] > :nth-child(2) .nav-label { transition-delay: 70ms; }
-.rail-panel [class^="destinations-"] > :nth-child(3) .nav-label { transition-delay: 100ms; }
 
-/* ---------- entrance ---------- */
+/* ---------- entrance: the page arrives, it does not cascade ----------
+   2-3 block rises stepped 70ms (motion.js stamps --d), one
+   soft move each — the pass-4..10 twenty-element 60/55ms
+   cascade wave was the "bounces on screen" verdict. The rail
+   slides in once. NO transition declarations here (law 5). */
 body.js .rise {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(10px);
 }
 body.js.ready .rise {
   opacity: 1;
   transform: none;
-  transition:
-    opacity 0.5s ease,
-    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.42s ease, transform 0.46s cubic-bezier(0.22, 0.61, 0.36, 1);
   transition-delay: var(--d, 0ms);
 }
 body.js .rail-panel {
   opacity: 0;
-  transform: translateX(-10px);
+  transform: translateX(-12px);
 }
 body.js.ready .rail-panel {
   opacity: 1;
   transform: none;
-  transition: opacity 0.45s ease 0.05s,
-              transform 0.5s cubic-bezier(0.3, 1, 0.36, 1) 0.05s;
 }
 
-/* ---------- hover: lift + bloom ---------- */
+/* ---------- hover: GROWTH + shadow bloom (the expand law) ----------
+   Cards/covers/pills scale up softly — never a hop: no
+   translateY anywhere in the hover family, no press-scale. */
 .continue-reading-38, .continue-reading-870,
 .reading-card-60, .reading-card-892,
 .today-s-journal-135, .today-s-journal-967,
@@ -107,13 +122,13 @@ body.js.ready .rail-panel {
 .reading-list-80, .reading-list-96, .reading-list-912, .reading-list-928,
 [class^="note-4"], [class^="growing-entity-"],
 .highlight-118, .highlight-126, .highlight-950, .highlight-958,
-[class^="work-row-"], [class^="day-3"], [class^="day-4"],
+[class^="work-row-"], .day-3, .day-4,
 .selected-result-221, .reference-result-234, .reference-result-240,
 .today-s-entry-410, .evidence-link-465, .evidence-link-471,
 .return-to-a-thought-150, .return-to-a-thought-982 {
-  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.2s ease,
-              border-color 0.2s ease;
+  transition: transform 0.26s cubic-bezier(0.32, 0.72, 0, 1),
+              box-shadow 0.26s ease,
+              border-color 0.26s ease;
   will-change: transform;
 }
 .continue-reading-38:hover, .continue-reading-870:hover,
@@ -125,10 +140,11 @@ body.js.ready .rail-panel {
 [class^="note-4"]:hover, [class^="growing-entity-"]:hover,
 .highlight-118:hover, .highlight-126:hover,
 .highlight-950:hover, .highlight-958:hover,
-[class^="work-row-"]:hover, .selected-result-221:hover,
+[class^="work-row-"]:hover, .day-3:hover, .day-4:hover,
+.selected-result-221:hover, .reference-result-234:hover, .reference-result-240:hover,
 .today-s-entry-410:hover, .evidence-link-465:hover, .evidence-link-471:hover,
 .return-to-a-thought-150:hover, .return-to-a-thought-982:hover {
-  transform: translateY(-2px);
+  transform: scale(1.012);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22), 0 2px 4px rgba(0, 0, 0, 0.16);
 }
 body.theme-dark .continue-reading-38:hover, body.theme-dark .reading-card-60:hover,
@@ -136,28 +152,28 @@ body.theme-dark .today-s-journal-135:hover {
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55), 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-/* book covers: lift higher, shadow blooms */
+/* book covers: grow a touch more (they are the graphic mass) */
 [class^="book-cover-"] {
-  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.2s ease;
+  transition: transform 0.26s cubic-bezier(0.32, 0.72, 0, 1),
+              box-shadow 0.26s ease;
 }
 a:hover > [class^="book-cover-"],
 [class^="book-stack-"]:hover [class^="book-cover-"],
 [class^="work-7"]:hover [class^="cover-stage-"] [class^="book-cover-"],
 [class^="continue-reading"]:hover > [class^="book-cover-"] {
-  transform: translateY(-3px);
+  transform: scale(1.02);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
-/* action pills + links */
+/* action pills + links: grow, tint, underline — never hop */
 [class^="action-"], [class^="note-link-"], [class^="sec-link"] {
-  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.18s ease,
+  transition: transform 0.26s cubic-bezier(0.32, 0.72, 0, 1),
+              box-shadow 0.26s ease,
               color 0.15s ease,
               border-color 0.15s ease;
 }
 [class^="action-"]:hover, [class^="note-link-"]:hover {
-  transform: translateY(-1px);
+  transform: scale(1.02);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
 }
 a[class^="sec-link"]:hover span {
@@ -165,46 +181,32 @@ a[class^="sec-link"]:hover span {
   text-underline-offset: 3px;
 }
 
-/* press */
-a:active, [class^="action-"]:active, [class^="navigation-item-"]:active,
-[class^="pin-"]:active {
-  transform: scale(0.98);
-  transition-duration: 0.1s;
-}
+/* nav items: tint on hover (fade only — the width family above
+   is the rail's one movement) */
+body.theme-dark  .rail-panel [class^="navigation-item-"]:hover { background-color: rgba(238, 238, 234, 0.07); }
+body.theme-light .rail-panel [class^="navigation-item-"]:hover { background-color: rgba(37, 37, 37, 0.05); }
 
-/* nav items: tint on hover (the transition family lives in the INT-018
-   expansion block above — width + background-color + box-shadow) */
-body.theme-dark  [class^="navigation-item-"]:hover { background-color: rgba(238, 238, 234, 0.07); }
-body.theme-light [class^="navigation-item-"]:hover { background-color: rgba(37, 37, 37, 0.05); }
-
-/* avatar */
-[class^="avatar-"] { transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1); }
-[class^="avatar-"]:hover { transform: scale(1.05); }
-
-/* theme toggle */
+/* theme toggle: dim on hover — a color shift, not a spin */
 a[class^="moon-"], a[class^="sun-"] {
   display: inline-flex;
-  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.18s ease;
 }
-a[class^="moon-"]:hover, a[class^="sun-"]:hover { transform: rotate(-14deg) scale(1.08); }
+a[class^="moon-"]:hover, a[class^="sun-"]:hover { opacity: 0.72; }
 
-/* pin: retired with the overlay rail (INT-016 static reference rail;
-   the tool is hidden in shell.css — markup preserved for iteration) */
-
-/* ---------- progress fill-in ---------- */
+/* ---------- progress fill-in (one soft sweep) ---------- */
 .fill-anim {
   transform: scaleX(0);
   transform-origin: left center;
 }
 body.js.ready .fill-anim {
   transform: scaleX(1);
-  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+  transition: transform 0.65s cubic-bezier(0.22, 0.61, 0.36, 1) 0.25s;
 }
 
-/* ---------- tooltips (ink-inverted chip, fade + rise) ----------
-   INT-018: the RAIL's tooltips are retired — the expansion itself is
-   the label channel (labels + account reveal on hover/focus). Header
-   and content tooltips (e.g. search) keep the hover chip. */
+/* ---------- tooltips: pure fade (no rise, no motion) ----------
+   Rail tooltips are RETIRED for good (INT-020: the expansion is
+   the label channel; markup data-tips removed from the rail).
+   Header/content tooltips (search) keep the ink chip, fading in. */
 .rail-panel [data-tip]::after { display: none; }
 [data-tip] { position: relative; }
 [data-tip]::after {
@@ -212,7 +214,7 @@ body.js.ready .fill-anim {
   position: absolute;
   left: calc(100% + 12px);
   top: 50%;
-  transform: translateY(calc(-50% + 4px));
+  transform: translateY(-50%);      /* static centering — never animated */
   background: #252525;
   color: #F7F7F5;
   font-family: var(--font-family-inter);
@@ -224,7 +226,7 @@ body.js.ready .fill-anim {
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.16s ease, transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.15s ease;
   z-index: 90;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
@@ -235,23 +237,17 @@ body.theme-dark [data-tip]::after {
 [data-tip]:hover::after,
 [data-tip]:focus-visible::after {
   opacity: 1;
-  transform: translateY(-50%);
 }
-/* the expansion carries the rail's labels now — no rail hover tooltips
-   to double-label the same hover (see the retirement note above). */
 
-/* ---------- journal caret breathes + preview pointer nudges ---------- */
+/* ---------- journal caret breathes (functional: it's a text caret) ---------- */
 @keyframes caret-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
 .authored-day-page-284 p:last-child span:last-child {
   animation: caret-pulse 1.6s ease-in-out infinite;
 }
-@keyframes pointer-nudge {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(3px); }
-}
-.preview-pointer-197 { animation: pointer-nudge 2.2s ease-in-out infinite; }
 
-/* ---------- reduced motion ---------- */
+/* ---------- reduced motion ----------
+   Everything arrives instantly; the expansion still WORKS (states
+   flip, no motion). */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -262,6 +258,4 @@ body.theme-dark [data-tip]::after {
   body.js .rise { opacity: 1; transform: none; }
   body.js .rail-panel { opacity: 1; transform: none; }
   .fill-anim { transform: none; }
-  [data-tip]::after { transition: none; }
-  /* expansion still WORKS under reduced motion — states arrive instantly */
 }

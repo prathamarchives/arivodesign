@@ -338,3 +338,11 @@ Stage Summary:
 - Docs lockstep: INTENT-LEDGER (INT-019), REVIEW.md pass 10, STATE.md rewrite, this entry.
 
 **Stage summary:** PASS 10 landed and pushed — the sidebar at its slimmest, lightest, with real motion blur on the expansion. Carried: blur peak strength, thin-icon set, one-notch family rescale, ink-vs-tint, glass strength, tooltips. Next queue: the content composition port (segmented control + card rhythm).
+
+## Session 17 — 2026-10-17 (INT-020: the motion system rebuilt from zero)
+
+- Intake turn-020 verbatim; INT-020 ledgered with the double forensics (labels clipped to zero height by an unreset `max-height: 0`; width transition dead after entrance — the ready-rule's own transition list shadowed it, so the rail SNAPPED and the blur/stagger popped over the snap).
+- Rebuilt: motion.css from zero under five laws (expand-not-bounce; motion-blur TEXT-only; zero-layout overlays; one clock no stagger; one transition stack per element); motion.js (2-3 block-rise entrance, grace 140ms); shell.css (absolute label overlay, bottom account slot); tokens (--ref-rail-label-gap).
+- 6-page surgery: save-state + pin + rail data-tips deleted, account to bottom, icon alts named, v11. Mid-pass defect: the tools-block regex anchored on the pin's inner `</div>`, leaving an orphan close that cascade-closed the rail and re-parented the page — caught by DOM measurement (shell height 0), fixed on the `<!--/rail-panel-->` comment anchor, RATCHETED (5j(f) div-balance).
+- Verified: rAF trajectories (OPEN 64→…→168 ~300ms, label opacity/blur smear 0→1 / 5px→0, axis 44 every frame; CLOSE labels ≤0.01 at w 71); 6 pages console-clean v11; VLM audit 6/6. verify re-ratcheted (5f(b) 0.3xs settle curve, 5g(a/e) growth/v11, 5i text-only blur, NEW 5j a-f) — PASS.
+- PUSH BLOCKED (L-10: gh + PAT wiped again). Pass 11 committed locally; STATE/REVIEW/ledger lockstep. Awaiting fresh inline PAT to push.

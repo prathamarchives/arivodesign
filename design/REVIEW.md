@@ -338,3 +338,61 @@ Owner order (turn 19, verbatim in `context/raw/turn-019.txt`): "smooth it out ad
 2. Icon size 18 = stroke-thinning via scale; a dedicated thin-stroke icon set is the eventual deeper fix if 18px still reads thick.
 3. The rail is now 64 — the whole family (icons/avatar/items/pill) can go one notch smaller or larger as a set (token block).
 4. Push block cleared with the fresh PAT (pass 9 + this pass both up); PAT rotation stands advised after session close.
+
+---
+
+## PASS 11 — THE MOTION SYSTEM, REBUILT FROM ZERO (INT-020, session 17)
+
+> Owner verdict on pass 10: "its still messed up, texts? and theres no motion this shi hurts my eyes. no smooth. it just bounces on screen. no expand animation. design this system of motion from scratch that it expands when cursor hovers over it not bounce and fades in with motion blur the text of home/lib/archive and all of em and never put the unecessary texts anywhere."
+
+### Forensics FIRST (the owner was right twice)
+
+1. **"texts?"** — pass 10 shipped `.nav-label { max-height: 0 }` whose `.expanded` rule only reset `max-width`. Labels were clipped to ZERO HEIGHT forever: the text literally could not render. (The DOM-VLM audit trail had measured box geometry, not label height — measurement gap closed this pass.)
+2. **"no expand animation"** — the entrance rule `body.js.ready .rail-panel` re-declared `transition` (opacity/transform), and a later same-element transition list REPLACES the earlier one: after page load, the width transition was dead. The rail SNAPPED 64→168 in one frame; the blur keyframe and label stagger then popped over the snap. That composite was the "bounces on screen / hurts my eyes."
+3. **Contributors:** panel-wide blur (rail-open-blur keyframe restarted on every hover), staggered label delays (40/70/100ms), layout-animating `max-width/max-height/gap` on reveal text, the 20-element 60/55ms entrance cascade, translateY hover hops + :active press + avatar/toggle scale spins, and the journal pointer's infinite wiggle.
+
+### The rebuilt system (motion.css rewritten from zero — five laws)
+
+1. **EXPAND, never bounce** — no overshoot curves, no hops, no press-scale, no stagger. Hover = growth (width/scale) on one shared S-curve `cubic-bezier(0.32, 0.72, 0, 1)`.
+2. **Motion blur is TEXT-ONLY** — labels smear in (blur 5px→0, slide 12px→0, opacity) and settle sharp; panels/icons/chrome never blur.
+3. **Zero-layout text** — labels are absolute overlays (left = icon + 12px gap, full row height); nothing animates max-w/h/gap. The rail clips them while collapsed; they fade in once there is room.
+4. **One clock** — rail width + item width + all text share curve/duration; text rides a single 90ms offset, zero per-item stagger.
+5. **One transition stack per element** — the entrance ready-rule sets state only (opacity/transform), never `transition`; the base `.rail-panel` rule owns width + box-shadow + entrance fade/slide together.
+
+Structure: account block moved to the rail's BOTTOM slot (replaces the deleted save-state; reserved height — the nav items NEVER move); "All changes saved" + pin markup deleted from all 6 pages; rail data-tips deleted (the expansion is the label channel); icon alts now carry real names. Entrance: 2-3 block rises (70ms steps), rail slides in once. Hover: cards/covers/pills scale up 1.012-1.02 + shadow bloom. Tooltips: pure fade. Close: text exits 140ms undelayed — gone before the rail could clip it. Close grace 140ms.
+
+### What changed (frozen layers untouched: prototype.css stays byte-verbatim)
+
+| Property | Pass 10 | Pass 11 | note |
+|---|---|---|---|
+| label rendering | **max-height: 0 never reset — invisible** | absolute overlay, always laid out | the "texts?" bug class |
+| width transition | **dead after entrance (snap)** | one shared stack (law 5) | the "no expand animation" bug class |
+| expansion | 260ms cubic(0.16,1,0.3,1) + snap | **300ms cubic(0.32,0.72,0,1)** | soft S, no overshoot, one clock |
+| label reveal | stagger 40/70/100 + blur(2px) focus-in | **all together: opacity+blur(5px)+slide 12px, 200ms @90ms** | "fades in with motion blur the text of home/lib/archive and all of em" |
+| panel blur | rail-open-blur 1.4px keyframe | **none — blur is text-only** | "hurts my eyes" verdict honored |
+| label exit | mirrored stagger | 140ms undelayed | gone before clipping range |
+| entrance | 20-element 60/55ms cascade | **2-3 block rises, 70ms steps** | "it just bounces on screen" honored |
+| hover family | translateY(-1/-2/-3px) hops + scale(0.98) press + avatar 1.05 + toggle spin | **scale 1.012-1.02 growth + shadow bloom, nothing else** | expand-not-bounce, system-wide |
+| account block | top, revealing (items slid down) | **bottom slot, reserved height, pure fade** | nothing above the items ever moves |
+| save-state / pin | "All changes saved" + pin (retired) | **deleted from all 6 pages** | "never put the unecessary texts anywhere" |
+| close grace | 180ms | 140ms | snappier, still flicker-proof |
+| cache-bust | v10 | **v11** | INT-008 class |
+
+### The mid-pass defect (named, with evidence — Loop 5 material)
+
+The HTML surgery script's tools-block regex anchored on the FIRST `</div>` — the pin's inner close — leaving an orphan `</div>` that cascade-closed the rail-panel early; the parser re-parented the header/content outside the shell (shell height 0, one child). Caught by browser DOM measurement within the pass, fixed by re-anchoring on the `<!--/rail-panel-->` comment, and RATCHETED: verify 5j(f) now checks div-balance on all 6 pages. The script also gained balance assertions at region and file level.
+
+### Verification (this pass)
+
+- verify.sh re-ratcheted: 5f(b) width 0.3xs settle-curve form, 5g(a) growth-not-press, 5g(e) v11, 5i text-only motion blur (rail-open-blur FORBIDDEN), NEW 5j (a-f: no save-state / no max-w-h collapse / absolute label overlay / one-stack / no stagger / no hop / div balance). Green after docs.
+- Browser-DOM trajectories (1440×900, rAF-sampled): OPEN — w 64→96→149→161→166→167→168 over ~300ms while label opacity 0→0.33→0.77→0.95→1 and blur 5px→3.3→1.2→0.26→0; icon axis 44 at EVERY frame; text invisible until the rail is wide enough (opacity 0 at w=96/149 — no mid-flight clipping possible). CLOSE — labels ≤0.01 opacity while the rail is still 71px wide (gone before clip range). The pass-10 snap contrast: width now provably animates.
+- 6 pages console-clean at v11; page tree structure verified (shell 900, rail 64×876, grid placement intact).
+- VLM audit (collapsed + expanded): 6/6 pass — collapsed shows icons only; expanded labels fully visible, sharp, unclipped; account block clean at bottom; no save-state/pin remnants; ink pill correct; zero defects. Evidence: `design/preview/p11-01..02-*.png`.
+
+### Carried to the owner
+
+1. Text-blur strength: 5px smear over 200ms — one literal if it should read stronger/weaker.
+2. Expand timing: 300ms on the settle curve — one literal if it should feel snappier.
+3. The account block ("prathamarchives / Personal space") stays as the rail's bottom identity — if that reads as unnecessary text too, it is one deletion.
+4. Push blocked again (container reset wiped gh + PAT — L-10 class): pass 11 committed locally; a fresh inline PAT pushes it.
+5. Then the queued content-area composition port (segmented control + card rhythm — measured in the INT-016 spec).

@@ -163,13 +163,15 @@ if [ -n "$arivo_bad" ] || [ -n "$arivo_journal_bad" ]; then
 else
   ok "arivo absent except the owner's arivo:// URIs (journal)"
 fi
-# (b) latency law, INT-018 form: the rail EXPANDS on hover by owner
-#     order — a width transition exists again, and it must stay fast
-#     (<= 260ms; the INT-009 near-critical/no-bounce law stands).
-if grep -q 'width 0\.2[0-6]s' design/styles/motion.css; then
-  ok "rail expansion present and fast (width 0.2xs, <=260ms)"
+# (b) latency law, INT-020 form: the rail EXPANDS on hover on the
+#     shared settle curve — one clock, 300ms, no overshoot. (The
+#     INT-009/019 ≤260ms form is superseded: that law was written
+#     against bounce-era curves; the rebuilt system trades 40ms for
+#     a true S-curve and ratchets no-bounce structurally in 5j.)
+if grep -q 'width 0\.3[0-5]\?s' design/styles/motion.css; then
+  ok "rail expansion present and smooth (width 0.3xs, settle curve, no bounce)"
 else
-  bad "rail width transition missing or slow — expansion needs width 0.2[0-6]s (INT-009/018)"
+  bad "rail width transition missing or mistimed — expansion needs width 0.3[0-5]s (INT-020)"
 fi
 # (c) tooltip system: data-tip hooks + ink-inverted chip in the motion layer
 if grep -q 'data-tip=' design/index.html && grep -q 'data-tip\]::after' design/styles/motion.css; then
@@ -200,13 +202,15 @@ else
   bad "page graph incomplete (nav anchors: $nlinks/15+)"
 fi
 
-# ---------------------------------------------------------------- 5g. INT-013 motion + integrity guards (ratcheted 2026-10-16)
-# (a) the motion layer exists: entrance rise, progress fill-in, press, reduced-motion gate
+# ---------------------------------------------------------------- 5g. INT-013 motion + integrity guards (re-ratcheted 2026-10-16)
+# (a) the motion layer exists: entrance rise, progress fill-in, hover
+#     GROWTH (scale — the INT-020 expand-not-bounce law; the :active
+#     press-scale is retired as bounce-family), reduced-motion gate
 if grep -q '\.rise' design/styles/motion.css && grep -q 'fill-anim' design/styles/motion.css \
-   && grep -q 'prefers-reduced-motion' design/styles/motion.css && grep -q 'scale(0.98)' design/styles/motion.css; then
-  ok "motion layer present (rise + fill + press, reduced-motion gated)"
+   && grep -q 'prefers-reduced-motion' design/styles/motion.css && grep -q 'scale(1.0' design/styles/motion.css; then
+  ok "motion layer present (rise + fill + growth, reduced-motion gated)"
 else
-  bad "motion layer incomplete — 'with motion effects' is part of the directive (INT-013)"
+  bad "motion layer incomplete — 'with motion effects' is part of the directive (INT-013/020)"
 fi
 # (b) motion.js wired on every page
 mjs=$(grep -l 'motion.js' design/*.html | wc -l)
@@ -227,12 +231,12 @@ if grep -q 'progress-track-' design/styles/shell.css && grep -q 'height: 4px' de
 else
   bad "progress tracks unsized — invisible progress was the G-class failure (INT-013)"
 fi
-# (e) cache-bust version bumped with the paint (?v=10) — the INT-008 landing-failure class
+# (e) cache-bust version bumped with the paint (?v=11) — the INT-008 landing-failure class
 vb=$(grep -o 'tokens.css?v=[0-9]*' design/index.html | grep -o '[0-9]*$')
-if [ "$vb" = "10" ]; then
-  ok "asset links cache-busted at v10"
+if [ "$vb" = "11" ]; then
+  ok "asset links cache-busted at v11"
 else
-  bad "asset links not re-busted at v10 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
+  bad "asset links not re-busted at v11 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
 fi
 # (f) no external resource references — everything local (the export's only CDN was fonts)
 ext="$(grep -hEo 'src="http[^"]*"|href="http[^"]*"' design/*.html 2>/dev/null | grep -v '^$' || true)"
@@ -289,13 +293,74 @@ if grep -q "rail.classList.add('expanded')" design/motion.js && \
 else
   bad "rail expansion not wired — hover expand is the owner's INT-018 order"
 fi
-# INT-019: the blur-on-movement law gets its marquee case — the
-# expansion MUST carry a motion-blur treatment (owner order).
-if grep -q 'rail-open-blur' design/styles/motion.css && \
-   grep -q 'filter: blur(2px)' design/styles/motion.css; then
-  ok "motion-blur treatment on expansion (rail keyframe + label focus-in)"
+# INT-020: motion blur belongs to TEXT ONLY — the labels smear in
+# (blur 5px -> 0 as they fade); a PANEL-wide blur keyframe is
+# forbidden (owner verdict: "hurts my eyes").
+if grep -q 'filter: blur(5px)' design/styles/motion.css && \
+   ! grep -q 'rail-open-blur' design/styles/motion.css; then
+  ok "motion-blur treatment on TEXT reveal only (no panel-wide blur)"
 else
-  bad "expansion lacks motion blur — 'a movement without blur treatment' (DESIGN-SYSTEM Don't, INT-019 order)"
+  bad "motion blur misplaced — text smear-in required, rail-open-blur forbidden (INT-020 order)"
+fi
+
+# ---------------------------------------------------------------- 5j. INT-020 motion-system guards (ratcheted 2026-10-17)
+# The owner ordered the motion system rebuilt from scratch (expand
+# not bounce / text fades with motion blur / no unnecessary texts).
+# Every failure class found or killed this pass becomes a check.
+# (a) no unnecessary chrome text: the save-state is dead everywhere
+if grep -q 'All changes saved' design/index.html design/home-light.html design/library.html design/archive.html design/journal.html design/reader.html 2>/dev/null; then
+  bad "save-state text present — 'never put the unnecessary texts anywhere' (INT-020)"
+else
+  ok "no save-state text on any page (INT-020)"
+fi
+# (b) zero-layout labels: the pass-10 layout-animation reveal clipped
+#     the labels to zero height (the "messed up, texts" bug) — the
+#     collapse-class animations must never come back
+if grep -q 'max-height: 0\|max-width: 0' design/styles/motion.css; then
+  bad "layout-collapsed reveal text in motion.css — labels must be zero-layout overlays (INT-020 law 3)"
+else
+  ok "no max-w/h collapse tricks on reveal text (labels render — the pass-10 text bug is dead)"
+fi
+if sed -n '/^\.rail-panel \.nav-label {/,/^}/p' design/styles/shell.css | grep -q 'position: absolute'; then
+  ok "nav-label is an absolute overlay (zero-layout law held)"
+else
+  bad "nav-label lost its absolute overlay — layout jank returns (INT-020 law 3)"
+fi
+# (c) one transition stack: the pass-10 entrance rule re-declared
+#     `transition` on .rail-panel, permanently shadowing the width
+#     transition — the rail SNAPPED open (the "no expand animation"
+#     bug). Entrance states may never own transitions.
+if sed -n '/body\.js\.ready \.rail-panel {/,/^}/p' design/styles/motion.css | grep -q 'transition'; then
+  bad "entrance ready-rule re-declares transition on .rail-panel — the one-stack law (INT-020 law 5, snap-bug class)"
+else
+  ok "one transition stack on .rail-panel (entrance owns no transitions)"
+fi
+# (d) no stagger: per-item transition-delay cascades are bounce
+if grep -q ':nth-child' design/styles/motion.css; then
+  bad "nth-child stagger in motion.css — stagger IS bounce (INT-020 law 4)"
+else
+  ok "no stagger cascade anywhere (one clock)"
+fi
+# (e) hover = growth, never a hop: no pixel-translateY hops in the
+#     hover family; scale-up present. (translateY(-50%) is exempt —
+#     it is the tooltip's static vertical centering, never animated)
+if grep -q 'translateY(-[0-9.]*px' design/styles/motion.css; then
+  bad "translateY hop in motion.css — hover grows (scale), it does not hop (INT-020 law 1)"
+else
+  ok "no hop family (hover = scale growth only)"
+fi
+# (f) HTML div balance: a surgery pass left an orphan </div> that
+#     cascade-closed the rail early and re-parented the whole page
+#     (session-17 forensic) — balanced markup, mechanically checked
+bal_bad=""
+for pg in design/index.html design/home-light.html design/library.html design/archive.html design/journal.html design/reader.html; do
+  o=$(grep -o '<div\b' "$pg" | wc -l); c=$(grep -o '</div>' "$pg" | wc -l)
+  [ "$o" -eq "$c" ] || bal_bad="$bal_bad $pg(${o}/${c})"
+done
+if [ -n "$bal_bad" ]; then
+  bad "div-unbalanced page(s) — orphan close cascades the tree apart:$bal_bad"
+else
+  ok "all 6 pages div-balanced (no orphan-close cascade class)"
 fi
 
 # ---------------------------------------------------------------- 6. worklog is alive for the latest turn

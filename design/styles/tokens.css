@@ -87,6 +87,7 @@
   --ref-rail-item-r: 6px;       /* INT-018: reduced from 8 per owner order */
   --ref-glass-blur: 20px;       /* frosted strength (refs 12-24) */
   --ref-rail-item-w-open: 144px;/* INT-019: the icon+label row when expanded */
+  --ref-rail-label-gap: 12px;   /* INT-020: fixed icon -> label offset (the label is a zero-layout overlay) */
 }
 
 /* page canvas: the artifact framing died (INT-016 "make it full page")

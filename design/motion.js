@@ -1,35 +1,32 @@
-/* motion.js — INT-018: entrance stagger, rail selection, rail EXPANSION.
-   (master: scripts/design-glue/) The prototype's statics stay verbatim.
-   The rail is a floating glass column that opens on hover/focus
-   (64 -> 168) revealing labels, account, and save-state; it closes
-   180ms after the pointer leaves (grace against flicker). The
-   expansion overlays content — nothing reflows. */
+/* motion.js — INT-020: the motion system, rebuilt from zero.
+   (master: scripts/design-glue/)
+   LAWS (mirror motion.css):
+   1. EXPAND, never bounce — no stagger cascades anywhere.
+   2. Entrance = 2-3 soft block rises (70ms steps), NOT the
+      pass-4..10 twenty-element 60/55ms cascade wave.
+   3. The rail expands on hover/focus (64 -> 168) — width + the
+      text fade/blur ride CSS transitions; this file only flips
+      the `expanded` class (plus a 140ms close grace against
+      flicker). The expansion overlays content — no reflow. */
 (function () {
   var body = document.body;
   body.classList.add('js');
 
-  // ---- entrance stagger ----
+  // ---- entrance: the shell's own blocks, one 70ms step apart ----
+  // (header, content column, trailing nav — never their children:
+  // the child-level cascade was the "bounces on screen" verdict)
   var shell = document.querySelector('body > div > [class^="study-shell-"]');
   if (shell) {
-    var slots = shell.querySelectorAll(
-      '[class^="workspace-header-"], [class^="home-content-"] > *, ' +
-      '[class^="library-content-"] > *, [class^="archive-content-"] > *, ' +
-      '[class^="reading-page-"], [class^="reader-heading-"], ' +
-      '[class^="authored-day-page-"], [class^="day-navigation-"]'
-    );
-    var t = 0;
-    for (var i = 0; i < slots.length; i++) {
-      slots[i].classList.add('rise');
-      slots[i].style.setProperty('--d', t + 'ms');
-      t += 60;
-      var kids = slots[i].querySelectorAll(':scope > *');
-      var tt = 60;
-      for (var j = 0; j < kids.length && j < 6; j++) {
-        if (kids[j].classList.contains('rise')) continue;
-        kids[j].classList.add('rise');
-        kids[j].style.setProperty('--d', Math.max(t - 60, 0) + tt + 'ms');
-        tt += 55;
-      }
+    var blocks = [];
+    var kids = shell.children;
+    for (var i = 0; i < kids.length; i++) {
+      var cls = kids[i].className || '';
+      if (/navigation-rail-|expanded-navigation-/.test(cls)) continue;  // the rail has its own entrance
+      blocks.push(kids[i]);
+    }
+    for (var b = 0; b < blocks.length && b < 3; b++) {
+      blocks[b].classList.add('rise');
+      blocks[b].style.setProperty('--d', (b * 70) + 'ms');
     }
   }
 
@@ -45,7 +42,7 @@
     }
   }
 
-  // ---- INT-018: rail expansion (hover + keyboard focus) ----
+  // ---- rail expansion: hover + keyboard focus (INT-018, INT-020 timing) ----
   var rail = document.querySelector('.rail-panel');
   if (rail) {
     var closeTimer = null;
@@ -57,7 +54,7 @@
       closeTimer = setTimeout(function () {
         rail.classList.remove('expanded');
         closeTimer = null;
-      }, 180);
+      }, 140);
     };
     rail.addEventListener('mouseenter', open);
     rail.addEventListener('mouseleave', close);
