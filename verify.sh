@@ -97,24 +97,24 @@ else
   bad "core.fileMode is not false — run: git config core.fileMode false (mode-churn guard)"
 fi
 
-# ---------------------------------------------------------------- 5e. prototype rail guards (re-ratcheted 2026-10-17, INT-018)
+# ---------------------------------------------------------------- 5e. prototype rail guards (re-ratcheted 2026-10-17, INT-019)
 # INT-016 rebuilt the sidebar to the owner's reference; INT-017
-# recalibrated it to desktop scale; INT-018 MATERIALIZES it: a
-# FLOATING GLASS column (inset 12, R16, frosted blur 20, 1px light
-# edge, soft shadow) that expands on hover 72 -> 184 (icon+label
-# rows, ink selection pill R6, inverted glyph). The 48-slot model
-# stays retired; expansion OVERLAYS (no reflow).
-# (a) the floating glass rail present in the scaffold, at desktop scale
-if grep -q 'ref-rail-w: 72px' design/styles/tokens.css && \
-   grep -q 'ref-rail-avatar: 30px' design/styles/tokens.css && \
-   grep -q 'ref-rail-icon: 22px' design/styles/tokens.css && \
+# recalibrated it to desktop scale; INT-018 MATERIALIZES it as floating
+# glass with hover expansion + ink selection; INT-019 slims the
+# component set (owner: "much smaller… remove the bold and thickness"):
+# rail 64, items 40x34, icons 18 (thinner strokes), avatar 24, softer
+# shadows, expansion 64 -> 168 with motion-blur treatment.
+# (a) the floating glass rail present in the scaffold, at INT-019 scale
+if grep -q 'ref-rail-w: 64px' design/styles/tokens.css && \
+   grep -q 'ref-rail-avatar: 24px' design/styles/tokens.css && \
+   grep -q 'ref-rail-icon: 18px' design/styles/tokens.css && \
    grep -q 'ref-rail-radius: 16px' design/styles/tokens.css && \
    grep -q 'backdrop-filter: blur(var(--ref-glass-blur))' design/styles/shell.css && \
    grep -q 'border-radius: var(--ref-rail-radius)' design/styles/shell.css && \
    grep -q '\.rail-panel \[class\^="navigation-item-"\]\.selected' design/styles/shell.css; then
-  ok "floating glass rail present (72/30/22 literals, R16, frosted, ink pill)"
+  ok "floating glass rail present (64/24/18 literals, R16, frosted, ink pill)"
 else
-  bad "glass rail missing/mis-built — floating frosted R16 column + ink pill required (INT-016/017/018)"
+  bad "glass rail missing/mis-built — floating frosted R16 column + ink pill required (INT-016/017/018/019)"
 fi
 if grep -q 'margin-left: calc(var(--sidebar-w' design/styles/shell.css; then
   bad "content margin-slide regression in shell.css — hover expansion must overlay (INT-007/013)"
@@ -227,12 +227,12 @@ if grep -q 'progress-track-' design/styles/shell.css && grep -q 'height: 4px' de
 else
   bad "progress tracks unsized — invisible progress was the G-class failure (INT-013)"
 fi
-# (e) cache-bust version bumped with the paint (?v=9) — the INT-008 landing-failure class
+# (e) cache-bust version bumped with the paint (?v=10) — the INT-008 landing-failure class
 vb=$(grep -o 'tokens.css?v=[0-9]*' design/index.html | grep -o '[0-9]*$')
-if [ "$vb" = "9" ]; then
-  ok "asset links cache-busted at v9"
+if [ "$vb" = "10" ]; then
+  ok "asset links cache-busted at v10"
 else
-  bad "asset links not re-busted at v9 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
+  bad "asset links not re-busted at v10 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
 fi
 # (f) no external resource references — everything local (the export's only CDN was fonts)
 ext="$(grep -hEo 'src="http[^"]*"|href="http[^"]*"' design/*.html 2>/dev/null | grep -v '^$' || true)"
@@ -288,6 +288,14 @@ if grep -q "rail.classList.add('expanded')" design/motion.js && \
   ok "expansion interaction wired (motion.js + motion.css)"
 else
   bad "rail expansion not wired — hover expand is the owner's INT-018 order"
+fi
+# INT-019: the blur-on-movement law gets its marquee case — the
+# expansion MUST carry a motion-blur treatment (owner order).
+if grep -q 'rail-open-blur' design/styles/motion.css && \
+   grep -q 'filter: blur(2px)' design/styles/motion.css; then
+  ok "motion-blur treatment on expansion (rail keyframe + label focus-in)"
+else
+  bad "expansion lacks motion blur — 'a movement without blur treatment' (DESIGN-SYSTEM Don't, INT-019 order)"
 fi
 
 # ---------------------------------------------------------------- 6. worklog is alive for the latest turn

@@ -280,3 +280,17 @@ Interpretations (labeled, not owner words):
 - Active selection flips to the ink pill (the references' extracted component): light pages #1E1E1E pill + white glyph; dark home #E4E4E0 pill + near-black glyph — icon color via CSS filter on the stroke SVGs (brightness(0) / brightness(0) invert(1)), 180ms crossfade, soft float shadow. This supersedes INT-016's "no icon color change" for the rail (the new reference set's active states are uniformly ink-inverted).
 - Glass needs luminosity (pass-2 DESIGN-SYSTEM law): the page canvas gains soft fixed glow washes behind the rail zone so the frosted panel has something to refract in both themes.
 - "Reduce the radius": item pill R8→R6; rail R16 (documented values, one-token adjustable).
+
+---
+
+**INT-019 — SMOOTH THE EXPANSION (WITH MOTION BLUR), SHRINK THE COMPONENTS, AND STRIP THE RAIL'S VISUAL WEIGHT — FRESH PAT SUPPLIED (PUSH BLOCK CLEARED) — active**
+
+> "smooth it out add the naimation and a bit motion blurr of expanding make compoments much smaller in size and remove the bold and thinkinesss from the sidebar"
+
+Source: owner turn 19, chat 2026-10-17 (`context/raw/turn-019.txt`; inline PAT `ghp_<redacted per L-15 — used for push this session, stored nowhere>`). Grounds: (a) a fresh PAT arrives with the turn — the session-15 push block (container reset, L-10 class) is CLEARED: the pending pass-9 commits go up first, then this pass; rotation was already advised, the old PAT is retired by replacement; (b) "smooth it out add the naimation" — the expansion motion gets smoother timing; (c) "a bit motion blurr of expanding" — the expansion gains a motion-blur treatment (the standing DESIGN-SYSTEM law "blur on structural movement" finally gets its marquee case); (d) "make compoments much smaller in size" — the rail's component set shrinks materially (icons, item boxes, avatar); (e) "remove the bold and thinkinesss from the sidebar" — the rail's visual weight drops: thinner icon strokes (via smaller glyph scale), lighter shadows, smaller type, no weight anywhere.
+
+Interpretations (labeled, not owner words):
+- Component scale pass 9 → pass 10: rail 72 → 64 (the glass column slims with its contents; column = inset 12 + 64 + 12 = 88), items 49×41 → 40×34, icons 22 → 18 (strokes thin proportionally — the "thickness" fix; the SVGs are stroke-based and resize cleanly), avatar 30 → 24 with monogram 12 → 10px, pitch 55 → 48, first-gap 40 → 32, expanded 184 → 168 with item rows 160 → 144 and label max-width 140 → 110, labels 13 → 12px (all ratios held near the reference family; every value one-token).
+- Weight removal: rail/pill shadows soften ~30% (no heavy black masses), labels stay 400 weight, the ink pill keeps its inversion but slims with the item box.
+- Motion: expansion 220 → 260ms on cubic-bezier(0.16, 1, 0.3, 1) (smoother decel, still inside the ≤280ms latency law, no bounce); the rail gains a mid-flight blur keyframe (blur 0 → 1.4px at 40% → 0) that reads as motion blur exactly during the width change; labels reveal with blur(2px) → blur(0) focus-in; collapse grace 140 → 180ms; stagger pulls earlier (40/70/100ms).
+- The blur treatment satisfies the "no movement without blur" Don't — ratcheted as a verify guard on the expansion.

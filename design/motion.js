@@ -1,8 +1,8 @@
 /* motion.js — INT-018: entrance stagger, rail selection, rail EXPANSION.
    (master: scripts/design-glue/) The prototype's statics stay verbatim.
    The rail is a floating glass column that opens on hover/focus
-   (72 -> 184) revealing labels, account, and save-state; it closes
-   140ms after the pointer leaves (grace against flicker). The
+   (64 -> 168) revealing labels, account, and save-state; it closes
+   180ms after the pointer leaves (grace against flicker). The
    expansion overlays content — nothing reflows. */
 (function () {
   var body = document.body;
@@ -57,7 +57,7 @@
       closeTimer = setTimeout(function () {
         rail.classList.remove('expanded');
         closeTimer = null;
-      }, 140);
+      }, 180);
     };
     rail.addEventListener('mouseenter', open);
     rail.addEventListener('mouseleave', close);

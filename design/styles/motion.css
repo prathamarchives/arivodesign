@@ -5,26 +5,35 @@
    prefers-reduced-motion collapses everything.
    ============================================================ */
 
-/* ---------- INT-018: rail expansion choreography ----------
-   Hover/focus expands the glass column 72 -> 184; the icons never move
+/* ---------- INT-018/019: rail expansion choreography ----------
+   Hover/focus expands the glass column 64 -> 168; the icons never move
    (item left inset + box hold the axis); labels/account/save-state
-   reveal with a 30ms stagger. Timing: 220ms width, near-critical
-   damping (the INT-009 law stands: <=280ms, no bounce — the turn-18
-   references' spring taste lands as timing family, not overshoot).
-   The expansion OVERLAYS content (no reflow — INT-007/009 law). */
+   reveal with an early 30ms stagger, each with a focus-in blur.
+   INT-019 (owner: "smooth it out… a bit motion blurr of expanding"):
+   260ms on a long-tail decel curve (smoother; still <=280ms latency
+   law, no bounce), and the rail itself smears MID-FLIGHT — the
+   motion-blur keyframe peaks (1.4px) exactly while the width is
+   changing and settles to 0. The expansion OVERLAYS content (no
+   reflow — INT-007/009 law). */
+@keyframes rail-open-blur {
+  0%   { filter: blur(0); }
+  40%  { filter: blur(1.4px); }
+  100% { filter: blur(0); }
+}
 .rail-panel {
   transition:
-    width 0.22s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.24s ease;
+    width 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.28s ease;
 }
 .rail-panel.expanded {
   width: var(--ref-rail-expanded);
   box-shadow: var(--ref-rail-shadow-open);
+  animation: rail-open-blur 0.3s ease-out;
 }
 .rail-panel [class^="navigation-item-"] {
   transition:
-    width 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-    gap 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+    gap 0.26s cubic-bezier(0.16, 1, 0.3, 1),
     background-color 0.16s ease,
     box-shadow 0.16s ease;
 }
@@ -35,31 +44,35 @@
 
 /* the reveal: labels + account + save-state rise in as the glass opens.
    Collapsed they must occupy ZERO layout (max-width/height 0) — hidden
-   width would drag the icon column off-center via max-content sizing. */
+   width would drag the icon column off-center via max-content sizing.
+   INT-019: each reveal focus-ins through a 2px blur (motion-blur
+   family — the text settles into sharpness as it lands). */
 .rail-panel .nav-label,
 .rail-panel [class^="account-details-"],
 .rail-panel [class^="rail-tools-"] {
   opacity: 0;
   transform: translateX(-8px);
+  filter: blur(2px);
   max-height: 0;
   max-width: 0;
   overflow: hidden;
   pointer-events: none;
-  transition: opacity 0.14s ease, transform 0.16s cubic-bezier(0.22, 1, 0.36, 1), max-height 0.2s ease, max-width 0.2s ease;
+  transition: opacity 0.16s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease, max-height 0.24s ease, max-width 0.24s ease;
 }
 .rail-panel.expanded .nav-label,
 .rail-panel.expanded [class^="account-details-"],
 .rail-panel.expanded [class^="rail-tools-"] {
   opacity: 1;
   transform: none;
+  filter: blur(0);
   pointer-events: auto;
 }
-.rail-panel.expanded .nav-label { max-width: 140px; }
-.rail-panel.expanded [class^="account-details-"] { max-height: 64px; max-width: 200px; transition-delay: 40ms; }
-.rail-panel.expanded [class^="rail-tools-"] { max-height: 44px; max-width: 160px; transition-delay: 30ms; }
-.rail-panel [class^="destinations-"] > :nth-child(1) .nav-label { transition-delay: 60ms; }
-.rail-panel [class^="destinations-"] > :nth-child(2) .nav-label { transition-delay: 90ms; }
-.rail-panel [class^="destinations-"] > :nth-child(3) .nav-label { transition-delay: 120ms; }
+.rail-panel.expanded .nav-label { max-width: 110px; }
+.rail-panel.expanded [class^="account-details-"] { max-height: 56px; max-width: 160px; transition-delay: 30ms; }
+.rail-panel.expanded [class^="rail-tools-"] { max-height: 40px; max-width: 130px; transition-delay: 20ms; }
+.rail-panel [class^="destinations-"] > :nth-child(1) .nav-label { transition-delay: 40ms; }
+.rail-panel [class^="destinations-"] > :nth-child(2) .nav-label { transition-delay: 70ms; }
+.rail-panel [class^="destinations-"] > :nth-child(3) .nav-label { transition-delay: 100ms; }
 
 /* ---------- entrance ---------- */
 body.js .rise {

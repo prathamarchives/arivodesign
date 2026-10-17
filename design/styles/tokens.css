@@ -66,14 +66,14 @@
 
   /* ---- INT-017: reference rail geometry, desktop-recalibrated ----
      (INT-016 measured it; ratios below = the reference's own) */
-  --ref-rail-w: 72px;           /* was 172 — avatar 42% of rail, as the reference */
-  --ref-rail-avatar: 30px;      /* was 72 — same 42% ratio */
-  --ref-rail-avatar-inset: 25px;/* was 60 */
-  --ref-rail-item-w: 49px;      /* was 117 — 68% of rail, as the reference */
-  --ref-rail-item-h: 41px;      /* was 98 — 57% of rail, as the reference */
-  --ref-rail-pitch: 55px;       /* was 132 — 0.77x rail, as the reference */
-  --ref-rail-first-gap: 40px;   /* was 94 — avatar-center -> first-center 179 -> 75 */
-  --ref-rail-icon: 22px;        /* was 52 — near the export icons' design scale */
+  --ref-rail-w: 64px;           /* INT-019: was 72 — the column slims with its contents */
+  --ref-rail-avatar: 24px;      /* INT-019: was 30 — much smaller, lighter identity mark */
+  --ref-rail-avatar-inset: 20px;/* INT-019: was 25 */
+  --ref-rail-item-w: 40px;      /* INT-019: was 49 — much smaller component set */
+  --ref-rail-item-h: 34px;      /* INT-019: was 41 */
+  --ref-rail-pitch: 48px;       /* INT-019: was 55 — 0.75x rail, family ratio kept */
+  --ref-rail-first-gap: 32px;   /* INT-019: was 40 */
+  --ref-rail-icon: 18px;        /* INT-019: was 22 — strokes thin proportionally (the thickness fix) */
   --ref-content-margin: 24px;   /* was 32 — desktop-class air */
   --ref-header-inset: 24px;     /* was 55 */
   --ref-header-gap: 22px;       /* was 53 */
@@ -81,12 +81,12 @@
 
   /* ---- INT-018: the floating glass rail (references synthesized) ---- */
   --ref-rail-inset: 12px;       /* full float: gap on all four sides */
-  --ref-rail-col: 96px;         /* grid column = inset + rail + inset (72 + 24) */
+  --ref-rail-col: 88px;         /* INT-019: inset + rail (64) + inset */
   --ref-rail-radius: 16px;      /* rounded corners, restrained (refs run 24-60) */
-  --ref-rail-expanded: 184px;   /* hover expansion — icon+label rows */
+  --ref-rail-expanded: 168px;   /* INT-019: hover expansion, slimmer */
   --ref-rail-item-r: 6px;       /* INT-018: reduced from 8 per owner order */
   --ref-glass-blur: 20px;       /* frosted strength (refs 12-24) */
-  --ref-rail-item-w-open: 160px;/* the icon+label row when expanded */
+  --ref-rail-item-w-open: 144px;/* INT-019: the icon+label row when expanded */
 }
 
 /* page canvas: the artifact framing died (INT-016 "make it full page")
@@ -104,34 +104,34 @@ body.theme-light { background-color: #F7F7F5; }
 body.theme-dark {
   --ref-rail-bg: rgba(23, 23, 23, 0.72);
   --ref-rail-edge: rgba(238, 238, 234, 0.10);
-  --ref-rail-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
-  --ref-rail-shadow-open: 0 16px 44px rgba(0, 0, 0, 0.52);
+  --ref-rail-shadow: 0 8px 28px rgba(0, 0, 0, 0.38);
+  --ref-rail-shadow-open: 0 12px 36px rgba(0, 0, 0, 0.44);
   --ref-rail-pill: #E4E4E0;             /* light ink (dark home) */
   --ref-rail-pill-glyph: #0A0A0A;
-  --ref-rail-pill-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  --ref-rail-pill-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
   --ref-rail-label: #EEEEEA;
   --ref-rail-label-muted: #A1A19C;
   --ref-avatar-ring: rgba(238, 238, 234, 0.20);
   --ref-header-line: rgba(238, 238, 234, 0.08);
   background-image:
-    radial-gradient(640px 780px at 96px 320px, rgba(238, 238, 234, 0.06), transparent 62%),
+    radial-gradient(560px 720px at 84px 300px, rgba(238, 238, 234, 0.06), transparent 62%),
     radial-gradient(1100px 840px at 88% 108%, rgba(238, 238, 234, 0.045), transparent 58%);
   background-attachment: fixed;
 }
 body.theme-light {
   --ref-rail-bg: rgba(255, 255, 255, 0.72);
   --ref-rail-edge: rgba(255, 255, 255, 0.65);
-  --ref-rail-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-  --ref-rail-shadow-open: 0 12px 40px rgba(0, 0, 0, 0.12);
+  --ref-rail-shadow: 0 6px 24px rgba(0, 0, 0, 0.07);
+  --ref-rail-shadow-open: 0 10px 32px rgba(0, 0, 0, 0.10);
   --ref-rail-pill: #1E1E1E;             /* ink (light pages) */
   --ref-rail-pill-glyph: #FFFFFF;
-  --ref-rail-pill-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  --ref-rail-pill-shadow: 0 1px 5px rgba(0, 0, 0, 0.14);
   --ref-rail-label: #252525;
   --ref-rail-label-muted: #777775;
   --ref-avatar-ring: rgba(37, 37, 37, 0.14);
   --ref-header-line: #E3E3DF;
   background-image:
-    radial-gradient(640px 780px at 96px 320px, rgba(214, 214, 208, 0.45), transparent 62%),
+    radial-gradient(560px 720px at 84px 300px, rgba(214, 214, 208, 0.45), transparent 62%),
     radial-gradient(1100px 840px at 88% 108%, rgba(255, 255, 255, 0.85), transparent 58%);
   background-attachment: fixed;
 }

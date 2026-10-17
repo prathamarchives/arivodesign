@@ -302,3 +302,39 @@ Hidden labels with `opacity: 0` still occupied LAYOUT width → max-content sizi
 3. **Glass strength** — 0.72 alpha + blur 20; stronger frost (0.55/blur 30) or lighter (0.85/blur 12) is one token pair.
 4. **Expand width 184 / speed 220ms** — the timing family holds the INT-009 latency law; a bouncier spring would need an explicit law amendment.
 5. Rail tooltips retired (labels + account now carry it on hover/focus) — say the word if you want them back.
+
+---
+
+## PASS 10 — SLIM, LIGHT, MOTION-BLURRED (INT-019, session 16)
+
+Owner order (turn 19, verbatim in `context/raw/turn-019.txt`): "smooth it out add the naimation and a bit motion blurr of expanding make compoments much smaller in size and remove the bold and thinkinesss from the sidebar" — plus a fresh inline PAT (push block cleared; redacted at intake per L-15; the pending pass-9 commits pushed first).
+
+### What changed (frozen layers untouched: prototype.css stays byte-verbatim)
+
+| Property | Pass 9 | Pass 10 | note |
+|---|---|---|---|
+| rail width | 72 | **64** | column slims with its contents (col 96→88) |
+| item box | 49×41 | **40×34** | "much smaller" |
+| icons | 22 | **18** | strokes thin ~18% — the "thickness" fix (stroke-based SVGs resize cleanly) |
+| avatar | 30 | **24** | monogram 12→10px |
+| pitch / first-gap | 55 / 40 | **48 / 32** | rhythm held proportional |
+| expanded | 184 | **168** | item rows 160→144, label max 140→110 |
+| labels | 13px | **12px/400** | lighter voice, no bold anywhere in the rail |
+| shadows | 0 12px 32px .45 (dark) | **0 8px 28px .38** | ~30% softer both themes; pill shadow 0 1px 5px |
+| expansion | 220ms cubic(0.22,1,0.36,1) | **260ms cubic(0.16,1,0.3,1)** | smoother long-tail decel, still ≤280ms law, no bounce |
+| motion blur | — | **rail-open-blur keyframe** (blur 0→1.4px@40%→0, 300ms) + label focus-in blur(2px)→0 | the DESIGN-SYSTEM "blur on structural movement" Don't gets its marquee case |
+| stagger | 60/90/120ms | **40/70/100ms** | earlier cascade; collapse grace 140→180ms |
+
+### Verification (this pass)
+
+- verify.sh re-ratcheted: 5e literals → 64/24/18, 5g(e) v10, NEW 5i clause — motion-blur treatment REQUIRED on the expansion (rail keyframe + label focus-in). Green after docs.
+- Browser-DOM (1440×900): collapsed — rail 64×876 @(12,12), avatar 24 center 44, items 40×34 @ x24 tops 89/137/185 (pitch 48), icons 18 center 44 (rail/avatar/icon all on axis 44), labels 12px/400. EXPANDED — rail 168, items 144, icon center STILL 44 (axis stable across the whole animation), labels/account/save-state revealed sharp. MOTION BLUR DOM-PROVEN: computed filter mid-flight = `blur(1.03px)` with animationName `rail-open-blur` firing, settled = none. (The mid-flight screenshot missed the 300ms window — capture latency; the DOM measurement is the evidence of record.)
+- VLM audit (4 states): rail reads "light and delicate… significantly reduced visual mass… floating, airy"; strokes read 1-1.5px thin; expanded clean and well-proportioned at the smaller scale; zero layout defects; verdict "refined, slim, modern glass rail". Evidence: `design/preview/p10-01..04-*.png`.
+- 6 pages console-clean at v10.
+
+### Carried to the owner
+
+1. The blur PEAK is 1.4px for 300ms — if it should read stronger/weaker, it's one keyframe value.
+2. Icon size 18 = stroke-thinning via scale; a dedicated thin-stroke icon set is the eventual deeper fix if 18px still reads thick.
+3. The rail is now 64 — the whole family (icons/avatar/items/pill) can go one notch smaller or larger as a set (token block).
+4. Push block cleared with the fresh PAT (pass 9 + this pass both up); PAT rotation stands advised after session close.

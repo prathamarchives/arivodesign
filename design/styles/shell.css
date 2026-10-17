@@ -99,7 +99,7 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
   flex: none;
   box-shadow: 0 0 0 1px var(--ref-avatar-ring);
 }
-.rail-panel [class^="avatar-"] p { white-space: nowrap; font-size: 12px; }
+.rail-panel [class^="avatar-"] p { white-space: nowrap; font-size: 10px; }
 .rail-panel [class^="account-details-"] {
   display: flex;
   flex-direction: column;
@@ -150,6 +150,8 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
   color: var(--ref-rail-label);
   white-space: nowrap;
   flex: none;
+  font-size: 12px;             /* INT-019: 13 -> 12 — lighter, no bold anywhere in the rail */
+  font-weight: 400;
 }
 
 /* selection: the INK pill (INT-018) — inverted glyph via CSS filter,

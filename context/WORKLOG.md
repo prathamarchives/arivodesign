@@ -320,3 +320,21 @@ Stage Summary:
 ### Session 15 addendum — push blocked (L-10 class, recurrence)
 - The container reset mid-session (34-min uptime at push time): the gh CLI + turn-14 PAT credential store (outside /home/z/my-project) are GONE. Repo/daemon/preview survived (tracked location).
 - PASS 9 is committed locally (see git log) but NOT pushed. The raw-corpus PATs are redacted stubs (L-15) — no recoverable credential. Awaiting a fresh PAT from the owner: re-bootstrap gh, push, then this addendum resolves.
+
+---
+
+## Session 16 — 2026-10-17 (INT-019: slim, light, motion-blurred; push block cleared)
+
+**Task:** owner turn 19 — fresh PAT + "smooth it out add the naimation and a bit motion blurr of expanding make compoments much smaller in size and remove the bold and thinkinesss from the sidebar".
+
+**Work log:**
+- Intake first (L-06): turn-019 verbatim, PAT redacted (L-15); INT-019 ledgered.
+- PUSH BLOCK CLEARED (the session-15 L-10 recurrence): pass 9 + addendum pushed with the inline PAT (ff2f6d9..c766dfd); remote ref synced. PAT used once via push URL, stored nowhere.
+- Component slimming: tokens INT-019 — rail 72→64 (col 96→88), items 49×41→40×34, icons 22→18 (strokes thin ~18% — the thickness fix), avatar 30→24 (monogram 10px), pitch 55→48, first-gap 40→32, expanded 184→168 (rows 144, label max 110), shadows softened ~30% both themes, pill shadow 0 1px 5px, canvas glow re-centered (560px @ 84px).
+- Weight removal: nav-label 12px/400 (shell override), monogram 10px.
+- Motion: expansion 220→260ms on cubic-bezier(0.16,1,0.3,1) (smoother decel, ≤280ms law intact); MOTION BLUR — @keyframes rail-open-blur (blur 0→1.4px@40%→0 over 300ms) on .expanded; labels/account focus-in through blur(2px)→0; stagger 40/70/100ms; collapse grace 140→180ms.
+- v10 cache-bust on all 6 pages; verify.sh re-ratcheted (5e literals 64/24/18, 5g(e) v10, NEW 5i clause: motion-blur treatment REQUIRED — the DESIGN-SYSTEM blur-on-movement law's marquee case).
+- Browser-DOM verification (1440×900): collapsed — rail 64×876 @(12,12), avatar 24 center 44, items 40×34 @ x24 pitch 48, icons 18 center 44 (single axis), labels 12px/400; expanded — rail 168, rows 144, icon axis STILL 44; MOTION BLUR PROVEN: computed filter blur(1.03px) mid-flight with animationName rail-open-blur, settled none. 6 pages console-clean. VLM audit: "light and delicate… floating, airy… refined, slim, modern glass rail", zero defects (mid-flight screenshot missed the 300ms window — capture latency; DOM measurement is the evidence). Evidence: design/preview/p10-01..04-*.png.
+- Docs lockstep: INTENT-LEDGER (INT-019), REVIEW.md pass 10, STATE.md rewrite, this entry.
+
+**Stage summary:** PASS 10 landed and pushed — the sidebar at its slimmest, lightest, with real motion blur on the expansion. Carried: blur peak strength, thin-icon set, one-notch family rescale, ink-vs-tint, glass strength, tooltips. Next queue: the content composition port (segmented control + card rhythm).
