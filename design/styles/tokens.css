@@ -4,6 +4,10 @@
    prototype.css is the VERBATIM export (frozen artifact) and may
    only reference these variables. Page canvases added for the
    shell scaffold (values consistent with the prototype palette).
+
+   INT-016 block: reference-sidebar literals (context/intake/
+   INT-016-ref-spec.md — the attached screenshot, measured at a
+   2.49x capture of a 1024-CSS window; all values = image px / 2.49).
    ============================================================ */
 
 @font-face {
@@ -46,9 +50,33 @@
   --text-rgb-189-189-185: rgba(189, 189, 185, 1);
   --text-rgb-83-83-80: rgba(83, 83, 80, 1);
   --text-rgb-80-80-77: rgba(80, 80, 77, 1);
+
+  /* ---- INT-016: reference rail geometry (measured, see ref-spec) ---- */
+  --ref-rail-w: 172px;          /* 428 image px / 2.49 — the sidebar width */
+  --ref-rail-avatar: 72px;      /* 180 / 2.49 — avatar circle */
+  --ref-rail-avatar-inset: 60px;/* 150 / 2.49 — avatar top inset */
+  --ref-rail-item-w: 117px;     /* 292 / 2.49 — selection pill width */
+  --ref-rail-item-h: 98px;      /* 245 / 2.49 — selection pill height (the item box) */
+  --ref-rail-item-r: 12px;      /* corner radius (measured 8-13, VLM 'generous') */
+  --ref-rail-pitch: 132px;      /* 328 / 2.49 — center-to-center item rhythm */
+  --ref-rail-first-gap: 94px;   /* identity bottom -> first item top (avatar center -> first center = 179) */
+  --ref-rail-icon: 52px;        /* ~130 / 2.49 — nav icon glyph size */
+  --ref-content-margin: 32px;   /* 80 / 2.49 — content side margins */
+  --ref-header-inset: 55px;     /* 137 / 2.49 — header top inset */
+  --ref-header-gap: 53px;       /* 131 / 2.49 — header content -> hairline */
+  --ref-content-gap: 33px;      /* 82 / 2.49 — hairline -> content */
 }
 
-/* page canvases behind the study-shell (prototype shows the shell
-   floating on a canvas; values from the prototype's own family) */
-body.theme-dark { background-color: #0B0B0A; }
-body.theme-light { background-color: #EAEAE7; }
+/* page canvas: the artifact framing died (INT-016 "make it full page")
+   — the canvas IS the app surface now; the desk-around-the-window look
+   belonged to the OS, not to the app. Values from the prototype family. */
+body.theme-dark  { background-color: #171717; }
+body.theme-light { background-color: #F7F7F5; }
+
+/* ---- INT-016: rail surfaces per theme ----
+   reference (light): rail bg = content bg (#FFFFFF), 1px #EAEAEA hairline,
+   selection pill #F7F7F9 (bg -8). Arivo ports the DELTAS onto its own
+   surfaces: light #F7F7F5 -> pill #EFEFEB, hairline #E3E3DF;
+   dark #171717 -> pill #1F1F1D (bg +8), hairline #2A2A28. */
+body.theme-dark  { --ref-rail-bg: #171717; --ref-rail-line: #2A2A28; --ref-rail-pill: #1F1F1D; }
+body.theme-light { --ref-rail-bg: #F7F7F5; --ref-rail-line: #E3E3DF; --ref-rail-pill: #EFEFEB; }

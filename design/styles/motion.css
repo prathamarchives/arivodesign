@@ -26,9 +26,7 @@ body.js.ready .rail-panel {
   opacity: 1;
   transform: none;
   transition: opacity 0.45s ease 0.05s,
-              transform 0.5s cubic-bezier(0.3, 1, 0.36, 1) 0.05s,
-              width 0.26s cubic-bezier(0.3, 1, 0.36, 1),
-              box-shadow 0.22s ease;
+              transform 0.5s cubic-bezier(0.3, 1, 0.36, 1) 0.05s;
 }
 
 /* ---------- hover: lift + bloom ---------- */
@@ -123,22 +121,8 @@ a[class^="moon-"], a[class^="sun-"] {
 }
 a[class^="moon-"]:hover, a[class^="sun-"]:hover { transform: rotate(-14deg) scale(1.08); }
 
-/* pin: dimmed at rest, tilted + owned when pinned */
-[class^="pin-"] {
-  display: inline-flex;
-  cursor: pointer;
-  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-              background-color 0.16s ease;
-  border-radius: 8px;
-  padding: 4px;
-  margin: -4px;
-}
-[class^="pin-"] img { opacity: 0.65; transition: opacity 0.16s ease; }
-[class^="pin-"]:hover img { opacity: 1; }
-body.pinned [class^="pin-"] img { opacity: 1; }
-body.pinned [class^="pin-"] { transform: rotate(45deg); }
-body.pinned.theme-dark  [class^="pin-"] { background: rgba(238, 238, 234, 0.08); }
-body.pinned.theme-light [class^="pin-"] { background: rgba(37, 37, 37, 0.06); }
+/* pin: retired with the overlay rail (INT-016 static reference rail;
+   the tool is hidden in shell.css — markup preserved for iteration) */
 
 /* ---------- progress fill-in ---------- */
 .fill-anim {
@@ -182,11 +166,8 @@ body.theme-dark [data-tip]::after {
   opacity: 1;
   transform: translateY(-50%);
 }
-/* no tooltips while the rail is open (labels are visible) */
-body.nav-open .rail-panel [data-tip]::after,
-body.pinned  .rail-panel [data-tip]::after {
-  opacity: 0 !important;
-}
+/* the rail is icon-only (INT-016 reference) — tooltips are the label
+   channel and always fire on hover; no open-state suppression exists. */
 
 /* ---------- journal caret breathes + preview pointer nudges ---------- */
 @keyframes caret-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }

@@ -1,7 +1,7 @@
-/* motion.js — INT-013: entrance stagger, rail hover/pin, nothing else.
-   (master: scripts/design-glue/) The prototype's statics stay verbatim;
-   this only classes the body and wires the two interactions the frames
-   describe. */
+/* motion.js — INT-016: entrance stagger, rail selection, nothing else.
+   (master: scripts/design-glue/) The prototype's statics stay verbatim.
+   The rail is now the STATIC reference rail (INT-016): no hover/expand,
+   no pin — the paint layer marks the current page's item selected. */
 (function () {
   var body = document.body;
   body.classList.add('js');
@@ -31,29 +31,16 @@
     }
   }
 
-  // ---- rail: hover opens, pin holds ----
-  var rail = document.querySelector('[class^="navigation-rail-"], [class^="expanded-navigation-"]');
-  var pin = document.querySelector('[class^="pin-"]');
-  if (rail) {
-    rail.addEventListener('mouseenter', function () { body.classList.add('nav-open'); });
-    rail.addEventListener('mouseleave', function () {
-      if (!body.classList.contains('pinned')) body.classList.remove('nav-open');
-    });
-  }
-  if (pin) {
-    pin.setAttribute('tabindex', '0');
-    pin.setAttribute('role', 'button');
-    pin.setAttribute('aria-pressed', body.classList.contains('pinned') ? 'true' : 'false');
-    var togglePin = function () {
-      var nowPinned = !body.classList.contains('pinned');
-      body.classList.toggle('pinned', nowPinned);
-      if (!nowPinned) body.classList.remove('nav-open');
-      pin.setAttribute('aria-pressed', nowPinned ? 'true' : 'false');
-    };
-    pin.addEventListener('click', togglePin);
-    pin.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); togglePin(); }
-    });
+  // ---- rail: mark the current page's item selected (reference pill) ----
+  var page = body.getAttribute('data-page');
+  if (page) {
+    var items = document.querySelectorAll('.rail-panel [class^="navigation-item-"]');
+    for (var k = 0; k < items.length; k++) {
+      if (items[k].getAttribute('href') === page) {
+        items[k].classList.add('selected');
+        items[k].setAttribute('aria-current', 'page');
+      }
+    }
   }
 
   // ---- go ----

@@ -97,22 +97,23 @@ else
   bad "core.fileMode is not false — run: git config core.fileMode false (mode-churn guard)"
 fi
 
-# ---------------------------------------------------------------- 5e. prototype rail guards (re-ratcheted 2026-10-16, INT-013)
-# The owner's Figma v1 prototype REPLACED the derived design (turn-013: "replace
-# it, replicate it one on one"). The rail truths now come from the export's own
-# math: 48px collapsed slot, 176px expanded panel, 28px avatar, ONE axis.
-# (a) expansion is an OVERLAY panel in a fixed 48px slot — hover must never reflow;
-#     the old margin-slide is dead.
-if grep -q 'width: 48px' design/styles/shell.css && grep -q 'width: 176px' design/styles/shell.css && \
-   grep -q 'position: absolute' design/styles/shell.css; then
-  ok "rail slot/panel present (48 slot, 176 panel, overlay)"
+# ---------------------------------------------------------------- 5e. prototype rail guards (re-ratcheted 2026-10-17, INT-016)
+# INT-016 (owner turn 16) SUPERSEDES the pass-6 rail truth: the sidebar is
+# rebuilt to the owner's attached reference — a STATIC 172px full-height icon
+# rail (avatar 72, pitch 132, 117x98 R12 selection pill, 1px hairline), full-
+# page app (no artifact framing). The 48-slot/176-overlay model is retired.
+# (a) static reference rail present in the scaffold
+if grep -q 'ref-rail-w: 172px' design/styles/tokens.css && \
+   grep -q 'border-right: 1px solid var(--ref-rail-line)' design/styles/shell.css && \
+   grep -q '\.rail-panel \[class\^="navigation-item-"\]\.selected' design/styles/shell.css; then
+  ok "reference rail present (static 172, hairline, selection pill)"
 else
-  bad "rail overlay model missing — 48 slot + 176 panel required (INT-013)"
+  bad "reference rail missing — static 172px rail + hairline + pill required (INT-016)"
 fi
 if grep -q 'margin-left: calc(var(--sidebar-w' design/styles/shell.css; then
   bad "content margin-slide regression in shell.css — hover expansion must overlay (INT-007/013)"
 else
-  ok "no content margin-slide (overlay expansion intact)"
+  ok "no content margin-slide (static rail, nothing to slide)"
 fi
 # (b) chrome weight discipline: the prototype speaks normal + 500 — no 700 in paint or glue
 if grep -q 'font-weight: 700\|font-weight:700' design/styles/shell.css design/styles/motion.css design/styles/tokens.css context/references/figma-v1/styles.css 2>/dev/null; then
@@ -120,11 +121,13 @@ if grep -q 'font-weight: 700\|font-weight:700' design/styles/shell.css design/st
 else
   ok "no bold in paint or glue (400/500 voice)"
 fi
-# (c) content breath on hover-open: 3px lean, transform-only (INT-009 D band)
-if grep -q 'transform-origin: left center' design/styles/shell.css; then
-  ok "content breath present (transform-origin: left center)"
+# (c) full-page app guard: the artifact framing is dead (INT-016 "make it full
+#     page. like actual ui") — the app fills the viewport, no canvas card.
+if grep -q 'height: 100dvh' design/styles/shell.css && \
+   ! grep -q 'border-radius: 24px' design/styles/shell.css; then
+  ok "full-page app frame (100dvh, no artifact card framing)"
 else
-  bad "content breath missing — hover-open must lean the content, transform-only (INT-009 D)"
+  bad "artifact framing regression — full-bleed app required (INT-016)"
 fi
 # (d) identity: the handle string on every page, avatar monogram pa in every rail
 pages_ok=0
@@ -154,17 +157,13 @@ if [ -n "$arivo_bad" ] || [ -n "$arivo_journal_bad" ]; then
 else
   ok "arivo absent except the owner's arivo:// URIs (journal)"
 fi
-# (b) latency law: rail render 260ms — a regression past 280ms is the old failure
-rdur=$(grep -o 'width 0\.[0-9]\+s' design/styles/shell.css | head -1 | grep -o '0\.[0-9]\+')
-if [ -n "$rdur" ]; then
-  rms=$(python3 -c "print(int(round(float('$rdur')*1000)))")
-  if [ "$rms" -le 280 ]; then
-    ok "rail latency within the law (${rms}ms <= 280ms)"
-  else
-    bad "rail latency ${rms}ms > 280ms (INT-009 law)"
-  fi
+# (b) latency law: the rail is STATIC (INT-016) — no width transition exists
+#     at all; render latency is zero by construction. A width transition
+#     reappearing is the regression to catch.
+if grep -q 'width 0\.[0-9]\+s' design/styles/shell.css; then
+  bad "rail width transition found — the reference rail is static; latency must be 0ms (INT-016)"
 else
-  bad "rail width transition missing — latency unpinnable (INT-009)"
+  ok "rail static — no width transition, latency 0ms (INT-009 law satisfied by construction)"
 fi
 # (c) tooltip system: data-tip hooks + ink-inverted chip in the motion layer
 if grep -q 'data-tip=' design/index.html && grep -q 'data-tip\]::after' design/styles/motion.css; then
@@ -222,12 +221,12 @@ if grep -q 'progress-track-' design/styles/shell.css && grep -q 'height: 4px' de
 else
   bad "progress tracks unsized — invisible progress was the G-class failure (INT-013)"
 fi
-# (e) cache-bust version bumped with the paint (?v=6) — the INT-008 landing-failure class
+# (e) cache-bust version bumped with the paint (?v=7) — the INT-008 landing-failure class
 vb=$(grep -o 'tokens.css?v=[0-9]*' design/index.html | grep -o '[0-9]*$')
-if [ "$vb" = "6" ]; then
-  ok "asset links cache-busted at v6"
+if [ "$vb" = "7" ]; then
+  ok "asset links cache-busted at v7"
 else
-  bad "asset links not re-busted at v6 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
+  bad "asset links not re-busted at v7 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
 fi
 # (f) no external resource references — everything local (the export's only CDN was fonts)
 ext="$(grep -hEo 'src="http[^"]*"|href="http[^"]*"' design/*.html 2>/dev/null | grep -v '^$' || true)"

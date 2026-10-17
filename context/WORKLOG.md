@@ -260,3 +260,22 @@ Stage Summary:
 
 Stage Summary:
 - The iteration phase opens with a real menu: 21 named candidates, split by who owns the value. Preview live (?v=6). Awaiting the owner's live reactions + rulings — each becomes Loop 1/2 intake, then the next paint pass executes.
+
+---
+
+## Session 13 — 2026-10-17 (INT-016: full-page + reference sidebar)
+
+**Task:** owner turn 16 — "ruthless iteration": (a) the prototype stops being a framed artifact ("make it full page. like actual ui"), (b) the attached reference is replicated for sizing/composition/spacing/component sizes, (c) focus on the sidebar first.
+
+**Work log:**
+- Intake first (L-06): `context/raw/turn-016.txt` verbatim (attachment described); INT-016 ledgered with labeled interpretations; reference image committed at `context/references/INT-016-ref-sidebar.jpg`.
+- Forensic read of the reference (PIL pixel scans — region maps, run detection, edge/color sampling — plus grid-annotated VLM passes: red/blue gridlines drawn onto crops at known spacing so positions read against labels). Calibration: 2.49× capture of a 1024-CSS window (2548/2.49 = 1024.0). All measurements + port decisions: `context/intake/INT-016-ref-spec.md`.
+- Key measurements: rail 428px img = 172 CSS static full-height; avatar 72 centered @ 60; icon-only items, glyph 52, pitch 132, selection pill 117×98 R12 #F7F7F9 (icon color UNCHANGED); 1px #EAEAEA divider; content margins 32; header 55 top inset; segmented control 119 tall; card R24-28. Reference's bottom rail: cut off.
+- tokens.css: `--ref-rail-*` + rhythm tokens; per-theme rail surfaces (pill = surface ∓8 mirroring reference delta); body canvas = app surface (#171717 / #F7F7F5).
+- shell.css FULL rewrite: 100dvh full-bleed frame (scroll in content column), `172px 1fr` grid, static rail (48/176 overlay machinery RETIRED — INT-016 supersedes), icon-only items with exact reference geometry, `.selected` pill, labels/account/tools hidden, workspace-header = reference bar (55/32/underline hairline, breadcrumb 20px/500), content cells scroll (33/32 rhythm), reader scroll-column + centered 640 measure, journal 3-row grid, all absolute overlays re-anchored via rail-aware center calc.
+- motion.css: tooltip suppression REMOVED (tooltips = the icon-only rail's label channel, always fire); rail width/shadow choreography removed; pin rules retired. motion.js: hover/pin logic removed; `.selected` + `aria-current` marking added (`data-page` ↔ nav href). HTML: archive dead classes stripped; v6→v7 cache-bust on all 6 pages.
+- Fixes found by browser measurement: export's 26px wrapper gap killed (first-item center landed 275 = avatar center 96 + 179 reference-exact); icon `<img>` line box killed via flex (icon centering dy=dx=0); icon sizing rule targets img (icons are img-wrapped SVGs, not inline svg).
+- verify.sh re-ratcheted: 5e static reference rail (172/hairline/.selected) + full-page guard (100dvh, no artifact radius); 5f(b) rail static = latency 0 by construction; 5g(e) v7. Green.
+- Browser verification (1440×900): all 6 pages console-clean; geometry DOM-measured exact (172×900 rail, 72×72 avatar @(50,60), items 117×98 @ x27, y 226/358/490, icons 52, pill colors both themes); tooltip fires (opacity 1); deep-note inside viewport; VLM breakage audit of 6 renders clean (journal/reader overlaps are the owner's designed painted-overlay states). Evidence: `design/preview/p7-01..07-*.png`.
+
+**Stage summary:** PASS 7 landed — full-page app + the reference sidebar replicated at measured values. The iteration loop is armed: five carried judgment calls (fixed-172 vs ratio, icon weight, rail bottom, icon-only behavior, dark deltas) await the owner's live review; content-area composition (segmented control, card rhythm) is measured and queued next. Committed as session 13.

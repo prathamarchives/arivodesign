@@ -1,41 +1,50 @@
 /* ============================================================
-   shell.css — INT-013 layout glue  (master: scripts/design-glue/)
+   shell.css — INT-016 layout glue  (master: scripts/design-glue/)
    The Figma export specifies every component but omits the page
    scaffold (Figma exports drop frame-level layout context). This
-   layer reconstructs ONLY the scaffolding, using values from the
-   prototype's own system. Component visuals stay 100% verbatim
-   in prototype.css.
+   layer reconstructs ONLY the scaffolding. Component visuals stay
+   100% verbatim in prototype.css.
    ------------------------------------------------------------
-   Rail model (from the export's own math):
-   collapsed rail = 48px (avatar 28 = 87.5% of the 32px inner)
-   expanded rail  = 176px (avatar 28 = 17.07% of the 164px inner)
-   The rail is a fixed 48px SLOT with an overlay PANEL that opens
-   to 176 on hover / pin (archive ships pinned = its frame state).
-   One axis: icons/avatar/pin share one x at rest, left-align open.
+   INT-016 (owner turn 16) SUPERSEDES the pass-6 scaffold:
+   - FULL-PAGE APP: the prototype is no longer a framed artifact
+     floating on a canvas — it fills the viewport edge-to-edge
+     ("actual ui"). Scroll moves inside the content column.
+   - REFERENCE SIDEBAR: rebuilt to the owner's attached reference
+     (context/intake/INT-016-ref-spec.md — measured): static 172px
+     full-height icon rail, 72px avatar centered at 60px inset,
+     icon-only nav at 132px pitch, ~52px icons, selection = soft
+     117x98 R12 pill (no icon color change), 1px hairline divider.
+     The 48px-slot + 176px hover/overlay model of INT-009/013 is
+     retired for this scope; tooltips carry the labels.
+   - REFERENCE RHYTHM in the content column: 32px margins, 55px
+     header top inset, header underline hairline, 33px gap to
+     content.
    ============================================================ */
 
-/* ---------- page canvas + root wrapper ---------- */
+/* ---------- page canvas + root wrapper: the app frame ---------- */
+html, body { height: 100%; }
 body > div {
+  height: 100dvh;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  padding: 24px;
+  overflow: hidden;            /* the app frame; scrolling lives in the content column */
 }
 
-/* ---------- study shell: the whole app as one object ---------- */
+/* ---------- study shell: one full-page grid ---------- */
 body > div > [class^="study-shell-"] {
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
+  grid-template-columns: var(--ref-rail-w) minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr);
-  column-gap: 24px;
-  row-gap: 24px;
-  padding: 14px 18px 18px 14px;
   flex: 1;
   min-height: 0;
   position: relative;
+  border: none;                /* the artifact card dies with the frame */
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
 }
 
-/* ---------- rail: slot + overlay panel ---------- */
+/* ---------- rail: the static reference column ---------- */
 body > div > [class^="study-shell-"] > [class^="navigation-rail-"],
 body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
   grid-column: 1;
@@ -43,6 +52,7 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
   position: relative;
   z-index: 40;
   width: auto;
+  min-width: 0;
   background: none;
   border: none;
   border-radius: 0;
@@ -52,97 +62,89 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
 
 .rail-panel {
   position: absolute;
-  top: 0; left: 0; bottom: 0;
-  width: 48px;
+  top: 0; left: 0; right: 0; bottom: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 10px 6px 14px 6px;
-  border-radius: 18px;
-  overflow: hidden;
-  transition: width 0.26s cubic-bezier(0.3, 1, 0.36, 1),
-              box-shadow 0.22s ease;
+  align-items: center;
+  padding: var(--ref-rail-avatar-inset) 0 0 0;
+  background-color: var(--ref-rail-bg);
+  border: none;
+  border-right: 1px solid var(--ref-rail-line);
+  border-radius: 0;
+  overflow: visible;           /* tooltips may escape the column */
   z-index: 41;
 }
-body.theme-dark  .rail-panel { background-color: #292929; }
-body.theme-light .rail-panel { background-color: #EFEFED; }
 
-body.nav-open .rail-panel,
-body.pinned  .rail-panel {
-  width: 176px;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-/* identity: avatar fixed 28px (both states, per export math) */
-.rail-panel [class^="avatar-"] {
-  width: 28px;
-  height: 28px;
-  flex: none;
-}
-.rail-panel [class^="avatar-"] p { white-space: nowrap; }
-
-/* collapsed: one axis — everything centered */
+/* identity: avatar 72px, centered — the rail's only identity mark */
 .rail-panel [class^="identity-"] {
   justify-content: center;
+  align-items: center;
   padding: 0;
-  gap: 9px;
+  gap: 0;
+  flex-direction: column;
+}
+.rail-panel [class^="avatar-"] {
+  width: var(--ref-rail-avatar);
+  height: var(--ref-rail-avatar);
+  flex: none;
+}
+.rail-panel [class^="avatar-"] p { white-space: nowrap; font-size: 24px; }
+.rail-panel [class^="account-details-"] { display: none; }   /* icon-only rail */
+
+/* destinations: the icon column at the reference pitch */
+.rail-panel [class^="navigation-"] { gap: 0; padding: 0; }  /* the export's 26px wrapper gap dies — the reference owns the rhythm */
+.rail-panel [class^="destinations-"] {
+  align-items: center;
+  gap: calc(var(--ref-rail-pitch) - var(--ref-rail-item-h));  /* 34px — pitch minus item box */
+  margin-top: var(--ref-rail-first-gap);
+  padding: 0;
 }
 .rail-panel [class^="navigation-item-"] {
+  width: var(--ref-rail-item-w);
+  height: var(--ref-rail-item-h);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  gap: 0;
   padding: 0;
+  margin: 0;
+  border-radius: var(--ref-rail-item-r);
+  background-color: transparent;   /* the export's dark card + shadow die here */
+  box-shadow: none;
 }
-body.nav-open .rail-panel [class^="identity-"],
-body.pinned  .rail-panel [class^="identity-"],
-body.nav-open .rail-panel [class^="navigation-item-"],
-body.pinned  .rail-panel [class^="navigation-item-"] {
-  justify-content: flex-start;
-  padding: 0 7px;
-}
-body.nav-open .rail-panel [class^="identity-"],
-body.pinned  .rail-panel [class^="identity-"] {
-  padding: 0 2px;
+.rail-panel [class^="navigation-item-"] > div { display: flex; }  /* kill the inline-img line box — glyph centers true */
+.rail-panel [class^="navigation-item-"] svg,
+.rail-panel [class^="navigation-item-"] img {
+  width: var(--ref-rail-icon);
+  height: var(--ref-rail-icon);
 }
 
-/* expansion-only elements: labels, account details, save state */
+/* selection: the reference pill — surface tint only, icon unchanged */
+.rail-panel [class^="navigation-item-"].selected {
+  background-color: var(--ref-rail-pill);
+}
+
+/* labels/meta: the reference rail is icon-only (tooltips carry names) */
 .rail-panel .nav-label,
-.rail-panel .nav-meta,
-.rail-panel [class^="account-details-"] {
-  opacity: 0;
-  transform: translateX(-6px);
-  transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.3, 1, 0.36, 1);
-  transition-delay: 0ms;
-  pointer-events: none;
-  white-space: nowrap;
-  min-width: 0;
-}
-body.nav-open .rail-panel .nav-label,
-body.pinned  .rail-panel .nav-label,
-body.nav-open .rail-panel .nav-meta,
-body.pinned  .rail-panel .nav-meta,
-body.nav-open .rail-panel [class^="account-details-"],
-body.pinned  .rail-panel [class^="account-details-"] {
-  opacity: 1;
-  transform: none;
-  pointer-events: auto;
-  transition-delay: calc(var(--i, 0) * 30ms + 60ms);
-}
+.rail-panel .nav-meta { display: none; }
+.rail-panel [class^="rail-tools-"] { display: none; }  /* reference bottom not visible; restorable by iteration */
 
-/* theme-correct expansion colors */
-body.theme-dark  .nav-label { color: var(--text-rgb-238-238-234); }
-body.theme-dark  .nav-meta  { color: var(--text-rgb-161-161-156); }
-body.theme-dark  .rail-panel .account-details-327 .text-328 { color: var(--text-rgb-238-238-234); }
-body.theme-dark  .rail-panel .account-details-327 .text-329 { color: var(--text-rgb-161-161-156); }
-.rail-panel .account-details-327 { flex-shrink: 0; }
-
-/* ---------- workspace header + content cells ---------- */
+/* ---------- workspace header: the reference's content-column bar ---------- */
 body > div > [class^="study-shell-"] > [class^="workspace-header-"] {
   grid-column: 2;
   grid-row: 1;
   min-width: 0;
+  padding: var(--ref-header-inset) var(--ref-content-margin) 24px var(--ref-content-margin);
+  border-bottom: 1px solid var(--ref-rail-line);
 }
+body.theme-dark  [class^="workspace-header-"] [class^="location-"] p { color: inherit; }
+/* the reference reads its breadcrumb at ~22px display weight; the export's
+   13px was tuned for the old 48px rail's header. Port the reference scale. */
+[class^="workspace-header-"] [class^="location-"] p { font-size: 20px; }
+[class^="workspace-header-"] [class^="location-"] p:first-child { font-weight: 500; }
 
-/* home / library / archive: content in row 2 */
+/* ---------- content cells: scroll inside the column, reference margins ---------- */
 .home-content-21, .home-content-853,
 .library-content-656,
 .archive-content-347 {
@@ -151,21 +153,40 @@ body > div > [class^="study-shell-"] > [class^="workspace-header-"] {
   min-width: 0;
   width: 100%;
   min-height: 0;
+  overflow-y: auto;
+  padding: var(--ref-content-gap) var(--ref-content-margin) 64px var(--ref-content-margin);
 }
 
-/* reader: two stacked bars + prose */
+/* reader: header / reading heading / prose — prose scrolls in place.
+   The scroll container spans the content column (scrollbar at the real
+   edge); the measure stays 640 by centering the page's children. */
 .study-shell-499 { grid-template-rows: auto auto minmax(0, 1fr); }
 .study-shell-499 > .workspace-header-622 { grid-column: 2; grid-row: 1; }
-.study-shell-499 > .reader-heading-610   { grid-column: 2; grid-row: 2; min-width: 0; }
-.study-shell-499 > .reading-page-594     { grid-column: 2; grid-row: 3; min-width: 0; }
+.study-shell-499 > .reader-heading-610 {
+  grid-column: 2; grid-row: 2; min-width: 0;
+  width: min(880px, 100%);
+  margin: 0 auto;
+  padding-top: var(--ref-content-gap);
+}
+.study-shell-499 > .reading-page-594 {
+  grid-column: 2; grid-row: 3; min-width: 0;
+  width: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 24px var(--ref-content-margin) 96px var(--ref-content-margin);
+}
+.reading-page-594 > * { max-width: 640px; margin-left: auto; margin-right: auto; }
 
-/* journal: header / authored page / day navigation */
-.study-shell-175 { grid-template-rows: auto auto auto minmax(0, 1fr); }
-.study-shell-175 > .workspace-header-306  { grid-column: 2; grid-row: 1; }
+/* journal: header / authored page (scrolls) / day navigation */
+.study-shell-175 { grid-template-rows: auto minmax(0, 1fr) auto; position: relative; }
+.study-shell-175 > .workspace-header-306 { grid-column: 2; grid-row: 1; }
 .study-shell-175 > .authored-day-page-284 {
   grid-column: 2; grid-row: 2;
   width: min(620px, 100%);
   margin: 0 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-top: var(--ref-content-gap);
 }
 .study-shell-175 > .day-navigation-292 {
   grid-column: 2; grid-row: 3;
@@ -173,7 +194,6 @@ body > div > [class^="study-shell-"] > [class^="workspace-header-"] {
   margin: 0 auto;
   align-self: start;
 }
-.study-shell-175 { position: relative; }
 
 /* ---------- home overview columns ---------- */
 .study-overview-31, .study-overview-863 { min-width: 0; }
@@ -198,7 +218,7 @@ a:focus-visible, [data-tip]:focus-visible {
 .study-shell-499 { position: relative; }
 .study-shell-499 > .floating-deep-note-532 {
   position: absolute;
-  right: 24px;
+  right: var(--ref-content-margin);
   top: 120px;
   z-index: 30;
   max-width: 420px;
@@ -206,7 +226,7 @@ a:focus-visible, [data-tip]:focus-visible {
 .study-shell-499 > .node-518 {
   position: absolute;
   bottom: 22px;
-  left: 50%;
+  left: calc(var(--ref-rail-w) + (100% - var(--ref-rail-w)) / 2);
   transform: translateX(-50%);
   z-index: 30;
 }
@@ -214,7 +234,7 @@ a:focus-visible, [data-tip]:focus-visible {
   position: absolute;
   top: auto;
   bottom: 268px;
-  left: calc(50% - 30px);
+  left: calc(var(--ref-rail-w) + (100% - var(--ref-rail-w)) / 2 - 30px);
   transform: translateX(-50%);
   z-index: 31;
 }
@@ -222,14 +242,14 @@ a:focus-visible, [data-tip]:focus-visible {
 .study-shell-175 > .node-249 {
   position: absolute;
   top: 168px;
-  left: calc(50% + 64px);
+  left: calc(var(--ref-rail-w) + (100% - var(--ref-rail-w)) / 2 + 64px);
   transform: translateX(-50%);
   z-index: 31;
 }
 .study-shell-175 > .node-196 {
   position: absolute;
   bottom: 190px;
-  left: calc(50% - 512px);
+  left: calc(var(--ref-rail-w) + (100% - var(--ref-rail-w)) / 2 - 512px);
   z-index: 30;
   width: 340px;
 }
@@ -247,50 +267,23 @@ a:focus-visible, [data-tip]:focus-visible {
 .study-shell-175 > .reference-picker-213 {
   position: absolute;
   bottom: 56px;
-  left: calc(50% - 148px);
+  left: calc(var(--ref-rail-w) + (100% - var(--ref-rail-w)) / 2 - 148px);
   z-index: 30;
   width: 360px;
 }
 .study-shell-175 > .day-context-272 {
   position: absolute;
   top: 96px;
-  right: 0px;
+  right: var(--ref-content-margin);
   width: 300px;
   z-index: 20;
 }
 .study-shell-175 > .day-page-footer-194 {
   position: absolute;
-  left: 72px;
+  left: calc(var(--ref-rail-w) + var(--ref-content-margin));
   bottom: 22px;
   width: auto;
   z-index: 20;
-}
-
-/* ---------- pinned state claims layout space ---------- */
-body.pinned [class^="study-shell-"] > [class^="workspace-header-"],
-body.pinned [class^="study-shell-"] > [class^="home-content-"],
-body.pinned [class^="study-shell-"] > [class^="library-content-"],
-body.pinned [class^="study-shell-"] > [class^="archive-content-"],
-body.pinned [class^="study-shell-"] > [class^="reader-heading-"],
-body.pinned [class^="study-shell-"] > [class^="reading-page-"],
-body.pinned [class^="study-shell-"] > [class^="authored-day-page-"],
-body.pinned [class^="study-shell-"] > [class^="day-navigation-"] {
-  padding-left: 128px; /* 48 slot + 128 = the 176 panel */
-  transition: padding-left 0.26s cubic-bezier(0.3, 1, 0.36, 1);
-}
-
-/* ---------- hover-open breath: content leans, never reflows (INT-009 D) ---------- */
-body.nav-open:not(.pinned) [class^="study-shell-"] > [class^="workspace-header-"],
-body.nav-open:not(.pinned) [class^="study-shell-"] > [class^="home-content-"],
-body.nav-open:not(.pinned) [class^="study-shell-"] > [class^="library-content-"],
-body.nav-open:not(.pinned) [class^="study-shell-"] > [class^="archive-content-"],
-body.nav-open:not(.pinned) [class^="study-shell-"] > [class^="reader-heading-"],
-body.nav-open:not(.pinned) [class^="study-shell-"] > [class^="reading-page-"],
-body.nav-open:not(.pinned) [class^="study-shell-"] > [class^="authored-day-page-"],
-body.nav-open:not(.pinned) [class^="study-shell-"] > [class^="day-navigation-"] {
-  transform: translateX(3px) scale(0.998);
-  transform-origin: left center;
-  transition: transform 0.26s cubic-bezier(0.3, 1, 0.36, 1);
 }
 
 /* ---------- book covers: the export lost frame dimensions ----------
@@ -378,15 +371,3 @@ body.nav-open:not(.pinned) [class^="study-shell-"] > [class^="day-navigation-"] 
 .action-685, .list-view-688 { background-color: #FFFFFF; border: 1px solid #DEDEDB; }
 .action-146, .action-978 { flex-direction: row; }
 [class^="action-"] p, .node-518 p { white-space: nowrap; }
-
-/* ---------- reader composition ---------- */
-.reading-page-594 { width: min(640px, 100%); margin: 0 auto; }
-.reader-heading-610 { width: min(880px, 100%); margin: 0 auto; }
-
-/* ---------- light-theme border voices (shell frames) ---------- */
-.study-shell-175, .study-shell-499, .study-shell-637, .study-shell-834, .study-shell-321 {
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.16);
-}
-.study-shell-2 {
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.5);
-}

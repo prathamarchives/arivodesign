@@ -185,3 +185,37 @@ The export CANNOT render as designed raw: Figma HTML exports drop frame-level la
 ### Carried to the owner
 
 - The pin's hover/pin model, the tooltip chip voices, and the two overlap-faithful floats (deep-note over prose, toolbar over paragraph) are the build's judgment calls inside the replacement order — each is documented above and trivially reversible by a correction turn.
+
+---
+
+## PASS 7 — FULL-PAGE + THE REFERENCE SIDEBAR (INT-016, session 13)
+
+Owner order (turn 16, verbatim in `context/raw/turn-016.txt`): "the protytpe is compositoned as an artifact. like make it full page. like actual ui. im attaching a refrence and replicate that into it. like sizing, compostioning, spacing and everything, components size" + "the first thing were gonna work with is the sidebar. pull all your focus on the sidebar."
+
+### What was measured (the reference, forensically)
+
+The attached reference (`context/references/INT-016-ref-sidebar.jpg`) was read with pixel scans + grid-annotated VLM passes; every number and the calibration reasoning lives in `context/intake/INT-016-ref-spec.md`. Calibration: 2.49× capture of a 1024-CSS-px window — the port rule is image px ÷ 2.49. Measured: rail 428px (=172 CSS) static full-height, white, 1px #EAEAEA divider; avatar ~180 (=72) centered, 150 (=60) top inset; 8 icon-only items, glyph ~130 (=52), #8A8A8A, pitch 328 (=132); selection = #F7F7F9 pill 292×245 (=117×98, R12) with NO icon color change; content margins 80 (=32); header 137 (=55) top inset; segmented control 297 (=119) tall; card R~24-28.
+
+### What changed (frozen layers untouched: prototype.css stays byte-verbatim)
+
+| Layer | Change |
+|---|---|
+| `tokens.css` | INT-016 token block: `--ref-rail-*` geometry (172/72/60/117/98/12/132/94/52), content rhythm (32/55/53/33), per-theme rail surfaces (pill = surface ∓8, mirroring the reference's #F7F7F9-on-#FFFFFF delta). Body canvas = app surface now (dark #171717, light #F7F7F5) — the desk-around-the-window framing died with the artifact. |
+| `shell.css` | FULL rewrite of the scaffold: 100dvh full-bleed app frame (scroll moves into the content column); study-shell = `172px 1fr` grid, no border/radius/shadow; static rail (48-slot + 176-overlay machinery RETIRED — INT-016 supersedes INT-009/013 rail truth); avatar 72 centered @ 60; icon-only items 117×98 at 132 pitch, icons 52 centered (the export's inline-img line box killed); selection pill via `.selected` (motion.js marks `href === data-page`, `aria-current="page"`); labels/account/rail-tools hidden (markup preserved for iteration); workspace-header = reference bar (55 top inset, 32 margins, underline hairline, breadcrumb 20px/500); content cells scroll with 33/32 rhythm; reader scrolls in the column with the 640 measure centered via children; journal/reader overlay anchors recomputed for the full-bleed grid. |
+| `motion.css` | Tooltip suppression (nav-open/pinned) removed — icon-only rail means tooltips are the label channel and always fire; rail entrance keeps fade+rise, width/shadow choreography removed; pin rules retired (tool hidden). |
+| `motion.js` | Rail hover/pin logic removed (static rail); selection marking added (`data-page` ↔ nav href → `.selected` + aria-current). Entrance stagger unchanged. |
+| HTML | `archive.html` body class stripped of dead `pinned nav-open`; all 6 pages cache-busted v6→v7. Zero markup restructuring — the rail nodes are the export's own. |
+
+### Verification (this pass)
+
+- verify.sh re-ratcheted: 5e = static 172 reference rail (tokens + hairline + .selected pill present), no margin-slide, full-page guard (100dvh, no artifact radius), 5f(b) = rail static (latency 0ms by construction — a width transition reappearing is the regression), 5g(e) = v7 cache-bust. All green.
+- Browser-measured (1440×900): rail 172×900, hairline 1px, avatar 72×72 @(50,60), items 117×98 at x27 (y 226/358/490 — pitch 132 exact), icons 52×52 centered dy=dx=0, avatar-center→first-item-center = 179 (the reference's own 446/2.49), selected pill #1F1F1D on dark / #EFEFEB on light, aria-current on the active link.
+- Interaction checks: tooltips fire on rail hover (opacity 1, label content); deep-note/selection-toolbar/page-pill overlays inside viewport after re-anchoring; console clean on all 6 pages; VLM breakage audit of 6 renders: no real defects (journal/reader "overlaps" are the owner's designed painted-overlay states).
+
+### Carried to the owner (labeled interpretations, correction-turn material)
+
+1. **Scale calibration** — the reference is a ~1024-CSS tablet-class capture; values ported 1:1 (fixed 172 rail) rather than viewport-ratio (would be 242 at 1440). If the rail reads thin/wide at your window size, say the word — ratio-scaling or a different width is a one-token change.
+2. **Icon weight** — the export's icons were drawn for ~16px display; at the reference's 52px their strokes scale proportionally (chunkier). A dedicated 52px icon set is the eventual fix if the weight bothers you.
+3. **Rail bottom is empty** — the reference's bottom is cut off; Arivo's tools ("All changes saved" + pin) are hidden, not deleted. The natural bottom candidates: settings, theme toggle, or the save state — owner's call.
+4. **Theme mapping** — reference is light; the dark rail mirrors the reference's deltas (pill = surface +8, hairline #2A2A28). The dark home keeps its landing voice.
+5. **The rail is icon-only** — no labels even on hover (tooltip carries the name). If you want a hover-reveal label behavior instead, that's a correction turn.
