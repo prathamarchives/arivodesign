@@ -80,6 +80,9 @@
   --ref-header-inset: 24px;     /* was 55 */
   --ref-header-gap: 22px;       /* was 53 */
   --ref-content-gap: 20px;      /* was 33 */
+  --ref-section-gap: 30px;      /* INT-025: the homepage's ONE equal gap (owner: "measure the gap
+                                   between components divide them equally") — matches the sections'
+                                   own 30px rhythm; header->content and welcome->sections join it */
 
   /* ---- INT-018: the floating glass rail (references synthesized) ---- */
   --ref-rail-inset: 12px;       /* full float: gap on all four sides */

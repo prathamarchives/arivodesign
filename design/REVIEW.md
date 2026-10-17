@@ -539,3 +539,42 @@ Round 1 (DOM, both states, 6 pages): 0 geometry errors, 0 console errors — pan
 3. Icon weight 1.1 stands; 0.9 is the next step if thinner still is wanted.
 4. Push still blocked (L-10, PAT wiped): pass 11–15 local; a fresh inline PAT pushes all.
 5. Then the queued content-area composition port (segmented control + card rhythm — measured in the INT-016 spec).
+
+## Pass 16 — INT-025: the @ dropped, the nav struck, the marked corposlop removed, one equal gap (2026-10-17)
+
+> Owner turn 25: "remove the @ from the the prathama archives. measure the gap between components divide them equally measure precisly the wdith, the gap the height, and inspect the screenshots i have attached and remove everything i have amrked most of em are the unecessary things like unecessary corposlop main character typa texts and lines and shit so remove that and fix the composioning and postioning of whole homepage accordingly"
+
+### The mark forensics (the screenshot is the spec)
+
+The owner's screenshot carries white hand-drawn marks. Pixel isolation (pure white >249 vs text ink 238) + component clustering + live-render registration (chrome offset 53px) mapped every stroke to DOM geometry; three independent VLM passes on crops and a marks-only bitmap converged on the same reading. The verdict: the ⌘K hint X'd; the breadcrumb @ X'd; the WHOLE greeting block scribbled (date + tagline + subtitle); "PICK UP WHERE YOU LEFT OFF" struck; "A place for focus…" struck; the journal card X'd corner-to-corner; the RETURN TO A THOUGHT texts scribbled; and a wavy vertical strike down the rail's icon column that STOPS AT THE DIVIDER — the nav is struck, the account is not.
+
+### What changed
+
+| surface | before (pass 15) | after (pass 16) | grounds |
+|---|---|---|---|
+| handle | @prathamarchives | **prathamarchives** (rail, breadcrumb, title, alt) | "remove the @" |
+| rail | full-height column: nav at top … divider … account at end | **bottom-anchored account chip** (divider + pfp + handle, 86px tall) — nav struck | the wavy line through the icons, stopping at the divider |
+| ⌘K hint | present in search box | **removed** | the small X |
+| hero greeting | date + tagline + subtitle | **removed** (Import button survives, right edge kept) | the block scribble |
+| card eyebrows | "PICK UP WHERE YOU LEFT OFF", "A place for focus…" | **removed** | the strikethroughs |
+| right column | journal card + return block + closing line | **the whole column removed** — reading-space fills full width | the X + the scribbles + genre reading (closing line below-fold, disclosed) |
+| vertical rhythm | 20 / 38 / 30 / 30 (+18/16/17 intra) | **30 / 30 / 30 / 30 (+16/16/16 intra)** — one token `--ref-section-gap` | "measure the gap… divide them equally" |
+| card row | 339 / 267 (shrink-dance) | **639 / 405** — the export's 60.256% basis pinned | "fix the composioning accordingly" |
+| section edges | ragged shrink-to-fit (771/626/823) | **one aligned full-width edge** (stretch) | same |
+| dead assets | 18 nav icon SVGs | **git-rm'd** | INT-024 precedent |
+| cache-bust | v15 | **v16** | INT-008 class |
+
+### The in-pass defect (caught by the rAF round, fixed by construction)
+
+The old x24 wrapper lock RODE the nav items' width growing 40→144 on expansion. With no items, the wrapper stays 40px forever — centering it in the growing panel slid the avatar 52px right and pushed the handle 31px past the clip. Fix: pin the wrapper to the content-box left with `margin-left: calc((64-40)/2 - 1px)` (the 1px is the panel's border). Result: drift 0.000 across every frame, avatar x31 in both states, handle 20.4px clear, the divider line flush at x12 in both states.
+
+### Evidence (three rounds)
+
+Round 1 (DOM ×2 states ×6 pages): 0 errors — chip 64×86 at y572-658 on all six pages, avatar x31/y611 everywhere, divider y593, handle "prathamarchives" 8px off the disc; homepage gaps measured 30/30/30/30 and 16/16 intra; cards 639/405; sections edge-aligned 112-1172. Round 2 (rAF): drift 0.000 through the 64→168 expansion; the line tracks the panel edge in lockstep. Round 3 (VLM dark + light + hover): chip bottom-left with no icons; hover shows the handle fully inside the panel with no @; single full-width column; no tagline, journal card, or return block; equal gaps; no ⌘K; console clean on all six pages.
+
+### Judgment calls carried (not ordered, disclosed)
+
+1. The below-fold "Your space, at your pace. Everything here is saved to your archive." closing line was removed as genre-corposlop (it sat below the owner's 617px fold, unmarkable, same "main character" register as the struck blocks, inside the struck column) — one-line revert if the owner wants it back.
+2. The rail strike was read as NAV-ONLY (the stroke stops at the divider; the avatar is unmarked; the @-order implies the handle lives). If the owner meant the whole chip too, it is one HTML block.
+3. reader.html is URL-reachable only (pre-existing since the export — the rail never linked it; the rail's removal changed nothing).
+4. Push still blocked (L-10): pass 11–16 wait on a fresh inline PAT.

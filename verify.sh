@@ -97,25 +97,27 @@ else
   bad "core.fileMode is not false — run: git config core.fileMode false (mode-churn guard)"
 fi
 
-# ---------------------------------------------------------------- 5e. prototype rail guards (re-ratcheted 2026-10-17, INT-019 / INT-023)
+# ---------------------------------------------------------------- 5e. prototype rail guards (re-ratcheted 2026-10-17, INT-019 / INT-023 / INT-025)
 # INT-016 rebuilt the sidebar to the owner's reference; INT-017
 # recalibrated it to desktop scale; INT-018 MATERIALIZES it as floating
 # glass with hover expansion + ink selection; INT-019 slims the
 # component set (owner: "much smaller… remove the bold and thickness"):
 # rail 64, items 40x34, icons 18 (thinner strokes), softer shadows,
 # expansion 64 -> 168 with motion-blur treatment; INT-023 resizes the
-# avatar to the turn-23 account-block reference ratio (26 = 0.40 x rail).
-# (a) the floating glass rail present in the scaffold, at INT-019/023 scale
+# avatar to the turn-23 account-block reference ratio (26 = 0.40 x rail);
+# INT-025 strikes the nav column (owner mark) — the rail is now the
+# BOTTOM-ANCHORED ACCOUNT CHIP (divider + pfp + handle, top: auto).
+# (a) the floating glass chip present in the scaffold, at INT-019/023 scale
 if grep -q 'ref-rail-w: 64px' design/styles/tokens.css && \
    grep -q 'ref-rail-avatar: 26px' design/styles/tokens.css && \
-   grep -q 'ref-rail-icon: 18px' design/styles/tokens.css && \
    grep -q 'ref-rail-radius: 16px' design/styles/tokens.css && \
    grep -q 'backdrop-filter: blur(var(--ref-glass-blur))' design/styles/shell.css && \
    grep -q 'border-radius: var(--ref-rail-radius)' design/styles/shell.css && \
-   grep -q '\.rail-panel \[class\^="navigation-item-"\]\.selected' design/styles/shell.css; then
-  ok "floating glass rail present (64/26/18 literals, R16, frosted, ink pill)"
+   grep -q 'top: auto' <(sed -n '/^\.rail-panel {/,/^}/p' design/styles/shell.css) && \
+   ! grep -q 'navigation-item-' design/styles/shell.css; then
+  ok "floating glass account chip present (64/26 literals, R16, frosted, bottom-anchored, nav rules retired)"
 else
-  bad "glass rail missing/mis-built — floating frosted R16 column + ink pill required (INT-016/017/018/019/023)"
+  bad "glass chip missing/mis-built — bottom-anchored frosted R16 chip required (INT-016/017/018/019/023/025)"
 fi
 if grep -q 'margin-left: calc(var(--sidebar-w' design/styles/shell.css; then
   bad "content margin-slide regression in shell.css — hover expansion must overlay (INT-007/013)"
@@ -136,17 +138,17 @@ if grep -q 'height: 100dvh' design/styles/shell.css && \
 else
   bad "artifact framing regression — full-bleed app required (INT-016)"
 fi
-# (d) identity: the handle string on every page, avatar monogram pa in every rail
+# (d) identity: the handle string (INT-025: @ dropped by owner order) on every page
 pages_ok=0
 for pg in design/index.html design/home-light.html design/library.html design/archive.html design/journal.html design/reader.html; do
-  grep -q '@prathamarchives' "$pg" && pages_ok=$((pages_ok+1))
+  grep -q 'prathamarchives' "$pg" && pages_ok=$((pages_ok+1))
 done
-if [ "$pages_ok" -eq 6 ]; then
-  ok "identity @prathamarchives on all 6 pages"
+if [ "$pages_ok" -eq 6 ] && ! grep -rq '@prathamarchives' design/*.html; then
+  ok "identity prathamarchives (no @) on all 6 pages (INT-013, INT-025 de-@)"
 else
-  bad "identity missing on $((6-pages_ok))/6 pages (INT-013)"
+  bad "identity missing on $((6-pages_ok))/6 pages or @ still present (INT-013/025)"
 fi
-pa=$(grep -l 'avatar-img" src="images/pfp.png?v=15' design/*.html | wc -l)
+pa=$(grep -l 'avatar-img" src="images/pfp.png?v=16' design/*.html | wc -l)
 if [ "$pa" -eq 6 ] && [ -s design/images/pfp.png ]; then
   ok "real pfp image in all 6 rails (INT-024 — the monogram retired by owner order)"
 else
@@ -195,12 +197,20 @@ fi
 for f in design/assets/fonts/inter-400.woff2 design/assets/fonts/inter-500.woff2 design/assets/fonts/lora-400.woff2; do
   if [ -s "$f" ]; then ok "font present: $(basename "$f")"; else bad "font missing: $f (INT-013)"; fi
 done
-# (f) page graph: 6 pages, nav anchors wired
-nlinks=$(grep -o 'class="navigation-item-[0-9]*" href=' design/*.html | wc -l)
-if [ "$nlinks" -ge 15 ] && [ -s design/library.html ] && [ -s design/archive.html ] && [ -s design/journal.html ] && [ -s design/reader.html ]; then
-  ok "page graph wired (nav anchors: $nlinks, 6 pages)"
+# (f) page graph: 6 pages, wired by CONTENT links (the rail nav is struck —
+#     INT-025; home links library+archive, archive links journal, every page
+#     links home via the theme toggle / breadcrumb surface)
+if grep -q 'href="library.html"' design/index.html && \
+   grep -q 'href="archive.html"' design/index.html && \
+   grep -q 'href="journal.html"' design/archive.html && \
+   grep -q 'href="index.html"' design/home-light.html && \
+   grep -q 'href="index.html"' design/library.html && \
+   grep -q 'href="index.html"' design/reader.html && \
+   grep -q 'href="index.html"' design/journal.html && \
+   [ -s design/reader.html ]; then
+  ok "page graph wired by content links (home->library/archive, archive->journal, all->home)"
 else
-  bad "page graph incomplete (nav anchors: $nlinks/15+)"
+  bad "page graph incomplete — a content surface lost its link (INT-025)"
 fi
 
 # ---------------------------------------------------------------- 5g. INT-013 motion + integrity guards (re-ratcheted 2026-10-16)
@@ -232,12 +242,12 @@ if grep -q 'progress-track-' design/styles/shell.css && grep -q 'height: 4px' de
 else
   bad "progress tracks unsized — invisible progress was the G-class failure (INT-013)"
 fi
-# (e) cache-bust version bumped with the paint (?v=15) — the INT-008 landing-failure class
+# (e) cache-bust version bumped with the paint (?v=16) — the INT-008 landing-failure class
 vb=$(grep -o 'tokens.css?v=[0-9]*' design/index.html | grep -o '[0-9]*$')
-if [ "$vb" = "15" ]; then
-  ok "asset links cache-busted at v15"
+if [ "$vb" = "16" ]; then
+  ok "asset links cache-busted at v16"
 else
-  bad "asset links not re-busted at v15 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
+  bad "asset links not re-busted at v16 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
 fi
 # (f) no external resource references — everything local (the export's only CDN was fonts)
 ext="$(grep -hEo 'src="http[^"]*"|href="http[^"]*"' design/*.html 2>/dev/null | grep -v '^$' || true)"
@@ -282,11 +292,11 @@ if grep -q 'radial-gradient' design/styles/tokens.css; then
 else
   bad "canvas glow missing — frosted glass on a flat canvas reads dead (pass-2 law)"
 fi
-if grep -q 'filter: brightness(0)' design/styles/shell.css && \
-   grep -q 'filter: brightness(0) invert(1)' design/styles/shell.css; then
-  ok "ink pill glyph inversion present (both themes)"
+if ! grep -q 'brightness(0)' design/styles/shell.css && \
+   grep -q 'box-shadow: 0 0 0 1px var(--ref-avatar-ring)' design/styles/shell.css; then
+  ok "ink-pill inversion retired with the nav (INT-025); the chip's avatar ring stands"
 else
-  bad "selected glyph inversion missing — the ink pill needs its inverted icon (INT-018)"
+  bad "glyph-inversion rules orphaned or the avatar ring lost (INT-018/025)"
 fi
 if grep -q "rail.classList.add('expanded')" design/motion.js && \
    grep -q 'ref-rail-expanded' design/styles/motion.css; then
@@ -376,13 +386,13 @@ if [ -n "$acct_bad" ]; then
 else
   ok "no account slot / 'Personal space' on any page (INT-021)"
 fi
-# (b) the handle label rides the shared nav-label overlay in every rail
+# (b) the handle label rides the shared nav-label overlay in every rail (INT-025: no @)
 hdl=0
 for pg in design/index.html design/home-light.html design/library.html design/archive.html design/journal.html design/reader.html; do
-  grep -q 'nav-label">@prathamarchives</p>' "$pg" && hdl=$((hdl+1))
+  grep -q 'nav-label">prathamarchives</p>' "$pg" && hdl=$((hdl+1))
 done
 if [ "$hdl" -eq 6 ]; then
-  ok "handle @prathamarchives as nav-label overlay on all 6 rails (INT-021)"
+  ok "handle prathamarchives as nav-label overlay on all 6 rails (INT-021, de-@ INT-025)"
 else
   bad "handle label missing on $((6-hdl))/6 rails (INT-021)"
 fi
@@ -395,23 +405,28 @@ if sed -n '/^\.rail-panel \[class\^="identity-"\] {/,/^}/p' design/styles/shell.
 else
   bad "identity lock missing — fixed slot width + position:relative required, width:100% forbidden (INT-021 drift class)"
 fi
-# (d) thin icons: every rail glyph strokes at 1.1 (owner: "make the icons thinner")
-thin_ok=0; thin_bad=""
+# (d) INT-025: the rail nav icons are GONE with the nav column — the 18
+#     glyph files are git-rm'd (dead assets must not linger; the INT-024
+#     settings-SVG removal set the precedent)
+navres=0
 for v in 11 14 17 843 846 849 646 649 652 333 337 341 184 187 190 508 511 514; do
-  if grep -q 'stroke-width="1\.1"' "design/images/vector-$v.svg"; then thin_ok=$((thin_ok+1)); else thin_bad="$thin_bad vector-$v"; fi
+  [ -e "design/images/vector-$v.svg" ] && navres=$((navres+1))
 done
-if [ "$thin_ok" -eq 18 ]; then
-  ok "all 18 rail icons stroke 1.1 (thin, INT-021)"
+if [ "$navres" -eq 0 ]; then
+  ok "all 18 rail nav icons deleted with the nav (INT-025 — no dead assets)"
 else
-  bad "rail icons not thin:$thin_bad — stroke-width 1.1 required on all 18 (INT-021)"
+  bad "$navres orphaned rail icon SVGs remain (INT-025 removal order)"
 fi
-# (e) changed ASSETS carry the cache-bust too: the icon srcs are ?v=-busted
-#     (the stale-SVG render class — CSS was v12 while imgs served old strokes)
-bust=$(grep -o 'images/vector-[0-9]*\.svg?v=15' design/index.html | wc -l)
-if [ "$bust" -eq 3 ]; then
-  ok "rail icon srcs cache-busted (?v=15 — changed assets re-fetch, INT-008 class)"
+# (e) changed ASSETS carry the cache-bust (the stale-render class); the
+#     INT-025 changed set = the four stylesheets + motion.js + the pfp img
+#     (the content icons are unchanged assets and never carried busts; the
+#     busted rail icons died with the nav)
+bust=$(grep -o 'styles/[a-z]*\.css?v=16\|motion\.js?v=16\|images/pfp\.png?v=16' design/index.html | wc -l)
+stale=$(grep -o '?v=15' design/*.html | wc -l)
+if [ "$bust" -ge 6 ] && [ "$stale" -eq 0 ]; then
+  ok "changed assets cache-busted (CSS x4 + motion.js + pfp at ?v=16, no stale v15 — INT-008 class)"
 else
-  bad "rail icon srcs not cache-busted on index (found $bust/3) — stale-icon render class (INT-008)"
+  bad "cache-bust incomplete ($bust v16 links, $stale stale v15) — stale-render class (INT-008)"
 fi
 
 # ---------------------------------------------------------------- 5l. INT-024 rail order + settings removal guards (re-ratcheted 2026-10-17)
@@ -450,27 +465,24 @@ else
   bad "handle anchor rule missing or gap not tightened to 8px (INT-024 — slot-edge start clips the string)"
 fi
 
-# ---------------------------------------------------------------- 5m. INT-024 bottom account block + rail-order guards (re-ratcheted 2026-10-17)
-# Owner turn 24: nav components FIX AT TOP; the account (pfp + handle)
-# lives at the BOTTOM/END with the divider line OVER it. The INT-023
-# divider is retained (owner: "with the line over it that divides it")
-# and rides the same one clock; the 24px account-adjacent token retired
-# with the re-order (the auto push owns the free space above the line).
-# (a) order on every rail: destinations -> divider -> identity (identity LAST)
-div_pages=0; div_order=0
+# ---------------------------------------------------------------- 5m. INT-025 account-chip rail guards (re-ratcheted 2026-10-17)
+# Owner turn 25 struck the nav column: destinations removed, the rail is
+# the BOTTOM-ANCHORED ACCOUNT CHIP. Owner turn 24's bottom/end order still
+# holds: the divider line OVER the account, at the rail's end.
+# (a) order on every rail: divider -> identity (identity LAST), nav ABSENT
+nav_bad=""; order_ok=0
 for pg in design/index.html design/home-light.html design/library.html design/archive.html design/journal.html design/reader.html; do
+  if grep -q 'navigation-item-\|destinations-' "$pg"; then nav_bad="$nav_bad $pg"; continue; fi
   if grep -q 'class="rail-divider"' "$pg"; then
-    div_pages=$((div_pages+1))
     iline=$(grep -n 'class="identity-' "$pg" | head -1 | cut -d: -f1)
     dline=$(grep -n 'class="rail-divider"' "$pg" | head -1 | cut -d: -f1)
-    nline=$(grep -n 'class="destinations-' "$pg" | head -1 | cut -d: -f1)
-    if [ "$nline" -lt "$dline" ] && [ "$dline" -lt "$iline" ]; then div_order=$((div_order+1)); fi
+    if [ "$dline" -lt "$iline" ]; then order_ok=$((order_ok+1)); fi
   fi
 done
-if [ "$div_pages" -eq 6 ] && [ "$div_order" -eq 6 ]; then
-  ok "rail order destinations > divider > identity on all 6 rails (INT-024)"
+if [ -z "$nav_bad" ] && [ "$order_ok" -eq 6 ]; then
+  ok "rail = account chip: nav absent, divider > identity on all 6 rails (INT-025 over INT-024)"
 else
-  bad "account divider missing/misordered (present $div_pages/6, ordered $div_order/6) — INT-024"
+  bad "nav residue:$nav_bad or divider/identity order broken ($order_ok/6) — INT-025"
 fi
 # (b) the ZERO-WIDTH-IMPACT law: the flow element is slot-wide, the line is an
 #     absolutely-positioned ::after (a 64px flow child would widen the
@@ -493,17 +505,20 @@ if grep -q 'transition: width 0.3s cubic-bezier(0.32, 0.72, 0, 1)' <(sed -n '/\.
 else
   bad "divider line off-clock — must share the rail's width curve and tokens (INT-023 / INT-020 law 4)"
 fi
-# (d) the bottom-block rhythm: the divider's auto margin pushes the account to
-#     the rail's end; the wrapper FILLS the panel; the panel carries a bottom
-#     inset; the identity rides the 17px token below the line
-if grep -q 'margin: auto 0 0 0' design/styles/shell.css \
+# (d) the account-chip rhythm: the wrapper is PINNED to the x24 slot
+#     (align-self + margin-left — the INT-025 drift fix: centering a
+#     40px wrapper in the growing panel slid the avatar 52px right);
+#     the identity rides the 17px token below the line; the panel
+#     carries symmetric padding and hugs its content (top: auto)
+if grep -q 'align-self: flex-start' design/styles/shell.css \
+   && grep -q 'margin-left: calc((var(--ref-rail-w) - var(--ref-rail-item-w)) / 2 - 1px)' design/styles/shell.css \
    && grep -q 'flex: 1 1 auto' design/styles/shell.css \
-   && grep -q 'margin-top: 0' design/styles/shell.css \
    && grep -q 'ref-rail-post-divider-gap: 17px' design/styles/tokens.css \
+   && grep -q 'margin-top: var(--ref-rail-post-divider-gap)' design/styles/shell.css \
    && grep -q 'padding: var(--ref-rail-avatar-inset) 0 var(--ref-rail-avatar-inset) 0' design/styles/shell.css; then
-  ok "bottom account block lawful (auto push + wrapper fill + panel bottom inset + 17px line->avatar rhythm)"
+  ok "account-chip rhythm lawful (pinned x24 slot + wrapper fill + panel padding + 17px line->avatar)"
 else
-  bad "bottom account rhythm broken — divider auto-push / wrapper flex-fill / panel padding / 17px token (INT-024)"
+  bad "account-chip rhythm broken — wrapper pin / 17px token / panel padding (INT-024/025)"
 fi
 # (e) the pfp image: round-cropped, cover-fit, riding the 26px slot
 if grep -q '\[class\^="avatar-"\] img.avatar-img {' design/styles/shell.css \
@@ -521,6 +536,44 @@ if grep -q 'body > div .study-shell-499 { grid-template-rows: auto auto minmax(0
   ok "page-shell row templates at (0,1,2) specificity — 3-row shells beat the base rule (INT-024 defect fix)"
 else
   bad "row-template specificity regression — reader/journal rails would clip (INT-024 defect class)"
+fi
+
+# ---------------------------------------------------------------- 5n. INT-025 homepage corposlop + rhythm guards (ratcheted 2026-10-17)
+# Owner turn 25: "remove everything i have marked — mostly unnecessary
+# corposlop main-character-type texts and lines and shit... fix the
+# composition and positioning of whole homepage accordingly."
+# (a) the marked texts are DEAD on both homepage themes
+slop_bad=""
+for pg in design/index.html design/home-light.html; do
+  for s in "A little further" "Pick up a book" "PICK UP WHERE YOU LEFT OFF" \
+           "A place for focus" "Today’s page" "RETURN TO A THOUGHT" \
+           "Make the next action legible" "Your space, at your pace" \
+           "FRIDAY, OCTOBER" "reflection-space" "today-s-journal" "return-to-a-thought" "⌘"; do
+    grep -q "$s" "$pg" && slop_bad="$slop_bad $pg:$s"
+  done
+done
+if [ -z "$slop_bad" ]; then
+  ok "all marked corposlop removed from both homepage themes (hero, card eyebrows, journal card, return block, closing line, ⌘K)"
+else
+  bad "corposlop residue:$slop_bad (INT-025 removal order)"
+fi
+# (b) the homepage keeps its functional survivors (unmarked content)
+if grep -q 'Import a work' design/index.html && grep -q 'Currently reading' design/index.html \
+   && grep -q 'Reading lists' design/index.html && grep -q 'Recent highlights' design/index.html \
+   && grep -q 'Continue reading' design/index.html && grep -q 'Search anything' design/index.html; then
+  ok "functional homepage content survives (Import/sections/CTA/search — unmarked)"
+else
+  bad "homepage lost unmarked functional content — removal overreach (INT-025 scope law)"
+fi
+# (c) the ONE equal gap: 30px rhythm token + the shell overrides
+if grep -q 'ref-section-gap: 30px' design/styles/tokens.css \
+   && grep -q 'padding-top: var(--ref-section-gap)' design/styles/shell.css \
+   && grep -q 'gap: var(--ref-section-gap)' design/styles/shell.css \
+   && grep -q 'justify-content: flex-end' design/styles/shell.css \
+   && grep -q 'align-items: stretch' design/styles/shell.css; then
+  ok "homepage rhythm: one 30px gap (header/row/sections), Import right-anchored, sections edge-aligned full-width"
+else
+  bad "homepage rhythm broken — the equal-gap law (INT-025: measure + divide equally)"
 fi
 
 # ---------------------------------------------------------------- 6. worklog is alive for the latest turn

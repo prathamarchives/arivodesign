@@ -410,3 +410,24 @@ Work log:
 - Docs lockstep: ledger, REVIEW pass 15, STATE rewrite, this entry. Committed locally; push blocked (L-10 — PAT wiped, sessions 15/17/18/19/20 class).
 
 **Stage Summary:** PASS 15 live on localhost:3000 (?v=15, no-store): the rail reads Home/Library/Archive at top … divider … pfp + @prathamarchives at the END (the line over it), settings gone, a real round-cropped pfp, the handle 8px off the disc fully visible; the motion system + axis lock untouched (rAF drift 0.00); reader + journal rails render full-height for the first time since INT-016. Carried: pfp artwork keep-or-swap, the x76-alignment reading (needs a rail-widening order if strict), icon weight 0.9 next step, PAT to push pass 11–15, then the content-composition port.
+
+---
+
+## Session 22 — 2026-10-17 — INT-025: the @ dropped, the nav struck, the homepage's corposlop removed, one equal gap
+
+**Task ID:** 1 · **Agent:** Super Z (main, GLM host)
+
+**Task:** Owner turn 25 (INT-025) — remove the @ from prathamarchives; measure + equally divide the component gaps (width/gap/height, precisely); remove everything marked in the attached screenshot (corposlop texts + lines); fix the homepage composition/positioning accordingly.
+
+**Work Log:**
+- Intake turn-025 verbatim + annotated screenshot (upload/pasted_image_1792247919035.png); INT-025 ledgered.
+- MARK FORENSICS (the "inspect the screenshots" order): pure-white stroke isolation (>249 vs ink 238) + connected-component clustering + live-render registration (browser-chrome offset 53px, viewport 1196×617) → 8 mark groups mapped to DOM geometry; three independent VLM passes on crops/marks-only bitmaps converged. The rail mark = a wavy vertical strike through the icon column STOPPING AT the divider (avatar unmarked); the hero scribble covers the whole greeting block; the journal card X is corner-to-corner; the ⌘K and the breadcrumb @ each carry a precise small X.
+- HTML surgery (scripts/int025-html-surgery.py, count/balance/idempotence assertions): 6 pages — destinations block removed, @prathamarchives → prathamarchives (title/alt/handle/breadcrumb), ⌘ K line removed, v16 busts; homepages additionally — greeting block, "PICK UP WHERE YOU LEFT OFF", "A place for focus…", the entire reflection-space column (journal card + RETURN TO A THOUGHT + the below-fold "Your space, at your pace" closing line) removed.
+- CSS surgery: shell.css — panel `top: auto` (the bottom-anchored account chip), the dead nav/selection rules retired, the INT-025 homepage rhythm section (padding-top/gap → 30px token, welcome `flex-end`, section gaps 18/17→16, sections `align-items: stretch`, the continue card's 60.256% basis pinned); tokens.css — `--ref-section-gap: 30px`.
+- DEFECT fixed (rAF round): the wrapper's old x24 lock RODE the item widths growing 40→144 — with no items, centering a permanent 40px wrapper in the expanding panel drifted the avatar 52px right (handle 31px past the clip). Fixed by construction: `align-self: flex-start` + `margin-left: calc((64-40)/2 - 1px)` (the 1px = panel border). rAF: drift 0.000, avatar x31 in BOTH states, handle 20.4px clear, divider line flush x12 in both states.
+- 18 rail nav icon SVGs git-rm'd (dead assets, INT-024 precedent).
+- THREE verification rounds: (1) DOM ×2 states ×6 pages — 0 errors; chip 64×86 @ y572-658 on all 6, avatar x31/y611 everywhere, gaps measured 30/30/30/30/16/16 (header→row→3 sections→cards), cards 639/405 (60.26/39.74); (2) rAF drift 0.000 through 64→168; (3) VLM dark+light+hover — all clean: chip bottom-left, handle "prathamarchives" fully visible no @, no tagline/journal/return block, single full-width column, equal gaps, no ⌘K. Console clean on all 6.
+- verify.sh re-ratcheted (5e, 5f, 5g(e), 5k(b)(d)(e), 5m rewritten, NEW 5n) → GREEN.
+- Docs lockstep: ledger INT-025, REVIEW pass 16, STATE rewrite, this entry. Committed locally; push blocked (L-10 — PAT wiped).
+
+**Stage Summary:** PASS 16 live on localhost:3000 (?v=16, no-store): the sidebar is a bottom-left account chip (divider + pfp + "prathamarchives", no @; hover expands 64→168, handle smears in, avatar locked x31 — rAF 0.000); the homepage is a single full-width column — Import top-right, Currently reading (60/40 cards), Reading lists, Recent highlights, every section gap a measured 30px, intra-section 16px; all marked corposlop gone (hero, card eyebrows, journal card, return block, closing line, ⌘K). Disclosed: the below-fold "Your space, at your pace" was removed as genre-corposlop (invisible to the owner's marks); reader.html remains URL-reachable only (pre-existing). Carried: pfp artwork keep-or-swap, PAT to push pass 11–16.
