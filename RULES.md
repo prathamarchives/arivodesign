@@ -47,3 +47,7 @@ Enforcement note: a DO-rule skipped is a defect even if the output looks fine; a
 - **R-X12 · Do not freeze an untested visual claim.** Do not state that a transition, route, theme, or layout is fixed unless the rendered behavior was tested and evidence is recorded. [L-13, L-16, INT-028]
 - **R-X13 · Do not widen the change.** Do not change page content, component sizes, type, icon art, cover art, backend behavior, or the frozen `design/styles/prototype.css`. Do not add dependencies or use broad color filters. [L-18, D-008, D-010, INT-028]
 - **R-X14 · Do not create fake outcomes.** Do not add success messages or imply that an unimplemented product action succeeded. Record undefined controls as unresolved instead. [L-16, X-03, INT-028]
+
+
+- **R-D14 · Keep evidence runnable and reachable.** Commit each new verifier/test script and rendered review artifact before using it as evidence. Record the exact command and file path. If no artifact can be run or viewed, mark the result not checked. [L-13, L-16, L-22; INT-028]
+- **R-X15 · Do not cite missing tooling.** Never document a runner or screenshot as the basis for a pass unless the referenced file exists at the stated path and can be opened or executed. Repair stale runbook references when discovered. [L-22; INT-028]
