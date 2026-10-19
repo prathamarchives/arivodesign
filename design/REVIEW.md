@@ -617,6 +617,7 @@ Round 1 (server): 6/6 pages 200 at ?v=17; 3 nav items per page in served markup;
 | Chrome changes position during transition | Recording shows unstable sidebar/nav position | Page and chrome state do not share one lifecycle | One route runtime and one consistent shell state |
 | Test evidence is not reproducible from the repo | Pass 17 worklog names `scripts/int026-verify.py` and `scripts/int026-shots.py`; current `scripts/` tree contains only server helpers | The worklog names runners that are absent from the current tree | Commit every new runner and persist screenshots plus the full matrix under `design/preview/phase1/` |
 | Manual rail pin is missing | The current six page exports render Home / Library / Archive, divider, avatar, and handle; no pin button exists | The current prototype does not materialize the owner's earlier manual top-left pin instruction | Add only the D-014 pin toggle, and verify pinned/unpinned/idle states |
+| Active section is inconsistent on child exports | The route indicator compares file names; Home-light and Journal do not map to a top-level item | The filename is being treated as the product destination | Apply D-015 mapping; do not add Journal or Reader nav items |
 
 **Scope guard:** preserve the Pass 17 sidebar, page content, homepage ratios and spacing, grayscale palette, artwork, and the frozen Figma export. Do not alter typography in this pass; D-008/X-16 and the INT-013 prototype disagree on Helvetica vs Inter/Lora.
 
