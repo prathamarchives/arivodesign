@@ -169,3 +169,14 @@ New laws this pass (all ratcheted into verify.sh 5f):
 6. **Landing = visible** — the preview server sends `Cache-Control: no-store` and asset links carry `?v=`; unverifiable-by-owner work is not done (L-13).
 
 Colour verification (directive ↔ constitution): #FFFFFF/#F4F4F6–#FAFAFA = `--surface-solid`/`--bg-0`/`--bg-1` exact; #18181B-class dark pills = `--fg-1`-driven + `--shadow-cta` (Y6/blur14/18% — inside the directive band); Inter/SF/Geist class = the constitution's self-hosted Helvetica (INT-004 law stands, same grotesk class). Zero raw hex entered component CSS.
+
+
+---
+
+## Current runtime addendum — INT-028
+
+The current implementation contract for route changes, persistent theme state, idle navigation chrome, reduced motion, and the Phase 1 test matrix lives in `PHASE-1-EXECUTION.md`. It is the executable brief for this stabilization pass. Read it before changing `design/navigation.js`, `design/motion.js`, or the custom shell/motion/theme CSS.
+
+This addendum does not replace the owner-supplied Figma export or permit an unreviewed redesign. Keep `design/styles/prototype.css` frozen. The existing motion system's “labels only” blur rule still applies to the sidebar; INT-028 authorizes bounded 4px blur on the outgoing/incoming **page surface only**. It does not authorize a viewport-wide blur, a blur on the sidebar glass, or a transition that leaves an empty frame.
+
+The current typeface authority is unresolved in the older record: D-008 / X-16 name Helvetica, while the INT-013 operative prototype uses self-hosted Inter and Lora. Phase 1 does not touch typography. Do not silently settle this conflict during a route or theme fix.
