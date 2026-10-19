@@ -53,13 +53,13 @@ The `scripts/` directory currently contains the no-cache development server help
 
 ## Locked UI constraints
 
-- Sidebar: full-height floating glass rail; Home / Library / Archive at the top; account identity at the bottom.
+- Sidebar: full-height floating glass rail; Home / Library / Archive at the top; account identity at the bottom. Add the owner-requested 24×24px pin toggle at the top-left. Pinned keeps the rail expanded and visible; unpinned restores idle behavior. This is the only Phase 1 component addition.
 - Rail: 64px collapsed, 168px expanded; 26px avatar; fixed icon/avatar axis; text weight 400; handle is exactly `prathamarchives`, with no `@`.
 - Home: keep the Import action, Currently reading, Reading lists, Recent highlights; 30px section gap and 16px intra-section gap; reading cards keep the 60.256% / remaining-width split.
 - Keep the grayscale palette and existing artwork.
 - Do not add “All changes saved”, “Personal Space”, `@prathamarchives`, `⌘K`, or other copy that the owner removed.
 - Do not change typography in Phase 1. The historic Helvetica rule conflicts with the current Figma export's Inter/Lora. That decision remains open.
-- No page-wide blur, screen-covering overlay, bounce, unapproved layout change, or fake success state.
+- No page-wide blur, screen-covering overlay, bounce, unapproved layout change, or fake success state. No settings row: the owner explicitly removed it.
 
 ## Current execution gate
 
