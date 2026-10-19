@@ -8,7 +8,7 @@
 - **Work:** Added `PHASE-1-EXECUTION.md`; backfilled the missing source entry for turn 26 as INT-027; ledgered INT-028; added L-19..L-21, R-D10..R-D13/R-X12..R-X14, X-17..X-19, and D-011..D-013; routed AGENTS/README/DESIGN-SYSTEM to the phase contract; corrected the verifier to check exact raw file references instead of assuming turn number equals INT number.
 - **Diagnosis:** the six pages are separate HTML documents. Internal links switch documents. Theme is hard-coded per page. `motion.js` handles rail hover and initial entrance but does not manage shared route or theme state. The recording shows an obscuring transition and a near-blank frame.
 - **Evidence:**
-  - **verified by source inspection** — page-per-file links and page-level theme classes are present; the current runtime has no shared router or theme persistence.
+  - **not checked** — source inspection indicates page-per-file links and page-level theme classes; the current runtime appears to lack shared route and theme state. Runtime behavior still requires a browser test.
   - **not checked** — `bash verify.sh` after the changes; browser rendering; route transition; theme persistence; reduced-motion behavior; idle chrome; responsive layout. No UI-fix claim is made.
 - **Execution constraint:** this editing environment can read and write repository files through the GitHub connector, but the local shell cannot resolve `github.com`. The verifier and browser matrix must run in an environment with a repository checkout before any pass is reported.
 
