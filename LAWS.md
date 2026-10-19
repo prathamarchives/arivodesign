@@ -97,3 +97,7 @@ When constraints conflict, the higher rung wins. C0 is the product itself; C1–
 
 **L-21 · Idle chrome must remain recoverable.** Hiding navigation chrome is allowed only after the fixed idle interval. Pointer, keyboard, scroll, and focus activity must reveal it. Focused or hovered navigation must not disappear. The content must not be clipped when the chrome hides or returns.
 *Grounds: INT-028; CONTRACT X-07/X-11/X-15.*
+
+
+**L-22 · Verification evidence must be reproducible.** A worklog cannot rely on a test runner, command, or screenshot that future agents cannot access. Store new test scripts and review artifacts in tracked repository paths, or label the result "not checked". Missing evidence is not implied evidence.
+*Grounds: INT-028; L-13; L-16; current tree inspection found test scripts named by the Pass 17 worklog but absent from `scripts/`.*
