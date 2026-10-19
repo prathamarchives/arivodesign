@@ -17,7 +17,7 @@ This phase does **not** redesign the visual system or add product features. The 
 
 1. Keep this prototype static HTML/CSS with vanilla JavaScript. Do not add a framework, build tool, dependency, API, or backend requirement. [D-010, INT-028]
 2. Keep `design/styles/prototype.css` frozen. It is the owner-supplied Figma export. Do not reformat or rewrite it. Add overrides to the named custom style files. [D-008, D-009, INT-028]
-3. Preserve Home, Library, Archive, Journal, Reader, their current content, the grayscale visual language, the cover artwork, and the avatar asset. Do not remove, rename, reorder, or add content in this phase. [X-01–X-16, INT-028]
+3. Preserve Home, Library, Archive, Journal, Reader, their content, grayscale visual language, cover artwork, and avatar asset. Do not remove, rename, reorder, or add content. The only component addition allowed is the owner-requested top-left rail pin toggle in D-014. [X-01–X-16, INT-004, INT-028]
 4. Preserve the restored sidebar: Home / Library / Archive at the top; 64px collapsed width; 168px expanded width; labels fade and blur in; divider above the account identity; 26px avatar; handle `prathamarchives` with no `@`; identity stays on its fixed axis. Do not center, resize, retype, or move the identity. [INT-019, INT-023, INT-024, INT-026]
 5. Preserve the homepage's 30px section rhythm, 16px intra-section rhythm, 60.256% / remaining-width reading cards, right-aligned Import action, and edge-aligned sections. Preserve the removal of the marked promotional copy, the `@` before the handle, the `⌘K` hint, and the personal-space label. [INT-025, INT-026]
 6. Do not add success toasts or filler copy. Do not claim that a control works unless its behavior was tested. [L-13, L-16, INT-028]
@@ -61,7 +61,7 @@ Files allowed: new `design/navigation.js`, new `design/styles/theme.css`, six ta
 
 ### Pass B — Route motion and idle navigation
 
-Files allowed: `design/navigation.js`, `design/motion.js`, `design/styles/motion.css`, `design/styles/shell.css`, `design/styles/tokens.css`, and version-query updates in the six target HTML files.
+Files allowed: `design/navigation.js`, `design/motion.js`, `design/styles/motion.css`, `design/styles/shell.css`, `design/styles/tokens.css`, and markup/cache-query updates in the six target HTML files. The only allowed markup addition is the specified pin toggle.
 
 #### Route transition
 
@@ -78,8 +78,13 @@ Use the View Transitions API where available. Provide a no-blank fallback. Fetch
 
 If the browser lacks View Transitions, use a temporary outgoing-page overlay while the new page is already present underneath. Animate old and new layers together. Remove the overlay after the animation. Do not fade to an empty body and then insert the destination.
 
-#### Sidebar and navigation chrome idle state
+#### Sidebar pin and navigation chrome idle state
 
+Add one button to the top-left corner of the sidebar in all six page shells. Use a 24×24px hit area, 12px grayscale line icon, 1.5px stroke, round caps, and no label. Fix the button's x/y position relative to the panel; its location must not move when the panel expands. Set `aria-label` to `Pin sidebar` or `Unpin sidebar` and `aria-pressed` to the current pinned state. The control must support pointer and keyboard activation.
+
+- Click to pin: keep the rail expanded and visible. Cancel/ignore the idle-hide timer while pinned.
+- Click again to unpin: return to hover/focus expansion and normal idle-hide behavior.
+- The pin icon must use existing grayscale tokens; do not add a dependency or a new icon font.
 - Idle threshold: **1800ms** after pointer/keyboard/scroll activity.
 - On idle, fade navigation chrome to opacity 0 and translate it **8px upward** over **220ms**. Do not blur the sidebar.
 - On any pointer movement, key press, scroll, or focus entry, reveal chrome immediately and clear the idle timer.
@@ -88,7 +93,7 @@ If the browser lacks View Transitions, use a temporary outgoing-page overlay whi
 - Reveal at least one visible, keyboard-accessible way to keep navigation available when the pointer is not moving. Do not add a new branded control. Use the existing sidebar/pin interaction if it exists; otherwise, the hidden state must reveal on keyboard focus and pointer movement.
 - While idle chrome is hidden, the page content must reclaim the sidebar's reserved grid column smoothly. When chrome returns, restore the normal inset and keep the page content readable. No overlap, jump, horizontal scrollbar, or clipped card.
 - Hide only navigation chrome. Keep page content, Import, section headings, reading controls, and the content's own actions visible.
-- Retain the current sidebar hover expansion and account alignment. The icon and avatar X-axis must differ by no more than **1px** between collapsed and expanded states.
+- Retain the current sidebar hover expansion and account alignment. The icon and avatar X-axis must differ by no more than **1px** between collapsed and expanded states. The pin button position must also remain fixed.
 - Focus indicators and accessible labels remain present. Hover-only interaction is not sufficient.
 
 ### Pass C — Interaction audit and correction loop
@@ -118,7 +123,7 @@ For every combination, record:
 - Page renders with readable foreground/background contrast and no content obscured by navigation.
 - No horizontal overflow or clipped main sections.
 - No console errors or uncaught promise rejections.
-- Sidebar state, section selection, icon/avatar axis, label visibility, and account handle are correct.
+- Sidebar state (hover, hidden, pinned, unpinned), section selection, icon/avatar axis, pin position, label visibility, and account handle are correct.
 - Theme is consistent after section changes and after reload.
 - Direct URL load works.
 - Section route works without a new document load.
@@ -145,6 +150,6 @@ Before reporting any pass:
 
 ## 6. Definition of done
 
-Phase 1 is complete only when all mandatory test combinations pass, the route and theme changes are in-place, no blank transition appears, idle navigation behaves as specified, accessibility states work, all known visible controls have an audit result, `bash verify.sh` passes, a fresh-context audit has no blocking finding, and the rendered evidence has been viewed.
+Phase 1 is complete only when all mandatory test combinations pass, the route and theme changes are in-place, no blank transition appears, idle and pinned navigation behave as specified, accessibility states work, all known visible controls have an audit result, `bash verify.sh` passes, a fresh-context audit has no blocking finding, and the rendered evidence has been viewed.
 
 **No partial pass may be described as “fixed.” Report the exact passed matrix and the remaining failures.**
