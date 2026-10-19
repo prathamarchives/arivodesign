@@ -490,3 +490,10 @@ Work log:
 A further source-tree check found that `design/README.md` referenced `scripts/scaffold_design.sh`, `scripts/transform_pages.py`, `scripts/int026-verify.py`, and `scripts/int026-shots.py`, but those files are absent from the current tracked `scripts/` directory. The design README was replaced with the actual file map and an explicit Phase 1 gate. L-22 and R-D14/R-X15 now require future test runners and rendered evidence to be committed and reachable before they support a pass claim. The Phase 1 contract requires screenshots and the full state matrix to live under `design/preview/phase1/`.
 
 **Evidence status remains not checked:** the repo verifier was not run; no browser output was generated; no test script was invoked. The previous session's worklog statements remain historical. The current branch must not be described as a UI repair or a passed verification run.
+
+
+### Session 25 follow-up — pin control recovered from owner intent
+
+The current rail markup has no manual pin, but the owner's original shell vision requires a small button at the top-left. This directly affects the new idle-hide behavior: without pin state, an agent could implement auto-hide while dropping a required way to keep the sidebar open. D-014, L-23, R-D15, and X-20 now make this the only component addition in Phase 1. The implementation contract fixes a 24×24px hit area, 12px icon, 1.5px stroke, fixed position, keyboard support, and a persistent pinned state that disables idle hiding. This does not authorize the Settings row, new labels, or any other UI change.
+
+**Evidence:** source intent and current HTML were inspected. **Not checked:** implementation, rendered position, keyboard activation, pinned state, or idle interaction. These checks are mandatory in the Phase 1 matrix.
