@@ -45,6 +45,8 @@ Enforcement note: a DO-rule skipped is a defect even if the output looks fine; a
 - **R-D14 · Keep evidence runnable and reachable.** Commit each new verifier/test script and rendered review artifact before using it as evidence. Record the exact command and file path. If no artifact can be run or viewed, mark the result not checked. [L-13, L-16, L-22; INT-028]
 - **R-D15 · Honor the rail pin state.** Add the small owner-requested top-left pin toggle. When pinned, keep the rail expanded and exclude it from idle hiding. When unpinned, restore the defined hover/focus/idle behavior. [L-23, D-014, INT-004, INT-028]
 
+- **R-D16 · Select the semantic parent section.** Use the exact route-to-selection mapping in D-015. Journal selects Archive; Reader has no top-level selection; do not add nav items. [D-015, X-21, INT-028]
+
 ## DON'T — Phase 1 prohibitions
 
 - **R-X12 · Do not freeze an untested visual claim.** Do not state that a transition, route, theme, or layout is fixed unless the rendered behavior was tested and evidence is recorded. [L-13, L-16, INT-028]
