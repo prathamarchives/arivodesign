@@ -25,17 +25,20 @@ if ! compgen -G "context/raw/turn-*.txt" > /dev/null; then
   bad "no raw turns found — intent corpus missing (L-02)"
 fi
 
-# ---------------------------------------------------------------- 2. every raw turn is ledgered
+# ---------------------------------------------------------------- 2. every raw source is cited by an intent entry
+# INT numbers are stable ledger IDs, not a filename-to-ID mapping. A tooling
+# turn can be backfilled after a later turn was already ledgered; validate the
+# exact raw path instead of assuming turn N must be INT-N. This ratchets the
+# source-coverage gap discovered while processing INT-027/INT-028.
 for f in context/raw/turn-*.txt; do
-  [ -e "$f" ] || continue              # no matches → guard, not a failure (check 1 handles emptiness)
-  n="$(basename "$f" .txt)"            # turn-001
+  [ -e "$f" ] || continue
+  n="$(basename "$f" .txt)"
   num="${n#turn-}"
   case "$num" in ''|*[!0-9]*) bad "unparseable raw turn name: $f"; continue;; esac
-  printf -v id 'INT-%03d' "$((10#$num))"   # INT-001 — zero-padded, matches ledger convention
-  if grep -q "\*\*$id" INTENT-LEDGER.md 2>/dev/null; then
-    ok "$id ledgered"
+  if grep -Fq "$f" INTENT-LEDGER.md 2>/dev/null; then
+    ok "$f source-cited in INTENT-LEDGER.md"
   else
-    bad "raw turn $f has no $id entry in INTENT-LEDGER.md (L-02)"
+    bad "raw turn $f has no exact source reference in INTENT-LEDGER.md (L-02)"
   fi
 done
 
