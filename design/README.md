@@ -57,6 +57,7 @@ The `scripts/` directory currently contains the no-cache development server help
 - Rail: 64px collapsed, 168px expanded; 26px avatar; fixed icon/avatar axis; text weight 400; handle is exactly `prathamarchives`, with no `@`.
 - Home: keep the Import action, Currently reading, Reading lists, Recent highlights; 30px section gap and 16px intra-section gap; reading cards keep the 60.256% / remaining-width split.
 - Keep the grayscale palette and existing artwork.
+- Selected destination: Home for both home documents; Library for Library; Archive for Archive and Journal; no top-level selected item in Reader.
 - Do not add “All changes saved”, “Personal Space”, `@prathamarchives`, `⌘K`, or other copy that the owner removed.
 - Do not change typography in Phase 1. The historic Helvetica rule conflicts with the current Figma export's Inter/Lora. That decision remains open.
 - No page-wide blur, screen-covering overlay, bounce, unapproved layout change, or fake success state. No settings row: the owner explicitly removed it.
