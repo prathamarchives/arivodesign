@@ -71,3 +71,10 @@ The first stabilization pass changes route state, theme state, navigation visibi
 Add the owner's requested small manual pin toggle at the **top-left corner of the sidebar**. The control is absent from the current six page exports, but the owner's original shell vision requires it. A pinned rail stays expanded and visible; it is excluded from idle hide. Unpinning returns to the specified hover, focus, and idle behavior. Use a 24×24px hit area, a 12px grayscale line icon with a 1.5px stroke, and no text label. Keep its position fixed as the rail changes width. No settings row, status text, or other new control is authorized. D-013's no-redesign rule remains active except for this one owner-grounded control.
 
 *Grounds: INT-004 (manual top-left sidebar control); INT-024 (Settings row removed); INT-028; L-21.*
+
+
+**D-015 — Active-section indicator follows semantic destination — active** · 2026-10-19
+
+Map top-level selection as follows: `index.html` and `home-light.html` select Home; `library.html` selects Library; `archive.html` and `journal.html` select Archive; `reader.html` has no top-level selection because Reader is a context, not a primary destination. Keep the top-level destinations limited to Home, Library, and Archive. Do not add a Journal or Reader nav item.
+
+*Grounds: INT-004 (Home / Library / Archive); D-009 (Archive contains journal and notes); INT-028 (consistent section interaction).*
