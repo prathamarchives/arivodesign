@@ -601,3 +601,21 @@ Round 1 (server): 6/6 pages 200 at ?v=17; 3 nav items per page in served markup;
 2. The pfp artwork remains the generated placeholder (keep-or-swap call open).
 3. home-light/journal/reader carry no ink pill (no nav item matches them) — identical to PASS 15; flagging it because the DOM harness initially mis-expected a pill there.
 4. The push-discipline standing rule (no push of interpretive changes without owner sign-off) now governs; this fix itself was pushed only after four green verification rounds, to replace the defective remote state with the restored one.
+
+
+---
+
+## INT-028 — interaction stability preflight (specification only; no UI fix claimed)
+
+**Evidence:** owner-supplied screen recording, 2026-10-19; source inspection of `design/index.html`, `design/home-light.html`, `design/library.html`, `design/archive.html`, `design/journal.html`, `design/reader.html`, `design/motion.js`, and the custom shell/motion CSS.
+
+| Defect | Evidence | Root cause | Required correction |
+|---|---|---|---|
+| Theme click acts like page navigation | Theme controls link between `index.html` and `home-light.html`; each body hard-codes one theme | Theme is represented by separate documents, not shared state | One stored theme preference; update the current body in place |
+| Section change feels like a new site load | Nav items link to separate HTML files | No shared route/history runtime | In-place same-origin route update; keep direct URLs and browser history |
+| Transition obscures the UI | Recording shows page-wide blur and a near-blank frame | Transition layer is not coordinated with DOM replacement | Preload destination; animate old/new layers together; no blank frame |
+| Chrome changes position during transition | Recording shows unstable sidebar/nav position | Page and chrome state do not share one lifecycle | One route runtime and one consistent shell state |
+
+**Scope guard:** preserve the Pass 17 sidebar, page content, homepage ratios and spacing, grayscale palette, artwork, and the frozen Figma export. Do not alter typography in this pass; D-008/X-16 and the INT-013 prototype disagree on Helvetica vs Inter/Lora.
+
+**Status:** the execution contract and governance references now exist on `fix/interaction-continuity-int028`. **Not checked:** verifier result after edits, rendered output, route/theme behavior, idle chrome, or responsive states. This entry records diagnosis, not a completed UI repair.
