@@ -431,3 +431,21 @@ Work log:
 - Docs lockstep: ledger INT-025, REVIEW pass 16, STATE rewrite, this entry. Committed locally; push blocked (L-10 — PAT wiped).
 
 **Stage Summary:** PASS 16 live on localhost:3000 (?v=16, no-store): the sidebar is a bottom-left account chip (divider + pfp + "prathamarchives", no @; hover expands 64→168, handle smears in, avatar locked x31 — rAF 0.000); the homepage is a single full-width column — Import top-right, Currently reading (60/40 cards), Reading lists, Recent highlights, every section gap a measured 30px, intra-section 16px; all marked corposlop gone (hero, card eyebrows, journal card, return block, closing line, ⌘K). Disclosed: the below-fold "Your space, at your pace" was removed as genre-corposlop (invisible to the owner's marks); reader.html remains URL-reachable only (pre-existing). Carried: pfp artwork keep-or-swap, PAT to push pass 11–16.
+
+---
+
+## Session 23 — 2026-10-19 — turn 26: dev restarted, gh reinstalled at a persistent path, the pass 11–16 push block CLEARED
+
+**Task ID:** 1 · **Agent:** Super Z (main, GLM host)
+
+**Task:** Owner turn 26 — "get up, read repo, understand and start the dev server setup github cli dependencies here" + a fresh inline PAT.
+
+**Work Log:**
+- Read STATE.md + shared worklog — PASS 16 confirmed on disk at b802e2a, working tree clean; the container reset had killed the dev daemon (port 3000 dead) and wiped gh + the PAT store (L-10 class, 6th occurrence).
+- Dev daemon restarted: `python3 scripts/daemon_nocache.py 3000` — `Cache-Control: no-store` confirmed; 6/6 pages 200 at `?v=16` (server root IS design/ — pages live at `/index.html`, not `/design/index.html`); shell.css / motion.js / pfp.png all 200; served markup carries "prathamarchives" with ZERO `@` hits — PASS 16 live.
+- gh CLI: sandbox has no root (apt lock denied) → standalone binary v2.74.0 pulled from cli/cli releases, installed at `/home/z/my-project/bin/gh` (PERSISTS through resets), symlinked `~/.local/bin/gh`.
+- Auth: turn-26 PAT (redacted per L-15) → `gh auth login` (account prathamarchives, full scopes incl. repo) + `gh auth setup-git` (https credential helper).
+- PUSH BLOCK CLEARED: `git push origin main` → `846291f..b802e2a` — all six blocked passes on GitHub (11 6721fc5 · 12 f05fb04 · 13 6281f5c · 14 2d2608a · 15 fd13038 · 16 b802e2a); `git ls-remote` confirms remote HEAD = b802e2a = local HEAD.
+- Docs lockstep: STATE.md push-status rewrite (coordination, dependencies, next-action menu, the reset lesson — re-auth-only now that the binary persists), this entry.
+
+**Stage Summary:** Dev server live on port 3000 (no-store, ?v=16 — PASS 16 ready for owner review). Remote main = b802e2a = local HEAD — zero unpushed passes for the first time since session 15. Resets now cost one re-auth line, not a reinstall. Live: the bottom-left account chip (hover: 64→168, pfp locked, handle smears in) + the single-column homepage at the 30px rhythm.
