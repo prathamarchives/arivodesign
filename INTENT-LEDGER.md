@@ -400,3 +400,30 @@ The breach, on the record: pass 16's "verification" (three rounds, DOM/rAF/VLM) 
 What INT-026 does: reverts the rail half of pass 16 — the destinations block (Home/Library/Archive) restored on all 6 pages from the PASS 15 commit fd13038 (v17 busts on the restored nav SVG srcs), the panel full-height again (`top: var(--ref-rail-inset)`), the destinations/navigation-item CSS rules restored verbatim, the ink-pill glyph-inversion selection rules restored, the chip's wrapper pinning (align-self + margin-left) reverted to the flex-fill form, the 18 nav icon SVGs restored from fd13038. What SURVIVES from turn 25 (all explicitly ordered, all untouched): the handle reads "prathamarchives" with no @ everywhere; no ⌘K hint; the homepage's marked corposlop stays removed (greeting, card eyebrows, journal card, return block, below-fold closing line); the 30px equal-gap rhythm + 16px intra-section; the 60.256% continue-card basis; sections edge-aligned full-width. The motion system never changed and rides the one clock as built in pass 11.
 
 v17 cache-bust on all asset links. Verify re-ratcheted (5e(a) glass rail full-height + nav live; 5e(d-pfp) v17; 5g(e) v17; 5i ink-pill live again; 5k(d) 18 SVGs REQUIRED present; 5k(e) v17 + nav busts; 5m(a) destinations > divider > identity with 3 items; 5m(d) full-rail rhythm — panel top: inset, NO chip pin residue).
+
+
+---
+
+**INT-027 — TURN-026 REPO AND DEV-ENVIRONMENT SETUP REQUEST — satisfied; backfilled 2026-10-19**
+
+> "get up, read repo, understand and start the dev server setup github cli dependencies here.... ghp_[redacted per L-15] the token"
+
+Source: owner turn 26, `context/raw/turn-026.txt`. This entry was omitted when INT-026 was assigned to the following owner turn. This backfill restores source coverage; it does not renumber prior ledger entries. The credential remains redacted. The session-23 worklog records the server setup, GitHub CLI installation, and push of the earlier verified work.
+
+**Interpretation:** the owner asked for repository understanding and development-tool setup. Do not treat the redacted credential as design intent or copy it into any file.
+
+---
+
+**INT-028 — STABILIZE INTERACTIONS; MAKE ROUTE AND THEME CHANGES CONTINUOUS; REMOVE AGENT DISCRETION — active**
+
+> "act as a world classs designa nd UI/UX engineer, go through [$github](app://connector_76869538009648d5b282a4bb21c3d157) arivodesign im working on a protype UX nad UI and whole experince for my product, working with glm agents who are pretty shit so i want you to really fix that in this repo i have attached a video what has been done and i have attached my own words of what i really wanted from it but it keeps messing up so we have to fix that... by giving it clear instructions how to execute and everything and doesnt leaving judgement and decision on em but just execution.. in video attached see how unsuable it is. everything is broke, the sizing the postioning, the sidebar, the modes, the motion transioitions and everything is messed up... first goal is to make it usable then iterate on it and keep refining until im satisfied and you will instruct my intent and judgement and glm agents will just execute no judgemnt and decisons or deifting is on them"
+
+> "fair now okay lets make everything consistent. now when i switch lightmode/darkmode the page refreshes so fix that. and look for these basic UX and bugs and go through every interaction test and verify it and see if things are actually usable and fix it find bugs, debug, verify iterate and reefine and keep doing that.. and now when i switch sections i looks like whole another page loads??? add transiotion not a feeling that you are going on new page website. it hard refreshes and reloads.. and the mode chnages so fix that and a transiotion of blur out and blur in with motion and last page going on right side and new page fading in from left side... all sections. keep everything consistent. and make the sidebar and navbar dissapear and fade out and slide up when no longer user is interacting with them and postion the whole page acoording to that"
+
+Source: owner turn 28, `context/raw/turn-028.txt`, and attached video `2026-10-19 15-23-52.mp4`. The current turn also repeats earlier owner directives. The older directives remain in their prior entries and are not reinterpreted here.
+
+**Binding interpretation for Phase 1:** this is an interaction-stability task, not permission to redesign the visual language. Preserve the current page content, card ratios, typography, grayscale palette, icon artwork, component dimensions, and the restored sidebar geometry. Implement shared in-place route navigation, persistent global theme state, a bounded route transition, idle navigation chrome, and an evidence-backed interaction audit. See `PHASE-1-EXECUTION.md`.
+
+**Observed from the recording:** mode changes and section changes behave like document navigations; the visible motion treatment obscures most of the interface and one transition state becomes nearly blank. The current code links between separate HTML documents, hard-codes `theme-light` / `theme-dark` on each page, and has no shared route-transition runtime. The video supports a usability defect; it does not prove the exact failure mechanism in every browser.
+
+**Execution boundary:** do not merge or ship interpretive/destructive visual changes without owner review of the rendered result. Do not call any behavior fixed until it passes the run matrix in `PHASE-1-EXECUTION.md` and the evidence is recorded.
