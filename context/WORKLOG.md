@@ -483,3 +483,10 @@ Work log:
 - **Not checked:** `bash verify.sh`; browser behavior; screenshot comparisons; route/history behavior; stored theme; reduced motion; idle chrome. The local shell could not resolve `github.com`, so the repo could not be checked out for a local run. No runtime UI file was changed, and no UI fix is claimed. Do not merge until the next executor runs the verifier and owner reviews rendered evidence.
 
 **Stage Summary:** specification and governance changes are on `fix/interaction-continuity-int028`. Pass 17 remains the UI baseline. Next action is to check out the branch, run the verifier, then execute Pass A only from `PHASE-1-EXECUTION.md`.
+
+
+### Session 25 follow-up — stale runbook and evidence gap
+
+A further source-tree check found that `design/README.md` referenced `scripts/scaffold_design.sh`, `scripts/transform_pages.py`, `scripts/int026-verify.py`, and `scripts/int026-shots.py`, but those files are absent from the current tracked `scripts/` directory. The design README was replaced with the actual file map and an explicit Phase 1 gate. L-22 and R-D14/R-X15 now require future test runners and rendered evidence to be committed and reachable before they support a pass claim. The Phase 1 contract requires screenshots and the full state matrix to live under `design/preview/phase1/`.
+
+**Evidence status remains not checked:** the repo verifier was not run; no browser output was generated; no test script was invoked. The previous session's worklog statements remain historical. The current branch must not be described as a UI repair or a passed verification run.
