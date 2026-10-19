@@ -52,3 +52,12 @@ Every phase of design work must keep this arc walkable. A design that breaks the
 - Invariants X-01..X-10 are the checklist for every painted artifact (Loop 3 self-review, Loop 4 verification).
 - The mechanical half (`verify.sh`) guards the repo; the experiential half is judged against this contract, labeled per L-16.
 - Contract changes follow L-08 (append-only, supersede by reference) and require an INT grounding — the contract renders owner intent, it does not invent it.
+
+
+## Part 2c — Interaction continuity invariants (INT-028)
+
+- **X-17 · Navigation is continuous.** Clicking an internal section link changes the visible section without replacing the document. Direct URLs, URL history, Back, and Forward still work. The current section and selected navigation item agree. [L-19; D-011; INT-028]
+- **X-18 · Motion supports orientation.** On a section change, the old page moves right and fades/softens while the next page enters from the left and becomes sharp. Use the timing and limits in `PHASE-1-EXECUTION.md`. Never leave the viewport blank or obscure the interface with a screen-wide blur. Theme change uses a color transition, not route motion. Reduced-motion mode uses a short opacity fade only. [L-20; D-012; INT-028]
+- **X-19 · Navigation chrome follows activity.** The sidebar and any true global navigation chrome fade and move upward when idle. Activity reveals them. Focused or hovered chrome remains available. Hidden chrome gives its layout space back to the content without clipping or overlap. Content actions and page headings remain visible. [L-21; INT-028]
+
+These invariants apply to the prototype shell and do not authorize changes to the backend objects, reading/capture semantics, page content, or frozen owner export.
