@@ -64,3 +64,6 @@ These invariants apply to the prototype shell and do not authorize changes to th
 
 
 - **X-20 · The sidebar has an explicit pin state.** The small pin toggle sits at the top-left of the rail. Pinned means expanded and visible, with idle hiding disabled. Unpinned means normal hover/focus expansion and idle hiding. The pin's position stays fixed while the rail width changes. No other new control is implied. [L-23; D-014; INT-004; INT-028]
+
+
+- **X-21 · Top-level selection follows the semantic route.** Home and its light export select Home; Library selects Library; Archive and Journal select Archive; Reader selects no top-level destination. Do not add new navigation items to make a file name appear selected. [D-015; INT-004; D-009; INT-028]
