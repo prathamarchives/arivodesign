@@ -64,3 +64,10 @@ Route motion: 300ms, `cubic-bezier(0.32, 0.72, 0, 1)`; old page +18px right, opa
 The first stabilization pass changes route state, theme state, navigation visibility, transition behavior, and test coverage only. Page content, exported artwork, type choices, component geometry, page structure, and the current grayscale design remain unchanged. `design/styles/prototype.css` remains frozen. The Helvetica vs Inter/Lora specification conflict is not resolved by this decision.
 
 *Grounds: INT-013; D-008; D-010; INT-028.*
+
+
+**D-014 — The rail pin toggle is the only Phase 1 control addition — active** · 2026-10-19
+
+Add the owner's requested small manual pin toggle at the **top-left corner of the sidebar**. The control is absent from the current six page exports, but the owner's original shell vision requires it. A pinned rail stays expanded and visible; it is excluded from idle hide. Unpinning returns to the specified hover, focus, and idle behavior. Use a 24×24px hit area, a 12px grayscale line icon with a 1.5px stroke, and no text label. Keep its position fixed as the rail changes width. No settings row, status text, or other new control is authorized. D-013's no-redesign rule remains active except for this one owner-grounded control.
+
+*Grounds: INT-004 (manual top-left sidebar control); INT-024 (Settings row removed); INT-028; L-21.*
