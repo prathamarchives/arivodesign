@@ -183,3 +183,6 @@ The current typeface authority is unresolved in the older record: D-008 / X-16 n
 
   
 **Rail-token clarification:** older prose above still repeats the pre-Figma `48/176` rail math. That text is historical and is not the current implementation value. INT-019 through INT-026 and the current token sheet define the Pass 17 rail as **64px collapsed / 168px expanded, 26px avatar, identity at the bottom**. Use `design/styles/tokens.css` and `PHASE-1-EXECUTION.md` for the current values.
+
+
+**Route-indicator clarification:** older Pass 17 notes that `home-light.html`, `journal.html`, and `reader.html` have no selected ink pill. That note is superseded by D-015 and `PHASE-1-EXECUTION.md`: both Home documents select Home; Journal selects Archive; Reader has no top-level selection because it is a context. Do not add top-level nav items.
