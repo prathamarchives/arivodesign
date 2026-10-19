@@ -2,7 +2,17 @@
 
 > STATUS: navigation snapshot — NOT authority (L-17). Canonical documents win on conflict.
 
-## Where things stand
+## Current state after INT-028 (2026-10-19)
+
+- **Position:** Stage 3 / Phase 1 interaction-stability specification. Baseline UI is Pass 17 on `main`. Work is on branch `fix/interaction-continuity-int028`. No UI runtime files have been repaired in this branch.
+- **Work:** Added `PHASE-1-EXECUTION.md`; backfilled the missing source entry for turn 26 as INT-027; ledgered INT-028; added L-19..L-21, R-D10..R-D13/R-X12..R-X14, X-17..X-19, and D-011..D-013; routed AGENTS/README/DESIGN-SYSTEM to the phase contract; corrected the verifier to check exact raw file references instead of assuming turn number equals INT number.
+- **Diagnosis:** the six pages are separate HTML documents. Internal links switch documents. Theme is hard-coded per page. `motion.js` handles rail hover and initial entrance but does not manage shared route or theme state. The recording shows an obscuring transition and a near-blank frame.
+- **Evidence:**
+  - **verified by source inspection** — page-per-file links and page-level theme classes are present; the current runtime has no shared router or theme persistence.
+  - **not checked** — `bash verify.sh` after the changes; browser rendering; route transition; theme persistence; reduced-motion behavior; idle chrome; responsive layout. No UI-fix claim is made.
+- **Execution constraint:** this editing environment can read and write repository files through the GitHub connector, but the local shell cannot resolve `github.com`. The verifier and browser matrix must run in an environment with a repository checkout before any pass is reported.
+
+## Pass 17 baseline (prior state)
 
 - **Position:** STAGE 3 PASS 17 — "THE SIDEBAR RESTORED — THE TURN-25 NAV-STRIKE WAS A MISREAD; THE PUSH DISCIPLINE WRITTEN INTO LAW" (INT-026, session 24). Owner turn 27: "where the fuck sidebar dissaperddd fix that." The pass-16 chip-only rail was a wrong reading of the turn-25 wavy strike; it shipped to origin without owner validation — the breach is on the record (ledger INT-026): AMBIGUOUS MARKS THAT DELETE WHOLE COMPONENTS get live-owner confirmation BEFORE destructive execution and BEFORE push. Reverted (the rail half of pass 16): destinations (Home/Library/Archive) restored on all 6 pages from fd13038; the panel full-height again (`top: var(--ref-rail-inset)`); nav-item rules + ink-pill glyph inversion restored verbatim; the chip wrapper-pin reverted to flex-fill; 18 nav SVGs restored. KEPT from turn 25 (explicit orders, untouched): handle "prathamarchives" NO @ everywhere; no ⌘K; homepage corposlop stays removed; the 30px/16px rhythm; 60.256% card basis; edge-aligned sections. motion.css/motion.js/tokens.css byte-identical to pass 16 — the motion system rides the one clock (hover 64→168, labels + handle smear in, avatar axis x44 rAF drift 0.000).
 - **Prior state:** PASS 16 (INT-025) — its HOMEPAGE half stands (corposlop removal + equal gaps + recomposition); its RAIL half is reverted by this pass. PASS 15's rail contract is restored (nav at top, divider, account at the end, pfp 26, 8px handle gap, 17px below the line).
@@ -22,7 +32,7 @@ Arivoo main @ `e96ee99` (Phase 2 harness LANDED, Phase 3 owner-gated). arivodesi
 
 ## Next action (exact)
 
-Owner reviews PASS 17 live (gateway → 3000, `?v=17`) — the sidebar is RESTORED: Home/Library/Archive at top (ink pill on the current page), hover expands 64→168 with the labels smearing in, divider, pfp + "prathamarchives" (no @) at the rail's end; the homepage stays the clean single column (Import top-right → Currently reading 60/40 → Reading lists → Recent highlights) at the 30px rhythm. Corrections arrive as turns (Loop 1/2: intake → ledger → repair → ratchet). The live menu: (1) the closing-line removal call + pfp artwork keep-or-swap (carried), (2) whatever the owner strikes next. PUSH DISCIPLINE now governs: interpretive/destructive changes push only after owner sign-off on the dev server. The moment the sidebar + homepage lock: the content-area port per D-007.
+The implementation agent must check out `fix/interaction-continuity-int028`, read `AGENTS.md`, `PHASE-1-EXECUTION.md`, and `GOVERNANCE.md`, then run `bash verify.sh`. Fix any verifier failure before starting UI changes. Execute Pass A only: shared route state and persistent theme. Keep `design/styles/prototype.css` frozen. Render and test the Pass A matrix before touching Pass B motion. Do not claim a fix without evidence. Do not merge or ship before owner review of the rendered result.
 
 ## How to use this file
 
