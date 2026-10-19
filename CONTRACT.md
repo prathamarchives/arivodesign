@@ -61,3 +61,6 @@ Every phase of design work must keep this arc walkable. A design that breaks the
 - **X-19 · Navigation chrome follows activity.** The sidebar and any true global navigation chrome fade and move upward when idle. Activity reveals them. Focused or hovered chrome remains available. Hidden chrome gives its layout space back to the content without clipping or overlap. Content actions and page headings remain visible. [L-21; INT-028]
 
 These invariants apply to the prototype shell and do not authorize changes to the backend objects, reading/capture semantics, page content, or frozen owner export.
+
+
+- **X-20 · The sidebar has an explicit pin state.** The small pin toggle sits at the top-left of the rail. Pinned means expanded and visible, with idle hiding disabled. Unpinned means normal hover/focus expansion and idle hiding. The pin's position stays fixed while the rail width changes. No other new control is implied. [L-23; D-014; INT-004; INT-028]
