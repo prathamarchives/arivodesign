@@ -62,7 +62,7 @@ fi
 
 # ---------------------------------------------------------------- 5. kernel + harness present
 for f in AGENTS.md LAWS.md RULES.md CONTRACT.md PRINCIPLES.md DECISIONS.md \
-         INTENT-LEDGER.md GOVERNANCE.md STATE.md GLOSSARY.md verify.sh; do
+         INTENT-LEDGER.md GOVERNANCE.md STATE.md GLOSSARY.md PHASE-1-EXECUTION.md verify.sh; do
   if [ -s "$f" ]; then ok "system file present: $f"; else bad "system file missing/empty: $f"; fi
 done
 
