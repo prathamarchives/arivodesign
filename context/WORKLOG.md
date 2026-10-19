@@ -465,3 +465,21 @@ Work log:
 - Docs lockstep: turn-026/027 archived, INTENT-LEDGER INT-026, REVIEW pass 17, STATE rewritten, this entry. Committed and PUSHED (the defective remote state replaced by the verified restore).
 
 **Stage Summary:** PASS 17 live on localhost:3000 (?v=17, no-store) and on origin: the sidebar is BACK — Home/Library/Archive at top with the ink pill, hover expands 64→168 (labels smear in, avatar locked x44), divider, pfp + "prathamarchives" (no @) at the end — while every explicit turn-25 order stands (no @, no ⌘K, homepage corposlop gone, one 30px rhythm). The push discipline is now law: no interpretive push without owner sign-off.
+
+
+---
+
+## Session 25 — 2026-10-19 — INT-028: route/theme continuity contract and verification-source repair
+
+**Task ID:** 1 · **Agent:** ChatGPT via GitHub connector
+
+**Task:** inspect the supplied recording and current prototype; prevent agent drift; define the first usability pass.
+
+**Work Log:**
+- Inspected `AGENTS.md`, laws, rules, contract, decisions, design-system, phase state, intent ledger, current prototype HTML, `motion.js`, motion/shell/token CSS, and the current verification script. The supplied recording shows an obscuring transition and a near-blank state. Source inspection indicates section and theme controls are links between separate HTML files; theme classes are fixed per page.
+- Captured the current interaction-stability directive as INT-028. Backfilled the previously missing turn-026 source entry as INT-027 without renumbering the prior ledger.
+- Added `PHASE-1-EXECUTION.md` with fixed file scope, route/history/theme behavior, transition limits, idle chrome behavior, viewports, route/theme matrix, and acceptance criteria. Added L-19..L-21, R-D10..R-D13/R-X12..R-X14, X-17..X-19, D-011..D-013. Updated the agent entry point, README, design-system pointer, STATE, and review log.
+- Repaired verifier logic: raw source coverage now checks the exact `context/raw/turn-NNN.txt` path in the ledger, rather than assuming the numeric turn always equals the INT identifier. The phase contract is also part of the required-file check.
+- **Not checked:** `bash verify.sh`; browser behavior; screenshot comparisons; route/history behavior; stored theme; reduced motion; idle chrome. The local shell could not resolve `github.com`, so the repo could not be checked out for a local run. No runtime UI file was changed, and no UI fix is claimed. Do not merge until the next executor runs the verifier and owner reviews rendered evidence.
+
+**Stage Summary:** specification and governance changes are on `fix/interaction-continuity-int028`. Pass 17 remains the UI baseline. Next action is to check out the branch, run the verifier, then execute Pass A only from `PHASE-1-EXECUTION.md`.
