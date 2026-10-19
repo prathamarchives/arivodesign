@@ -31,3 +31,19 @@ Enforcement note: a DO-rule skipped is a defect even if the output looks fine; a
 - **R-X09 · Don't violate the reading experience.** No admin chrome, no governance views, no settings inside the reading flow. [L-01]
 - **R-X10 · Don't work past a red verify.** `verify.sh` failing = fix first, then continue. No pushing, no new work on top. [L-13]
 - **R-X11 · Don't decide owner-gated questions alone.** Platform lock (desktop-first is a working decision), layer content, reader technology, and any experience-direction fork are reasoned WITH the owner, then ledgered. [L-05; INT-002]
+
+
+---
+
+## DO — Phase 1 continuity requirements
+
+- **R-D10 · Preserve route state.** Implement the exact route, theme, URL/history, and storage behavior in `PHASE-1-EXECUTION.md`. Direct URLs remain valid. [L-19, D-011, INT-028]
+- **R-D11 · Keep the transition bounded.** Use the one duration and easing specified in `PHASE-1-EXECUTION.md`. Fetch the target before starting. Do not show a blank frame. [L-20, X-11, INT-028]
+- **R-D12 · Test the whole route/theme matrix.** Test all six pages in both themes at the specified viewport sizes. Record browser, viewport, exact steps, screenshots, console result, and outcome. [L-13, L-16, L-21, INT-028]
+- **R-D13 · Re-init without duplication.** After a route change, reset selected navigation state and run motion setup once. Repeated route changes must not add listeners or timers. [L-19, D-011]
+
+## DON'T — Phase 1 prohibitions
+
+- **R-X12 · Do not freeze an untested visual claim.** Do not state that a transition, route, theme, or layout is fixed unless the rendered behavior was tested and evidence is recorded. [L-13, L-16, INT-028]
+- **R-X13 · Do not widen the change.** Do not change page content, component sizes, type, icon art, cover art, backend behavior, or the frozen `design/styles/prototype.css`. Do not add dependencies or use broad color filters. [L-18, D-008, D-010, INT-028]
+- **R-X14 · Do not create fake outcomes.** Do not add success messages or imply that an unimplemented product action succeeded. Record undefined controls as unresolved instead. [L-16, X-03, INT-028]
