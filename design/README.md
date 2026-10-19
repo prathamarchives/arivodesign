@@ -1,71 +1,66 @@
-# the design surface — the owner's v1 prototype, replicated one-on-one (INT-013)
+# Design surface — arivodesign
 
-Static prototype. No framework, no build step. As of INT-013 the product surface is the
-OWNER'S OWN Figma v1 prototype (uploaded as `figma-export.zip`, archived at
-`context/references/figma-v1/`) — replicated one-on-one and brought alive with the
-harness's motion vocabulary. Passes 1–5's derived design is superseded for every
-surface the prototype depicts.
+**Sources:** INT-004, INT-013, INT-025, INT-026, INT-028; D-008..D-013.  
+**Current UI baseline:** Pass 17.  
+**Current task:** read [`PHASE-1-EXECUTION.md`](../PHASE-1-EXECUTION.md) before changing any UI runtime file.
 
-## Open it
+## Status
 
-From the repo root — `bash serve.sh` (the repo's preview capability, INT-005):
+The repository contains a static HTML/CSS/vanilla-JavaScript prototype. The current pages are:
 
-```bash
-bash serve.sh            # → http://localhost:3000  (the chat preview gateway proxies 3000)
-bash serve.sh 4173       # any port you like
+- `index.html` — dark home export.
+- `home-light.html` — light home export.
+- `library.html` — library export.
+- `archive.html` — archive export.
+- `journal.html` — journal composing surface.
+- `reader.html` — reader and passage interaction concept.
+
+**Phase 1 is specified but not implemented.** Section links still use separate HTML documents. Theme classes are set per page. Do not claim navigation or theme continuity until the new behavior is implemented and tested in a browser.
+
+## Run the prototype
+
+From the repository root:
+
+```sh
+bash serve.sh
 ```
 
-Or open `design/index.html` directly in a browser (no build step, no dependency).
+The local preview uses port 3000 by default. Directly open a page only when testing standalone-load behavior. For the shared interaction tests, use the route and theme matrix in the phase contract.
 
-## What to try (the owner's checklist)
+## Source-of-truth order
 
-1. **Rail** — hover it: the 48px slot opens a 176px overlay panel (labels, account,
-   "All changes saved" stagger in); the pin (bottom) holds it open — tilts when pinned.
-   Archive ships pinned = its own frame state.
-2. **Theme** — the sun/moon in the header toggles dark home ↔ light home.
-3. **Home** — greeting, currently reading (illustrated covers + progress fill-in),
-   reading lists (fanned cover stacks), recent highlights, journal + return-to-a-thought.
-4. **Library** — segmented filters, folders, the book shelf with cover stages, the
-   article/paper/post/writing rows.
-5. **Archive** — journal week strip (Fri 16 active), today's entry, notes, knowledge
-   base growing-entities with grounded sources.
-6. **Journal** — the composing surface: authored day page with a breathing caret,
-   format toolbar, the `@design` reference picker with keyboard hints, the dark
-   source-preview card (with the owner's `arivo://` anchor URI).
-7. **Reader** — the reading surface with the captured passage, selection toolbar
-   (Highlight / Bookmark / Deep note), the floating deep-note panel with the
-   conceptual diagram (Visible cue → Action → Feedback), Read/Listen page pill.
-8. **Hover everything** — cards bloom, covers lift, pills press (.98), tooltips rise.
+1. `../AGENTS.md` — session entry and read order.
+2. `../LAWS.md`, `../RULES.md`, `../CONTRACT.md`, `../DECISIONS.md` — hard constraints and product decisions.
+3. `../INTENT-LEDGER.md` — owner intent authority.
+4. `../PHASE-1-EXECUTION.md` — exact current scope, constants, and acceptance matrix.
+5. This prototype — existing HTML/CSS structure and owner-provided export.
 
-## Structure
+If documentation and code conflict, do not guess. Follow the current decision record and phase contract. Record the conflict.
 
-```
-index.html            dark home (landing)          ← the owner's home-dark frame
-home-light.html       light home                   ← the owner's home frame
-library.html          library                      ← the owner's library frame
-archive.html          archive (pinned rail)        ← the owner's archive frame
-journal.html          journal day composing        ← the owner's journal frame
-reader.html           reader + deep note           ← the owner's reader frame
-images/               the owner's SVG set (verbatim)
-motion.js             entrance stagger + rail hover/pin
-styles/tokens.css     every literal + @font-face (Inter 400/500, Lora) + page canvases
-styles/prototype.css  the owner's export VERBATIM — frozen artifact, never edited
-styles/shell.css      scaffold glue only (shell grid, rail slot/panel, cover dims,
-                      track sizes, pill backgrounds, one axis, pinned claim, breath)
-styles/motion.css     the motion layer (rise, bloom, press, fill-in, tooltips)
-assets/fonts/         Inter 400/500 + Lora 400 (self-hosted; zero CDN)
-preview/              pass-6 evidence (p6-*.png)
-```
+## Files
 
-Rebuild pipeline (idempotent): `scripts/scaffold_design.sh` (wipe + install + glue) →
-`scripts/transform_pages.py` (links, titles, nav anchors, rail panel, labels, tooltips,
-fills) → `scripts/shoot_p6.py` (evidence). Glue masters live in `scripts/design-glue/`.
+- `index.html`, `home-light.html`, `library.html`, `archive.html`, `journal.html`, `reader.html` — page exports.
+- `styles/prototype.css` — owner-supplied Figma export. **Frozen. Do not edit.**
+- `styles/tokens.css` — current font declarations, color variables, sizing tokens.
+- `styles/shell.css` — shared page shell and sidebar geometry.
+- `styles/motion.css` — sidebar, content hover, and entrance motion.
+- `motion.js` — current page entrance, nav selection, and sidebar hover/focus behavior.
+- `images/` — SVG artwork and profile image.
+- `assets/fonts/` — self-hosted fonts.
+- `preview/` — previous design-review screenshots.
 
-The canonical spec is `../DESIGN-SYSTEM.md` (amended INT-013). If code and spec
-disagree, that's a defect (Loop 2).
+The `scripts/` directory currently contains the no-cache development server helpers only. Older notes named `scripts/scaffold_design.sh`, `scripts/transform_pages.py`, `scripts/int026-verify.py`, and `scripts/int026-shots.py`; those files are **not present in the current repository tree**. Do not invoke them or claim that they can reproduce a test. Any new test runner must be committed before its results can support a verification claim.
 
-## Font note
+## Locked UI constraints
 
-The prototype speaks Inter (400/500) + Lora (reader prose) — the owner's own choice in
-Figma, self-hosted here. The earlier Helvetica faces are retired from the surface
-(retained in git history).
+- Sidebar: full-height floating glass rail; Home / Library / Archive at the top; account identity at the bottom.
+- Rail: 64px collapsed, 168px expanded; 26px avatar; fixed icon/avatar axis; text weight 400; handle is exactly `prathamarchives`, with no `@`.
+- Home: keep the Import action, Currently reading, Reading lists, Recent highlights; 30px section gap and 16px intra-section gap; reading cards keep the 60.256% / remaining-width split.
+- Keep the grayscale palette and existing artwork.
+- Do not add “All changes saved”, “Personal Space”, `@prathamarchives`, `⌘K`, or other copy that the owner removed.
+- Do not change typography in Phase 1. The historic Helvetica rule conflicts with the current Figma export's Inter/Lora. That decision remains open.
+- No page-wide blur, screen-covering overlay, bounce, unapproved layout change, or fake success state.
+
+## Current execution gate
+
+The only active task is Phase 1 in `../PHASE-1-EXECUTION.md`: shared route and theme state first; then route motion and idle chrome; then an interaction audit. Test the current state before each pass, capture rendered evidence, update `REVIEW.md`, and do not merge without owner review.
