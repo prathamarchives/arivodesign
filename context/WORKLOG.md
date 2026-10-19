@@ -497,3 +497,10 @@ A further source-tree check found that `design/README.md` referenced `scripts/sc
 The current rail markup has no manual pin, but the owner's original shell vision requires a small button at the top-left. This directly affects the new idle-hide behavior: without pin state, an agent could implement auto-hide while dropping a required way to keep the sidebar open. D-014, L-23, R-D15, and X-20 now make this the only component addition in Phase 1. The implementation contract fixes a 24×24px hit area, 12px icon, 1.5px stroke, fixed position, keyboard support, and a persistent pinned state that disables idle hiding. This does not authorize the Settings row, new labels, or any other UI change.
 
 **Evidence:** source intent and current HTML were inspected. **Not checked:** implementation, rendered position, keyboard activation, pinned state, or idle interaction. These checks are mandatory in the Phase 1 matrix.
+
+
+### Session 25 follow-up — semantic route selection
+
+The route contract now maps the existing top-level destinations by product meaning, not raw filename. Both Home files select Home; Library selects Library; Archive and Journal select Archive; Reader has no top-level selection. This matches the owner-defined three-section shell and the archive's role as the home of notes and journal content. No Journal or Reader nav item is added. Older Pass 17 review text is preserved as history but marked superseded by D-015.
+
+**Evidence status:** source-level contract change only. **Not checked:** browser rendering, `aria-current`, section navigation, or selected-indicator appearance.
