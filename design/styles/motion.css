@@ -271,3 +271,34 @@ body.theme-dark [data-tip]::after {
   body.js .rail-panel { opacity: 1; transform: none; }
   .fill-anim { transform: none; }
 }
+
+/* ---------- INT-027: chrome auto-hide MOTION + theme canvas ----------
+   LAWS 4/5 hold: every element keeps its ONE stack. The rail's
+   existing stack (width/box-shadow/opacity/transform, above) carries
+   its hide state — no new transition is declared for it here, only
+   state values. The header gets its single stack. The shell's grid
+   tracks animate on their own single stack (Chromium 107+; below
+   that the states still flip instantly — functionality intact).
+   View + theme BLUR sweeps are WAAPI-driven (motion.js) by the
+   owner's turn-28 order — no stylesheet filter rules exist. */
+body > div > [class^="study-shell-"] {
+  transition: grid-template-columns 0.42s cubic-bezier(0.32, 0.72, 0, 1),
+              grid-template-rows 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+}
+body > div > [class^="study-shell-"] > [class^="workspace-header-"] {
+  transition: opacity 0.32s ease, transform 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+}
+/* hidden state (owner order: "fade out and slide up"): the header
+   retracts fully, the glass rail lifts and fades — both dead to the
+   pointer until motion.js wakes them on any activity */
+body.chrome-hidden > div > [class^="study-shell-"] > [class^="workspace-header-"] {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+body.js.ready.chrome-hidden .rail-panel {
+  opacity: 0;
+  transform: translateY(-16px);
+  pointer-events: none;
+}
+/* theme flip: the canvas crossfades under the WAAPI blur sweep */
+body { transition: background-color 0.32s ease; }

@@ -465,3 +465,21 @@ Work log:
 - Docs lockstep: turn-026/027 archived, INTENT-LEDGER INT-026, REVIEW pass 17, STATE rewritten, this entry. Committed and PUSHED (the defective remote state replaced by the verified restore).
 
 **Stage Summary:** PASS 17 live on localhost:3000 (?v=17, no-store) and on origin: the sidebar is BACK — Home/Library/Archive at top with the ink pill, hover expands 64→168 (labels smear in, avatar locked x44), divider, pfp + "prathamarchives" (no @) at the end — while every explicit turn-25 order stands (no @, no ⌘K, homepage corposlop gone, one 30px rhythm). The push discipline is now law: no interpretive push without owner sign-off.
+
+---
+
+## Session 25 — 2026-10-19 — INT-027 (turn 28, turn-keyed INT-028): view transitions, persistent mode, auto-hiding chrome, both themes on all six pages
+
+**Task ID:** 1 · **Agent:** Super Z (main, GLM host)
+
+**Task:** Owner turn 28 — no-refresh theme toggle; section switches as blur-swept view transitions (old exits right, new enters from left); mode persistence across sections; sidebar+navbar auto-hide with full-page reflow; a general bug-hunt/QA mandate.
+
+**Work Log:**
+- Forensics: the toggle was a literal navigation (index.html ↔ home-light.html anchors); sections had BAKED themes (index dark, the other five light) — the "mode changes while switching sections" complaint mapped to baked classes + a toggle that navigated; the paint census (live DOM walk, int027-paint-inventory.py) established the light/dark counterpart tables from the home pair.
+- Router (motion.js): WAAPI view transitions (leave 240ms exit-right, enter 320ms from-left, blur out/in per owner order), live-rail adoption into each new shell, pushState/popstate, title/breadcrumb/pill/scroll per swap, graceful fetch-fallback. IN-PASS DEFECTS caught by the loop: node-cache emptied by cross-document adoption (revisit → hard-refresh fallback) → HTML-string cache; popstate's URL already changed → no-op guard reads body[data-page]; the DOM-move armed the 140ms close-grace that beat the post-swap re-assert → re-assert via railCtl (cancels the grace).
+- Theme controller: toggle intercepts (never navigates), blur out/in sweep, body-class flip + rail icon set + moon/sun glyph via data-icon-dark/light pairs, sessionStorage('pa-theme'), persists across swaps; inline restore script (class pre-paint) + load-time icon normalization on all 6 pages.
+- themes.css GENERATED (int027-build-themes.py): bidirectional remap — cards/alt/recessed/hairlines/canvas root+shell mirrored from the home pair; inverted-ink CTAs, today-chips, mode-chips, active segment pills; monochrome glyphs via filter:invert(1); cover art NEVER remapped (ratcheted 5o(h)). Round-3 VLM catches fixed in-pass: the canvas layers (root div + shell, outside the shell-children walk) stayed white in dark; the journal SOURCE PREVIEW card was misclassified inverted-ink (glaring white) → reclassified dark surface.
+- Auto-hide: 3.2s idle → chrome-hidden (grid tracks animate on their own stack; reader/journal 3-row templates keep content rows; rail -16px fade via body.js.ready.chrome-hidden (0,4,0) — the plain (0,2,0) form lost to the entrance rule, round-2 catch; header -100%); typing-only focus suppression (a clicked link's residual focus used to pin the chrome forever).
+- v18 busts + themes.css link on 6 pages; verify.sh re-ratcheted (v18 + NEW 5o a–h).
+
+**Stage Summary:** PASS 18 live on localhost:3000 (?v=18, no-store): sections switch like an app (blur-swept, no reload, rail never dies), the mode is a sticky body class everywhere (all six pages render both designs), the chrome melts away at idle and the page reflows. FOUR green rounds (25 + 145 checks + VLM x10 + ratchet 129 ok).

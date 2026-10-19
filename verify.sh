@@ -149,7 +149,7 @@ if [ "$pages_ok" -eq 6 ] && ! grep -rq '@prathamarchives' design/*.html; then
 else
   bad "identity missing on $((6-pages_ok))/6 pages or @ still present (INT-013/025)"
 fi
-pa=$(grep -l 'avatar-img" src="images/pfp.png?v=17' design/*.html | wc -l)
+pa=$(grep -l 'avatar-img" src="images/pfp.png?v=18' design/*.html | wc -l)
 if [ "$pa" -eq 6 ] && [ -s design/images/pfp.png ]; then
   ok "real pfp image in all 6 rails (INT-024 — the monogram retired by owner order)"
 else
@@ -243,12 +243,12 @@ if grep -q 'progress-track-' design/styles/shell.css && grep -q 'height: 4px' de
 else
   bad "progress tracks unsized — invisible progress was the G-class failure (INT-013)"
 fi
-# (e) cache-bust version bumped with the paint (?v=17) — the INT-008 landing-failure class
+# (e) cache-bust version bumped with the paint (?v=18) — the INT-008 landing-failure class
 vb=$(grep -o 'tokens.css?v=[0-9]*' design/index.html | grep -o '[0-9]*$')
-if [ "$vb" = "17" ]; then
-  ok "asset links cache-busted at v17"
+if [ "$vb" = "18" ]; then
+  ok "asset links cache-busted at v18"
 else
-  bad "asset links not re-busted at v17 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
+  bad "asset links not re-busted at v18 (found: ${vb:-none}) — owner may see stale CSS (INT-008 class)"
 fi
 # (f) no external resource references — everything local (the export's only CDN was fonts)
 ext="$(grep -hEo 'src="http[^"]*"|href="http[^"]*"' design/*.html 2>/dev/null | grep -v '^$' || true)"
@@ -355,8 +355,11 @@ else
 fi
 # (e) hover = growth, never a hop: no pixel-translateY hops in the
 #     hover family; scale-up present. (translateY(-50%) is exempt —
-#     it is the tooltip's static vertical centering, never animated)
-if grep -q 'translateY(-[0-9.]*px' design/styles/motion.css; then
+#     the tooltip's static centering. The chrome-hidden states are
+#     EXEMPT since INT-027: translateY(-16px)/(-100%) there are the
+#     owner-ordered auto-hide slide-up states, not hover hops — the
+#     ban is scoped to everything OUTSIDE the chrome-hidden block.)
+if grep 'translateY(-[0-9.]*px' design/styles/motion.css | grep -v 'translateY(-16px)' | grep -v 'translateY(-100%)' | grep -q 'translateY'; then
   bad "translateY hop in motion.css — hover grows (scale), it does not hop (INT-020 law 1)"
 else
   ok "no hop family (hover = scale growth only)"
@@ -421,15 +424,15 @@ else
 fi
 # (e) changed ASSETS carry the cache-bust (the stale-render class); the
 #     INT-026 changed set = the four stylesheets + motion.js + the pfp img
-#     + the 18 restored rail icons (all at v17; the nav srcs carry v17
+#     + the restored rail icons (all at v18; the nav srcs carry v18
 #     from the restore, never the stale v15)
-bust=$(grep -o 'styles/[a-z]*\.css?v=17\|motion\.js?v=17\|images/pfp\.png?v=17' design/index.html | wc -l)
-stale=$(grep -o '?v=15\|?v=16' design/*.html | wc -l)
-navbust=$(grep -o 'images/vector-[0-9]*\.svg?v=17' design/index.html | wc -l)
-if [ "$bust" -ge 6 ] && [ "$stale" -eq 0 ] && [ "$navbust" -eq 3 ]; then
-  ok "changed assets cache-busted (CSS x4 + motion.js + pfp + 3 nav icons at ?v=17, no stale v15/v16 — INT-008 class)"
+bust=$(grep -o 'styles/[a-z]*\.css?v=18\|motion\.js?v=18\|images/pfp\.png?v=18' design/index.html | wc -l)
+stale=$(grep -o '?v=15\|?v=16\|?v=17' design/*.html | wc -l)
+navbust=$(grep -o 'images/vector-[0-9]*\.svg?v=18' design/index.html | wc -l)
+if [ "$bust" -ge 7 ] && [ "$stale" -eq 0 ] && [ "$navbust" -ge 3 ]; then
+  ok "changed assets cache-busted (CSS x5 + motion.js + pfp + nav icons at ?v=18, no stale v15/v16/v17 — INT-008 class)"
 else
-  bad "cache-bust incomplete ($bust v17 links, $navbust nav busts, $stale stale v15/v16) — stale-render class (INT-008)"
+  bad "cache-bust incomplete ($bust v18 links, $navbust nav busts, $stale stale v15/v16/v17) — stale-render class (INT-008)"
 fi
 
 # ---------------------------------------------------------------- 5l. INT-024 rail order + settings removal guards (re-ratcheted 2026-10-17)
@@ -545,6 +548,85 @@ if grep -q 'body > div .study-shell-499 { grid-template-rows: auto auto minmax(0
   ok "page-shell row templates at (0,1,2) specificity — 3-row shells beat the base rule (INT-024 defect fix)"
 else
   bad "row-template specificity regression — reader/journal rails would clip (INT-024 defect class)"
+fi
+
+
+# ---------------------------------------------------------------- 5o. INT-027 app-behavior guards (ratcheted 2026-10-19)
+# Owner turn 28: no-refresh section switches (view transitions), mode switch
+# without navigation + persistence, auto-hiding chrome, and the bidirectional
+# theme layer. These are STATIC guards; the run-time behavior is proven by
+# scripts/int027-verify1.py (25 checks) + int027-verify2.py (145 checks).
+# (a) themes.css linked on all 6 pages, after motion.css
+tl=0
+for pg in design/index.html design/home-light.html design/library.html design/archive.html design/journal.html design/reader.html; do
+  grep -q 'styles/motion.css?v=18">' "$pg" && grep -q 'styles/themes.css?v=18">' "$pg" && tl=$((tl+1))
+done
+if [ "$tl" -eq 6 ]; then
+  ok "themes.css linked on all 6 pages (INT-027 theme layer present)"
+else
+  bad "themes.css missing on $((6-tl))/6 pages — the mode cannot flip without it (INT-027)"
+fi
+# (b) icon + toggle data attrs: 4 data-icon pairs per page (3 nav + 1 toggle)
+di=0
+for pg in design/index.html design/home-light.html design/library.html design/archive.html design/journal.html design/reader.html; do
+  n=$(grep -c 'data-icon-dark=' "$pg")
+  t=$(grep -c 'data-theme-toggle="1"' "$pg")
+  [ "$n" -eq 4 ] && [ "$t" -eq 1 ] && di=$((di+1))
+done
+if [ "$di" -eq 6 ]; then
+  ok "rail icon pairs + toggle wiring on all 6 pages (4 data-icon + data-theme-toggle each)"
+else
+  bad "icon/toggle wiring broken on $((6-di))/6 pages (INT-027)"
+fi
+# (c) inline theme-restore script right after <body> (no flash, no navigation)
+tr=0
+for pg in design/index.html design/home-light.html design/library.html design/archive.html design/journal.html design/reader.html; do
+  grep -q "sessionStorage.getItem('pa-theme')" "$pg" && tr=$((tr+1))
+done
+if [ "$tr" -eq 6 ]; then
+  ok "inline theme-restore script on all 6 pages (mode survives direct loads)"
+else
+  bad "theme-restore script missing on $((6-tr))/6 pages — direct loads lose the mode (INT-027)"
+fi
+# (d) motion.js carries the router + theme + auto-hide controller
+if grep -q "pushState" design/motion.js && grep -q "pa-theme" design/motion.js \
+   && grep -q "chrome-hidden" design/motion.js && grep -q "IDLE_MS" design/motion.js \
+   && grep -q "data-page" design/motion.js; then
+  ok "motion.js: router + theme controller + chrome auto-hide present (INT-027)"
+else
+  bad "motion.js lost a controller — router/theme/autohide markers missing (INT-027)"
+fi
+# (e) the DOM-state no-op guard (popstate cannot compare URL with itself)
+if grep -q "The no-op guard reads the DOM STATE" design/motion.js; then
+  ok "router no-op guard reads data-page (the popstate URL-identity trap is closed)"
+else
+  bad "router no-op guard regressed to URL comparison — back/forward desyncs DOM (INT-027 defect class)"
+fi
+# (f) chrome-hidden layout + motion blocks
+if grep -q "body.chrome-hidden > div > \[class\^=\"study-shell-\"\]" design/styles/shell.css \
+   && grep -q "grid-template-columns: 0 minmax(0, 1fr)" design/styles/shell.css \
+   && grep -q "body.js.ready.chrome-hidden .rail-panel" design/styles/motion.css \
+   && grep -q "translateY(-100%)" design/styles/motion.css; then
+  ok "chrome auto-hide: grid collapse + fade/slide-up states lawful (INT-027)"
+else
+  bad "chrome auto-hide CSS broken — layout or motion rules missing (INT-027)"
+fi
+# (g) themes.css carries the canvas mirror + ink remaps + the journal surface fix
+if grep -q "background-color: #171717" design/styles/themes.css \
+   && grep -q "background-color: #222222" design/styles/themes.css \
+   && grep -q "body.theme-dark .text-rgb-37-37-37" design/styles/themes.css \
+   && grep -q "body.theme-light .text-rgb-238-238-234" design/styles/themes.css \
+   && grep -q "body.theme-dark .node-196 { background-color: #2C2C2C" design/styles/themes.css; then
+  ok "themes.css: canvas mirror + bidirectional ink + journal SOURCE PREVIEW surface (INT-027)"
+else
+  bad "themes.css incomplete — canvas/ink/journal-surface rules missing (INT-027)"
+fi
+# (h) cover art never remapped (the law): no book-cover/spine/rule rules in themes.css
+if ! grep -qE "theme-dark \.(book-cover|spine|rule-|door-study|handle-|system-)" design/styles/themes.css \
+   && ! grep -qE "theme-light \.(book-cover|spine|rule-|door-study|handle-|system-)" design/styles/themes.css; then
+  ok "cover art untouched by the theme layer (both directions) — the remap law holds"
+else
+  bad "themes.css remaps cover art — forbidden (identical across themes by design)"
 fi
 
 # ---------------------------------------------------------------- 5n. INT-025 homepage corposlop + rhythm guards (ratcheted 2026-10-17)

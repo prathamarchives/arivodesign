@@ -584,3 +584,30 @@ a:focus-visible, [data-tip]:focus-visible {
 .action-685, .list-view-688 { background-color: #FFFFFF; border: 1px solid #DEDEDB; }
 .action-146, .action-978 { flex-direction: row; }
 [class^="action-"] p, .node-518 p { white-space: nowrap; }
+
+/* ---------- INT-027: chrome auto-hide LAYOUT (owner turn 28) ----------
+   When the pointer is idle (or resting outside the chrome) for 3.2s,
+   motion.js stamps body.chrome-hidden: the rail column and the header
+   row collapse and the content column reflows to the full canvas
+   ("position the whole page acoordingly"). The MOTION lives in
+   motion.css (fade + slide up on the one stacks); this block is
+   layout truth only. Per-template row overrides keep the 3-row
+   shells (reader/journal, INT-024) intact — only the header row
+   dies; reader's heading row and journal's footer row are CONTENT
+   and stay. */
+body.chrome-hidden > div > [class^="study-shell-"] {
+  grid-template-columns: 0 minmax(0, 1fr);
+  grid-template-rows: 0 minmax(0, 1fr);
+}
+body.chrome-hidden > div > .study-shell-499 { grid-template-rows: 0 auto minmax(0, 1fr); }
+body.chrome-hidden > div > .study-shell-175 { grid-template-rows: 0 minmax(0, 1fr) auto; }
+body.chrome-hidden > div > [class^="study-shell-"] > [class^="workspace-header-"] {
+  overflow: hidden;                 /* the bar clips as its row dies */
+  border-bottom-color: transparent; /* no 1px sliver at height 0 */
+  pointer-events: none;
+}
+body.chrome-hidden > div > [class^="study-shell-"] > [class^="navigation-rail-"],
+body.chrome-hidden > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
+  overflow: hidden;                 /* the glass panel fades inside the dying column */
+  pointer-events: none;
+}
