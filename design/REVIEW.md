@@ -578,3 +578,26 @@ Round 1 (DOM ×2 states ×6 pages): 0 errors — chip 64×86 at y572-658 on all 
 2. The rail strike was read as NAV-ONLY (the stroke stops at the divider; the avatar is unmarked; the @-order implies the handle lives). If the owner meant the whole chip too, it is one HTML block.
 3. reader.html is URL-reachable only (pre-existing since the export — the rail never linked it; the rail's removal changed nothing).
 4. Push still blocked (L-10): pass 11–16 wait on a fresh inline PAT.
+
+## Pass 17 — INT-026: the sidebar restored — the turn-25 nav-strike was a misread (2026-10-19)
+
+Trigger: owner turn 27 — "where the fuck sidebar dissaperddd fix that and how the fuck did you pushed without verifccation if everythings right." The pass-16 chip-only rail was a WRONG READING of the turn-25 wavy strike; it shipped, and it shipped to origin without owner validation. This pass reverts the rail to the PASS 15 form and keeps every explicit turn-25 order.
+
+### What changed
+
+The rail half of pass 16 is reverted: destinations (Home/Library/Archive) restored on all 6 pages from fd13038 with v17-busted srcs; the panel is a full-height column again (`top: var(--ref-rail-inset)`, not the chip's `top: auto`); the destinations/navigation-item rules and the ink-pill glyph-inversion selection rules restored verbatim; the chip's wrapper pinning reverted to the flex-fill lock; 18 nav icon SVGs restored from fd13038. Untouched, per explicit owner orders: the handle reads "prathamarchives" (no @), no ⌘K, the homepage corposlop stays gone, the 30px/16px rhythm, the 60.256% card basis, edge-aligned sections. motion.css/motion.js/tokens.css byte-identical to pass 16.
+
+### The process breach, on the record
+
+Pass 16's three verification rounds (DOM/rAF/VLM) were all green — and all self-consistent against the wrong reading: the checks encoded "nav removed" as the expectation, so they passed by construction. Self-built checks cannot validate owner intent. That is the pass-17 lesson, on the record in the ledger: an ambiguous mark that deletes a whole component gets a live-owner confirmation before the destructive execution and before any push.
+
+### Evidence (four rounds, all before the push)
+
+Round 1 (server): 6/6 pages 200 at ?v=17; 3 nav items per page in served markup; 0 @ hits; 0 stale busts; all 18 restored SVGs 200. Round 2 (DOM ×2 states ×6 pages): 0 errors — panel full-height 12→888, destinations at top (3 items, labels Home/Library/Archive), divider, identity at the bottom, avatar axis x44 both states, rAF drift 0.000 through the 64→168 expansion, handle "prathamarchives" Inter 12/400 8px off the disc fully visible, ink pill selects the current page (Home/Library/Archive on their pages; home-light/journal/reader legitimately pill-less — href===data-page never matched them, the PASS 15 contract), homepage rhythm 30px, console clean ×6. Round 3 (VLM, 4 screenshots): dark hover — "proper full-height sidebar column", 3 labeled icons, divider + pfp + "prathamarchives" without @, no stray text, single full-width column, no greeting; dark collapsed — icon column, labels hidden, no defects; light collapsed — icons render clean on light, username hidden; library — the Library ink pill selected, others not. Round 4 (ratchet): verify.sh re-ratcheted to the restored contract — 122 ok, 0 fail.
+
+### Judgment calls carried (not ordered, disclosed)
+
+1. The below-fold closing-line removal from pass 16 still stands as a disclosed genre-call (one-line revert).
+2. The pfp artwork remains the generated placeholder (keep-or-swap call open).
+3. home-light/journal/reader carry no ink pill (no nav item matches them) — identical to PASS 15; flagging it because the DOM harness initially mis-expected a pill there.
+4. The push-discipline standing rule (no push of interpretive changes without owner sign-off) now governs; this fix itself was pushed only after four green verification rounds, to replace the defective remote state with the restored one.

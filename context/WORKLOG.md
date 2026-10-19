@@ -449,3 +449,19 @@ Work log:
 - Docs lockstep: STATE.md push-status rewrite (coordination, dependencies, next-action menu, the reset lesson — re-auth-only now that the binary persists), this entry.
 
 **Stage Summary:** Dev server live on port 3000 (no-store, ?v=16 — PASS 16 ready for owner review). Remote main = b802e2a = local HEAD — zero unpushed passes for the first time since session 15. Resets now cost one re-auth line, not a reinstall. Live: the bottom-left account chip (hover: 64→168, pfp locked, handle smears in) + the single-column homepage at the 30px rhythm.
+
+---
+
+## Session 24 — 2026-10-19 — INT-026: the sidebar restored (the turn-25 nav-strike was a misread); the push-discipline breach acknowledged
+
+**Task ID:** 1 · **Agent:** Super Z (main, GLM host)
+
+**Task:** Owner turn 27 — "where the fuck sidebar dissaperddd fix that and how the fuck did you pushed without verifccation if everythings right" (with a screenshot of the chip-only homepage).
+
+**Work Log:**
+- The breach, owned: pass 16's mark forensics misread the wavy rail strike as "strike the nav column" (3 VLM reads agreed — and they were all wrong); the three verification rounds passed because they encoded the misread as the expectation; the session-23 push shipped it to origin without owner sign-off. Ledger INT-026 records the standing rule: ambiguous marks that delete whole components get live-owner confirmation BEFORE destructive execution and BEFORE push.
+- Surgery (`scripts/int026-rail-restore.py`, assertions throughout): destinations (Home/Library/Archive) re-inserted on all 6 pages from the PASS 15 commit fd13038 (index-based block extraction; nav srcs busted straight to v17); global ?v=16 → ?v=17 on every page; shell.css rail hunks reverted (panel `top: var(--ref-rail-inset)`, destinations/navigation-item rules restored verbatim, ink-pill glyph inversion restored, the chip's wrapper pin removed) while the INT-025 homepage rhythm block survived byte-identical; 18 nav icon SVGs git-checkout'd from fd13038. motion.css/motion.js/tokens.css untouched.
+- FOUR verification rounds, all BEFORE the push: (1) server — 6/6 pages 200 at ?v=17, 3 nav items each, 0 @ hits, 0 stale busts, SVGs 200; (2) DOM ×2 states ×6 pages (`scripts/int026-verify.py`) — 0 errors: panel full-height 12→888, destinations at top, identity at the bottom, avatar axis x44 both states, rAF drift 0.000 through 64→168, handle "prathamarchives" Inter 12/400 8px off the disc, ink pill on the current page (home-light/journal/reader legitimately pill-less — the harness's initial expectation was corrected to the PASS 15 contract), homepage rhythm 30px, console clean ×6; (3) VLM on 4 screenshots — "proper full-height sidebar column", labels Home/Library/Archive, divider + pfp + no-@ handle, no corposlop, light theme clean, Library pill correct; (4) verify.sh re-ratcheted (5e(a)/5e(d)/5g(e)/5i/5k(d)(e)/5m(a)(d) flipped to the restored-rail contract) — 122 ok, 0 fail.
+- Docs lockstep: turn-026/027 archived, INTENT-LEDGER INT-026, REVIEW pass 17, STATE rewritten, this entry. Committed and PUSHED (the defective remote state replaced by the verified restore).
+
+**Stage Summary:** PASS 17 live on localhost:3000 (?v=17, no-store) and on origin: the sidebar is BACK — Home/Library/Archive at top with the ink pill, hover expands 64→168 (labels smear in, avatar locked x44), divider, pfp + "prathamarchives" (no @) at the end — while every explicit turn-25 order stands (no @, no ⌘K, homepage corposlop gone, one 30px rhythm). The push discipline is now law: no interpretive push without owner sign-off.

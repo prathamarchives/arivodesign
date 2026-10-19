@@ -45,14 +45,15 @@
      fixed at the top. The handle pulls closer to the pfp (gap 12 ->
      8, dedicated token) and the monogram becomes a real pfp image
      (round-cropped, riding the same 26px slot + axis lock).
-     INT-025 (owner turn 25) strikes the NAV COLUMN ITSELF (the
-     screenshot annotation: a wavy vertical strike through the icon
-     rows, stopping AT the divider): Home/Library/Archive are removed
-     from every rail; the panel sheds its full-height column form and
-     hugs its content as a BOTTOM-ANCHORED ACCOUNT CHIP (divider +
-     pfp + handle). The motion system survives untouched — hover
-     still expands 64 -> 168 and the handle still smears in with
-     motion blur; the @ is dropped from the handle by owner order.
+     INT-026 CORRECTION (owner turn 27 — "where did the sidebar
+     go"): the turn-25 strike was MISREAD. The NAV COLUMN STAYS:
+     Home/Library/Archive fixed at top, full-width divider, pfp +
+     prathamarchives at the rail's end (the PASS 15 form, restored
+     verbatim). What turn 25 actually ordered SURVIVES: the @ is
+     dropped from the handle, no command-K hint, the homepage's
+     marked corposlop removed, one 30px rhythm. The motion system
+     never changed: hover expands 64 -> 168 on the one clock, the
+     labels smear in with motion blur, the avatar axis is locked.
    - REFERENCE RHYTHM in the content column (INT-017 scale): 24px
      margins, 24px header top inset, header underline hairline, 20px
      gap to content.
@@ -99,7 +100,7 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
 
 .rail-panel {
   position: absolute;
-  top: auto;                    /* INT-025: the nav column is struck (owner mark) — no full-height column; the panel hugs content as a bottom-anchored chip */
+  top: var(--ref-rail-inset);  /* INT-026: full-height column restored — the turn-25 'strike the nav' read was WRONG (owner turn 27) */
   left: var(--ref-rail-inset);
   bottom: var(--ref-rail-inset);
   width: var(--ref-rail-w);     /* expands to var(--ref-rail-expanded) on hover (motion.css — the one shared transition stack) */
@@ -207,20 +208,46 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
   background: var(--ref-header-line);
 }
 
-/* INT-025: the nav rows are GONE (owner strike) — the destinations /
-   navigation-item / ink-selection rules retired with them. The
-   wrapper (navigation-NNN) SURVIVES as the sole flow child holding
-   [divider -> identity] at the pinned x24 slot (rule below), so the
-   avatar axis x44 holds through the expansion — by CONSTRUCTION now:
-   the wrapper no longer grows with the panel (there are no item rows
-   to widen it), so the old centering-based lock would drift. */
-.rail-panel > [class^="navigation-"] { gap: 0; padding: 0; flex: 1 1 auto; min-height: 0;
-  align-self: flex-start;               /* INT-025 defect fix: with no nav items the wrapper stays 40px wide —
-                                           centering it in the growing panel DRIFTED the avatar 52px right and
-                                           pushed the handle past the clip. Pin it to the content-box left... */
-  margin-left: calc((var(--ref-rail-w) - var(--ref-rail-item-w)) / 2 - 1px);  /* 11px = 12 minus the panel's 1px
-                                           border — restores the exact x24 slot (wrapper, identity, avatar x31,
-                                           divider line flush x12) that content-box centering used to own */
+/* destinations: icon rows that gain labels on expansion (icon axis never moves) */
+/* INT-024: the wrapper FILLS the panel (flex: 1, vertical only — its
+   width stays shrink-to-fit from its items, so the wrapper-left
+   invariant x24 and the avatar axis x44 hold) so the divider's auto
+   margin can push the account block to the rail's end.
+   SCOPED to the DIRECT child: [class^="navigation-"] would also match
+   the navigation-item-* rows (grandchildren) — flex:1 on those would
+   stretch the list (the selector-prefix hazard, caught pre-ship). */
+.rail-panel > [class^="navigation-"] { gap: 0; padding: 0; flex: 1 1 auto; min-height: 0; }
+.rail-panel [class^="destinations-"] {
+  align-items: center;
+  gap: calc(var(--ref-rail-pitch) - var(--ref-rail-item-h));
+  margin-top: 0;  /* INT-024: the components FIX AT THE TOP — the panel's 20px inset owns the first row's air */
+  padding: 0;
+}
+.rail-panel [class^="navigation-item-"] {
+  width: var(--ref-rail-item-w);
+  height: var(--ref-rail-item-h);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;   /* the icon box owns the left edge — the label overlay extends right */
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  border-radius: var(--ref-rail-item-r);
+  background-color: transparent;
+  box-shadow: none;
+}
+.rail-panel [class^="navigation-item-"] > div {
+  display: flex;               /* kill the inline-img line box — glyph centers true */
+  align-items: center;
+  justify-content: center;
+  width: var(--ref-rail-item-w);
+  height: var(--ref-rail-item-h);
+  flex: none;
+}
+.rail-panel [class^="navigation-item-"] svg,
+.rail-panel [class^="navigation-item-"] img {
+  width: var(--ref-rail-icon);
+  height: var(--ref-rail-icon);
 }
 
 /* the label overlay: ZERO LAYOUT (INT-020 law 3 — the pass-10
@@ -259,9 +286,18 @@ body > div > [class^="study-shell-"] > [class^="expanded-navigation-"] {
   left: calc((var(--ref-rail-item-w) + var(--ref-rail-avatar)) / 2 + var(--ref-rail-identity-label-gap));
 }
 
-/* INT-025: the ink-pill selection rules retired with the nav rows —
-   nothing in the rail can be "selected" anymore (motion.js's
-   data-page loop finds no items and no-ops safely). */
+/* selection: the INK pill (INT-018) — inverted glyph via CSS filter,
+   the references' floating-ink component. Icon color law of INT-016
+   is superseded for the rail by the turn-18 reference set. */
+.rail-panel [class^="navigation-item-"].selected {
+  background-color: var(--ref-rail-pill);
+  box-shadow: var(--ref-rail-pill-shadow);
+}
+body.theme-dark  .rail-panel [class^="navigation-item-"].selected svg,
+body.theme-dark  .rail-panel [class^="navigation-item-"].selected img { filter: brightness(0); }
+body.theme-light .rail-panel [class^="navigation-item-"].selected svg,
+body.theme-light .rail-panel [class^="navigation-item-"].selected img { filter: brightness(0) invert(1); }
+.rail-panel [class^="navigation-item-"].selected .nav-label { color: var(--ref-rail-pill-glyph); }
 
 /* ---------- workspace header: the reference's content-column bar ---------- */
 body > div > [class^="study-shell-"] > [class^="workspace-header-"] {
