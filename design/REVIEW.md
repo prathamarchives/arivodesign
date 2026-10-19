@@ -615,6 +615,7 @@ Round 1 (server): 6/6 pages 200 at ?v=17; 3 nav items per page in served markup;
 | Section change feels like a new site load | Nav items link to separate HTML files | No shared route/history runtime | In-place same-origin route update; keep direct URLs and browser history |
 | Transition obscures the UI | Recording shows page-wide blur and a near-blank frame | Transition layer is not coordinated with DOM replacement | Preload destination; animate old/new layers together; no blank frame |
 | Chrome changes position during transition | Recording shows unstable sidebar/nav position | Page and chrome state do not share one lifecycle | One route runtime and one consistent shell state |
+| Test evidence is not reproducible from the repo | Pass 17 worklog names `scripts/int026-verify.py` and `scripts/int026-shots.py`; current `scripts/` tree contains only server helpers | The worklog names runners that are absent from the current tree | Commit every new runner and persist screenshots plus the full matrix under `design/preview/phase1/` |
 
 **Scope guard:** preserve the Pass 17 sidebar, page content, homepage ratios and spacing, grayscale palette, artwork, and the frozen Figma export. Do not alter typography in this pass; D-008/X-16 and the INT-013 prototype disagree on Helvetica vs Inter/Lora.
 
