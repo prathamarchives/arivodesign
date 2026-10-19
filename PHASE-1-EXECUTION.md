@@ -49,7 +49,22 @@ Do not reorder phases. Do not combine them into one unreviewed patch.
 
 Files allowed: new `design/navigation.js`, new `design/styles/theme.css`, six target HTML files, `design/styles/tokens.css` only if a theme role token is missing, and `verify.sh`.
 
-1. Add `theme.css` after `prototype.css` and before `shell.css`. Keep the Figma export frozen. Use named role tokens for canvas, primary surface, secondary surface, primary text, muted text, divider, and glass.
+1. Add `theme.css` after `prototype.css` and before `shell.css`. Keep the Figma export frozen. Define these exact role values from the current prototype palette. Do not add hues or new surface colors.
+
+   | Token | Dark | Light |
+   |---|---|---|
+   | `--app-canvas` | `#171717` | `#F7F7F5` |
+   | `--app-shell` | `#222222` | `#F7F7F5` |
+   | `--app-surface-primary` | `#2C2C2C` | `#FFFFFF` |
+   | `--app-surface-secondary` | `#292929` | `#F2F2EE` |
+   | `--app-fg` | `#EEEEEA` | `#252525` |
+   | `--app-muted` | `#A1A19C` | `#777775` |
+   | `--app-divider` | `#3B3B39` | `#DEDEDB` |
+   | `--app-glass` | `rgba(23,23,23,.72)` | `rgba(255,255,255,.72)` |
+   | `--app-glass-edge` | `rgba(238,238,234,.10)` | `rgba(255,255,255,.65)` |
+   | `--app-focus` | `rgba(238,238,234,.5)` | `rgba(37,37,37,.5)` |
+
+   Map every visible text and surface role across all six pages to these tokens. Derive the selector list from the existing HTML; do not use universal selectors to recolor elements. Preserve the colors of cover artwork, avatar artwork, and embedded illustrations. Preserve the rail's existing body theme variables in `tokens.css` unless a change is required for a shared theme state.
 2. Use one preference key: `arivo.theme`, with values `dark` and `light`. If no saved preference exists, use dark. This follows the current dark-first design-system rule. Apply the preference before the first visible paint where possible. Wrap storage access in `try/catch`; storage failure must not break navigation.
 3. Theme switch must update the current document in place. It must not change the URL to another theme-specific page, fetch a new page, or reload the document.
 4. The chosen theme must remain the same when the user opens Home, Library, Archive, Journal, or Reader. The theme must survive a direct URL load and browser reload.
