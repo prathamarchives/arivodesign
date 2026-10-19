@@ -47,7 +47,7 @@ Do not reorder phases. Do not combine them into one unreviewed patch.
 
 ### Pass A — Shared route state and theme
 
-Files allowed: new `design/navigation.js`, new `design/styles/theme.css`, six target HTML files, `design/styles/tokens.css` only if a theme role token is missing, and `verify.sh`.
+Files allowed: new `design/navigation.js`, new synchronous `design/theme-init.js`, new `design/styles/theme.css`, six target HTML files, `design/styles/tokens.css` only if a theme role token is missing, and `verify.sh`.
 
 1. Add `theme.css` after `prototype.css` and before `shell.css`. Keep the Figma export frozen. Define these exact role values from the current prototype palette. Do not add hues or new surface colors.
 
@@ -65,8 +65,8 @@ Files allowed: new `design/navigation.js`, new `design/styles/theme.css`, six ta
    | `--app-focus` | `rgba(238,238,234,.5)` | `rgba(37,37,37,.5)` |
 
    Map every visible text and surface role across all six pages to these tokens. Derive the selector list from the existing HTML; do not use universal selectors to recolor elements. Preserve the colors of cover artwork, avatar artwork, and embedded illustrations. Preserve the rail's existing body theme variables in `tokens.css` unless a change is required for a shared theme state.
-2. Use one preference key: `arivo.theme`, with values `dark` and `light`. If no saved preference exists, use dark. This follows the current dark-first design-system rule. Apply the preference before the first visible paint where possible. Wrap storage access in `try/catch`; storage failure must not break navigation.
-3. Theme switch must update the current document in place. It must not change the URL to another theme-specific page, fetch a new page, or reload the document.
+2. Use one preference key: `arivo.theme`, with values `dark` and `light`. If no saved preference exists, use dark. Add `theme-init.js` as a synchronous script in the `<head>` of all six pages, before every stylesheet. It reads the preference and sets `document.documentElement.dataset.theme` before the first visible paint. If storage is unavailable, set dark. Wrap storage access in `try/catch`; storage failure must not break the page. After DOM load, keep `body.theme-dark` / `body.theme-light` aligned with the same value so existing rail tokens remain consistent.
+3. Treat every existing `a[title="Switch theme"]` as a theme action before generic internal-link handling. Prevent its default action. Toggle `html[data-theme]`, the body theme class, and `localStorage["arivo.theme"]` in the current document. Do not fetch its `href`, change the URL, add history state, or reload. Update the existing icon to `images/vector-173.svg` (moon) in dark mode and `images/vector-1005.svg` (sun) in light mode. Update its accessible label and title to `Switch to light mode` or `Switch to dark mode`. Use a **180ms color-only transition** with the shared micro easing; do not slide or blur the page.
 4. The chosen theme must remain the same when the user opens Home, Library, Archive, Journal, or Reader. The theme must survive a direct URL load and browser reload.
 5. Build a component-scoped color-role map for all six pages. Do not use `filter: invert()`, broad image filters, or a wildcard that recolors cover artwork, the avatar, or illustrations. Audit text, card surfaces, segmented controls, dividers, progress bars, floating panels, and focus states in both themes. Keep grayscale only.
 6. Intercept only safe, same-origin links to the six app documents. Respect Ctrl/Cmd-click, Shift-click, middle-click, downloads, external URLs, non-self targets, and hash-only links. Those links must keep browser behavior.
