@@ -83,3 +83,17 @@ When constraints conflict, the higher rung wins. C0 is the product itself; C1–
 
 **L-18 · Grow on failure or directive, never on speculation.** New governance files, rules, or checks are added only when a real failure, a real owner correction, or an explicit owner directive demands them. No speculative ceremony — this repo builds a product, and governance serves the product.
 *Grounds: INT-001 ("the right way this time" — the owner's verdict that Arivoo is "a lil bit over engineered"); Arivoo ENGINEERING growth stages.*
+
+
+---
+
+### C0 — Continuity of the experience
+
+**L-19 · Route and theme state are shared.** An in-prototype section change must not replace the document. A theme change must not navigate to a second theme-specific document. The selected theme persists across every prototype section, and browser history must remain usable.
+*Grounds: INT-028; current source inspection of `design/index.html`, `design/home-light.html`, `design/library.html`, `design/archive.html`, `design/journal.html`, `design/reader.html`.*
+
+**L-20 · Structural motion must not obscure the product.** Route motion must keep the outgoing or incoming page visible. A blank transition, full-viewport blur, or overlay that makes the page unreadable is a defect. Reduced-motion mode must remove movement and blur.
+*Grounds: INT-028 and the owner-supplied recording; CONTRACT X-11/X-14.*
+
+**L-21 · Idle chrome must remain recoverable.** Hiding navigation chrome is allowed only after the fixed idle interval. Pointer, keyboard, scroll, and focus activity must reveal it. Focused or hovered navigation must not disappear. The content must not be clipped when the chrome hides or returns.
+*Grounds: INT-028; CONTRACT X-07/X-11/X-15.*
