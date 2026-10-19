@@ -180,3 +180,6 @@ The current implementation contract for route changes, persistent theme state, i
 This addendum does not replace the owner-supplied Figma export or permit an unreviewed redesign. Keep `design/styles/prototype.css` frozen. The existing motion system's “labels only” blur rule still applies to the sidebar; INT-028 authorizes bounded 4px blur on the outgoing/incoming **page surface only**. It does not authorize a viewport-wide blur, a blur on the sidebar glass, or a transition that leaves an empty frame.
 
 The current typeface authority is unresolved in the older record: D-008 / X-16 name Helvetica, while the INT-013 operative prototype uses self-hosted Inter and Lora. Phase 1 does not touch typography. Do not silently settle this conflict during a route or theme fix.
+
+  
+**Rail-token clarification:** older prose above still repeats the pre-Figma `48/176` rail math. That text is historical and is not the current implementation value. INT-019 through INT-026 and the current token sheet define the Pass 17 rail as **64px collapsed / 168px expanded, 26px avatar, identity at the bottom**. Use `design/styles/tokens.css` and `PHASE-1-EXECUTION.md` for the current values.
