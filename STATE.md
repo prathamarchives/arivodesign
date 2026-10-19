@@ -5,7 +5,7 @@
 ## Current state after INT-028 (2026-10-19)
 
 - **Position:** Stage 3 / Phase 1 interaction-stability specification. Baseline UI is Pass 17 on `main`. Work is on branch `fix/interaction-continuity-int028`. No UI runtime files have been repaired in this branch.
-- **Work:** Added `PHASE-1-EXECUTION.md`; backfilled the missing source entry for turn 26 as INT-027; ledgered INT-028; added L-19..L-22, R-D10..R-D14/R-X12..R-X15, X-17..X-19, and D-011..D-013; replaced the stale design README; clarified historical rail values; routed AGENTS/README/DESIGN-SYSTEM to the phase contract; corrected the verifier to check exact raw file references instead of assuming turn number equals INT number.
+- **Work:** Added `PHASE-1-EXECUTION.md`; backfilled the missing source entry for turn 26 as INT-027; ledgered INT-028; added L-19..L-23, R-D10..R-D15/R-X12..R-X15, X-17..X-20, and D-011..D-014; replaced the stale design README; clarified historical rail values; routed AGENTS/README/DESIGN-SYSTEM to the phase contract; corrected the verifier to check exact raw file references instead of assuming turn number equals INT number.
 - **Diagnosis:** the six pages are separate HTML documents. Internal links switch documents. Theme is hard-coded per page. `motion.js` handles rail hover and initial entrance but does not manage shared route or theme state. The recording shows an obscuring transition and a near-blank frame.
 - **Evidence:**
   - **not checked** — source inspection indicates page-per-file links and page-level theme classes; the current runtime appears to lack shared route and theme state. Runtime behavior still requires a browser test. Source inspection also found that the design README named several verification/build scripts absent from the current tree.
