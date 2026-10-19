@@ -43,3 +43,24 @@ The owner set the vision for the app shell, home, library, and archive directly 
 **D-010 — Prototype medium: static HTML/CSS + minimal vanilla JS, no framework — active** · 2026-10-14
 Pre-execution visuals are plain HTML/CSS with minimal vanilla JS for interaction fidelity (sidebar states, overlay, page switching, theme). No framework, no build step — the prototype exists to lock visuals, and the production framework decision is made later WITH the owner.
 *Grounds: INT-004 ("we're just designing the HTML/CSS... use whatever tech you gotta use idc what framwork"); artifacts live in design/.*
+
+
+---
+
+**D-011 — Navigation and theme share one in-place runtime — active** · 2026-10-19
+
+Within the six-page static prototype, section links use one client-side navigation runtime. The runtime fetches and validates the destination, updates the page root and document history in place, updates `data-page` and the selected nav item, and supports Back/Forward. The chosen `dark` or `light` theme persists under `localStorage["arivo.theme"]` and applies across every section. Direct URL loads remain valid. If an in-place request fails, keep the current page and show no false success state; use a clear failure behavior that does not blank the document.
+
+*Grounds: INT-028; L-19; D-010.*
+
+**D-012 — Phase 1 motion envelope is fixed — active** · 2026-10-19
+
+Route motion: 300ms, `cubic-bezier(0.32, 0.72, 0, 1)`; old page +18px right, opacity 1→0, blur 0→4px; new page −18px left, opacity 0→1, blur 4→0px. Theme motion changes colors only. Idle chrome delay: 1800ms; hide motion: opacity + translateY(−8px), 220ms. Reduced motion: opacity-only, no longer than 120ms, with no blur. No bounce, scaling, rotation, cascade, or viewport-wide blur.
+
+*Grounds: INT-028; L-20; L-21; X-11.*
+
+**D-013 — Phase 1 may not redesign the Figma surface — active** · 2026-10-19
+
+The first stabilization pass changes route state, theme state, navigation visibility, transition behavior, and test coverage only. Page content, exported artwork, type choices, component geometry, page structure, and the current grayscale design remain unchanged. `design/styles/prototype.css` remains frozen. The Helvetica vs Inter/Lora specification conflict is not resolved by this decision.
+
+*Grounds: INT-013; D-008; D-010; INT-028.*
