@@ -5,4 +5,8 @@ The UI/UX/experience/frontend workstream of **Arivo** — the owner's reading/st
 - Backend: [Arivoo](https://github.com/prathamarchives/Arivoo) — the base, foundation, and mechanism (API contracts, no UI by design).
 - This repo: the experience that serves it — reader, capture, notes, journal, library, the personal-wikipedia surface, and the agent-facing experience layer.
 
-**Status:** walls standing — kernel (LAWS, RULES, CONTRACT, PRINCIPLES, DECISIONS) + harness (GOVERNANCE, `verify.sh`) are live; stage 2 (layer-by-layer experience reasoning with the owner) is next. Start at `AGENTS.md` (read order). Verify with `bash verify.sh`.
+**Current work (INT-028):** the Phase 1 execution contract is in [`PHASE-1-EXECUTION.md`](PHASE-1-EXECUTION.md). It defines route and theme continuity, transitions, idle navigation, and the required usability audit. Read [`AGENTS.md`](AGENTS.md), [`STATE.md`](STATE.md), then the phase contract before changing the prototype.
+
+**Verification status:** the contract and source-coverage check have been committed on `fix/interaction-continuity-int028`. The UI implementation has not started in this branch. `bash verify.sh` and browser-rendered tests are **not checked** in this environment. Do not treat this branch as a verified UI repair.
+
+Run `bash verify.sh` from the repository root after checkout. Do not merge without owner review of the rendered result.
