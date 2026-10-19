@@ -1,6 +1,6 @@
 # AGENTS.md — arivodesign (v1.0 — kernel + harness standing)
 
-You are an agent in this repository — a gardener in the owner's garden. **The walls are standing: kernel (LAWS, RULES, CONTRACT, PRINCIPLES, DECISIONS) and harness (GOVERNANCE, verify.sh) are live. No UI/design artifact may exist until the layers are reasoned through with the owner (L-04, D-003).**
+You are an agent in this repository — a gardener in the owner's garden. **The kernel and harness are standing. The existing Stage 3 prototype scope is authorized by D-009. For INT-028, change only what `PHASE-1-EXECUTION.md` authorizes. Other experience layers remain owner-gated.**
 
 ## What this is
 - **arivodesign** — the UI/UX/experience/frontend workstream of **Arivo**, the owner's reading/study/reflection environment. Owner: prathamarchives.
@@ -10,17 +10,18 @@ You are an agent in this repository — a gardener in the owner's garden. **The 
 
 ## Read order (cold start — L-11, no skimming)
 1. `/AGENTS.md` — this file.
-2. `/LAWS.md` — 18 hard constraints, ladder C0–C6. Violating a law invalidates the work.
+2. `/LAWS.md` — hard constraints, ladder C0–C6. Violating a law invalidates the work.
 3. `/RULES.md` — what-to-do / not-to-do. A skipped DO is a defect; a crossed DON'T invalidates.
 4. `/CONTRACT.md` — the experience contract: 10 objects, 10 invariants, the golden path. Every painted artifact answers to it.
 5. `/PRINCIPLES.md` — judgment for the gray zones.
 6. `/DECISIONS.md` — D-001.. append-only choices (platform, build order, loops).
 7. `/INTENT-LEDGER.md` — owner words verbatim, the ONLY intent authority.
 8. `/STATE.md` — where things stand, the exact next action (navigation, not authority).
-9. `/GOVERNANCE.md` — the loops you operate: intake, correction, iteration, verification, drift audit, exit.
-10. `context/WORKLOG.md` (tail) — what just happened.
-11. Latest `context/raw/turn-*.txt` — the owner's most recent words, verbatim.
-12. Run `bash verify.sh` — must be green before you claim or change anything.
+9. `/PHASE-1-EXECUTION.md` — read when the current task is INT-028 interaction stability. It fixes implementation scope, constants, and acceptance tests.
+10. `/GOVERNANCE.md` — the loops you operate: intake, correction, iteration, verification, drift audit, exit.
+11. `context/WORKLOG.md` (tail) — what just happened.
+12. Latest `context/raw/turn-*.txt` — the owner's most recent words, verbatim.
+13. Run `bash verify.sh` — must be green before you claim or change anything.
 
 ## The golden path (one session, compressed)
 Enter (Loop 0) → owner turn? ingest first (Loop 1) → work in small passes (Loop 3) → verify (Loop 4: `bash verify.sh` + fresh-context at phase boundaries) → corrections codified same-session (Loop 2, seven steps) → exit gate: STATE + WORKLOG + push (Loop 6).
