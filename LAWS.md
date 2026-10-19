@@ -101,3 +101,7 @@ When constraints conflict, the higher rung wins. C0 is the product itself; C1–
 
 **L-22 · Verification evidence must be reproducible.** A worklog cannot rely on a test runner, command, or screenshot that future agents cannot access. Store new test scripts and review artifacts in tracked repository paths, or label the result "not checked". Missing evidence is not implied evidence.
 *Grounds: INT-028; L-13; L-16; current tree inspection found test scripts named by the Pass 17 worklog but absent from `scripts/`.*
+
+
+**L-23 · Auto-hide has an explicit owner-controlled override.** The owner-specified rail pin keeps navigation visible and expanded until the user unpins it. Idle behavior must never override this state.
+*Grounds: INT-004 (manual top-left sidebar button); INT-028; D-014.*
