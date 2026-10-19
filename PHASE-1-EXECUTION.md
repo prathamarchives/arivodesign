@@ -127,7 +127,7 @@ For every combination, record:
 - Hidden chrome returns with pointer movement, keyboard input, focus, or scroll; it does not hide while in use.
 - Every visible interactive control gives its documented result or is recorded as unresolved.
 
-At least one test pass must inspect **1092×614** because it matches the supplied recording. A test report must include actual browser name/version, date, viewport, commands or steps, pass/fail, and screenshot/log path. Never invent a screenshot or infer a visual pass from DOM values.
+At least one test pass must inspect **1092×614** because it matches the supplied recording. A test report must include actual browser name/version, date, viewport, commands or steps, pass/fail, and screenshot/log path. Commit any new test runner under `scripts/` before citing it. Do not cite ephemeral `/tmp` files as the only evidence. Never invent a screenshot or infer a visual pass from DOM values.
 
 ## 5. Regression requirements
 
@@ -137,7 +137,7 @@ Before reporting any pass:
 2. Check all changed HTML files parse. Check all local script and stylesheet URLs return success.
 3. Confirm internal route clicks preserve the current document. Confirm theme clicks preserve URL and document.
 4. Confirm a fresh page load uses saved theme. Confirm Back/Forward work after at least three section changes.
-5. Capture before/after screenshots for Home dark/light, Library dark/light, and Archive dark/light, plus Journal and Reader in both themes.
+5. Capture before/after screenshots for Home dark/light, Library dark/light, and Archive dark/light, plus Journal and Reader in both themes. Store them under `design/preview/phase1/`; store the full 48-state result matrix at `design/preview/phase1/MATRIX.md`. The 1092×614 viewport must have before/after evidence because it matches the supplied recording.
 6. Read the screenshots at native size. A rendered artifact must be viewed before any visual claim.
 7. Request a fresh-context audit that reads this file, CONTRACT.md, DESIGN-SYSTEM.md, and the resulting evidence. The audit must challenge owner-intent interpretation, not just retest assumptions encoded by the builder.
 8. Update `design/REVIEW.md`, `context/WORKLOG.md`, and `STATE.md`. Label every behavior claim **verified by run** or **not checked**.
